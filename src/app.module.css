@@ -1,0 +1,17 @@
+.wrapper {
+    height: 100%;
+}
+
+.headerWrapper {
+    height: 4em;
+    min-height: 4em;
+}
+
+.bodyWrapper {
+    height: calc(100vh - 8em);
+}
+
+.footerWrapper {
+    height: 4em;
+    min-height: 4em;
+}

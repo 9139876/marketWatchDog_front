@@ -1,49 +1,60 @@
 import React from 'react';
-import {Alert, Layout, theme} from 'antd';
+import {Alert, Empty, Layout} from 'antd';
 import MainTree from "./components/mainTree";
+import {useStores} from "./stores/hooks/useStores";
+import {observer} from "mobx-react";
+import styles from "./app.module.css";
 
-const {Header, Content, Footer} = Layout;
+const {Header, Footer} = Layout;
 
-const App: React.FC = () => {
-    const {
-        token: {colorBgContainer, borderRadiusLG},
-    } = theme.useToken();
+const App = observer(() => {
+    const {appStateStore} = useStores();
 
     return (
-        <Layout>
-            <Header style={{display: 'flex', alignItems: 'center'}}>
-                <Alert type="success" message="Соединение с сервером" showIcon/>
-                {/*<div className="demo-logo"/>*/}
-                {/*<Menu*/}
-                {/*    theme="dark"*/}
-                {/*    mode="horizontal"*/}
-                {/*    defaultSelectedKeys={['2']}*/}
-                {/*    items={items}*/}
-                {/*    style={{flex: 1, minWidth: 0}}*/}
-                {/*/>*/}
-            </Header>
-            <Content style={{padding: '0 48px'}}>
-                <div
-                    style={{
-                        background: colorBgContainer,
-                        minHeight: 280,
-                        padding: 24,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    <MainTree/>
+        <div className={styles.wrapper}>
+
+            <div className={styles.headerWrapper}>
+                <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100%'}}>
+                    <div>
+                        <Alert type="success" message="Соединение с сервером" showIcon/>
+                    </div>
+                    <div>
+                        <Alert type="success" message="Соединение с сервером" showIcon/>
+                    </div>
+                    <div>
+                        <Alert type="success" message="Соединение с сервером" showIcon/>
+                    </div>
+                    <div>
+                        <Alert type="success" message="Соединение с сервером" showIcon/>
+                    </div>
                 </div>
-            </Content>
-            <Footer style={{
-                textAlign: 'right',
-                fontFamily: 'cursive',
-                fontWeight: 'bold',
-                fontSize: 'large'
-            }}>
-                Market WatchDog ©{new Date().getFullYear()} Created by Insider.
-            </Footer>
-        </Layout>
+
+                {/*<Header style={{display: 'flex', alignItems: 'center'}}>*/}
+                {/*    <div>*/}
+                {/*        <Alert type="success" message="Соединение с сервером" showIcon/>*/}
+                {/*    </div>*/}
+                {/*</Header>*/}
+            </div>
+
+            <div className={styles.bodyWrapper}>
+                {appStateStore.connectedToServer
+                    ? <MainTree/>
+                    : <Empty style={{paddingTop: '5em'}} styles={{image: {height: '10em'}}} description={<div style={{color: 'red', fontSize: '3em', fontFamily: 'cursive'}}>Нет соединения с сервером :(</div>}/>}
+            </div>
+
+            <div className={styles.footerWrapper}>
+                <Footer style={{
+                    textAlign: 'right',
+                    fontFamily: 'cursive',
+                    fontWeight: 'bold',
+                    fontSize: 'large'
+                }}>
+                    Market WatchDog ©{new Date().getFullYear()} Created by Insider.
+                </Footer>
+            </div>
+
+        </div>
     );
-};
+});
 
 export default App;

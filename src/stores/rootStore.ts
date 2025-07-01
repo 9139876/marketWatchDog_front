@@ -11,4 +11,9 @@ export default class RootStore {
 
     testStore: TestStore;
     appStateStore: AppStateStore;
+
+    clearAndRefresh = () => {
+        this.testStore = new TestStore(this);
+        this.appStateStore = new AppStateStore(this);
+    }
 }
