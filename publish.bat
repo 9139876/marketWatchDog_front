@@ -1,0 +1,1 @@
+npm run build & xcopy /s/y .\build C:\development\nginx\nginx-1.27.5\watchdog_html
