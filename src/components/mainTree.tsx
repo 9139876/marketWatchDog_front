@@ -1,8 +1,10 @@
 import React from 'react';
 import {Collapse, Divider} from 'antd';
 import MarketSignalsSettings from "./marketSignalsSettings/marketSignalsSettings";
+import {observer} from "mobx-react";
+import EventsList from "./log/eventsList";
 
-const MainTree: React.FC = () => {
+const MainTree = observer(() => {
 
     const onChange = (key: string | string[]) => {
         console.log(key);
@@ -22,7 +24,7 @@ const MainTree: React.FC = () => {
                     },
                     {
                         key: '2',
-                        label: <div>История рыночных сигналов</div>,
+                        label: 'История рыночных сигналов',
                         children: <div>Здесь потом что-то будет...</div>,
                     },
                 ]}
@@ -39,13 +41,25 @@ const MainTree: React.FC = () => {
                     },
                     {
                         key: '2',
-                        label: <div>Закрытые позиции</div>,
+                        label: 'Закрытые позиции',
                         children: <div>Здесь потом что-то будет...</div>,
                     },
                 ]}
             />
+            <Divider orientation="left">Лог</Divider>
+            <Collapse
+                size="large"
+                onChange={onChange}
+                items={[
+                    {
+                        key: '1',
+                        label: 'События',
+                        children: <EventsList/>
+                    }
+                ]}
+            />
         </>
     );
-};
+});
 
 export default MainTree;

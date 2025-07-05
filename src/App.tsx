@@ -14,7 +14,7 @@ const App = observer(() => {
         <div className={styles.wrapper}>
 
             <div className={styles.headerWrapper}>
-                <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100%'}}>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
                     <div>
                         <Alert type="success" message="Соединение с сервером" showIcon/>
                     </div>
@@ -47,7 +47,8 @@ const App = observer(() => {
                     textAlign: 'right',
                     fontFamily: 'cursive',
                     fontWeight: 'bold',
-                    fontSize: 'large'
+                    fontSize: 'large',
+                    padding: '1em'
                 }}>
                     Market WatchDog ©{new Date().getFullYear()} Created by Insider.
                 </Footer>

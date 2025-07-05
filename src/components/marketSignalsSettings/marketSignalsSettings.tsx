@@ -2,8 +2,9 @@ import React from "react";
 import {Button, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 import {CheckCircleTwoTone} from "@ant-design/icons";
+import {observer} from "mobx-react";
 
-const MarketSignalsSettings: React.FC = () => {
+const MarketSignalsSettings=observer(() => {
 
     interface DataType {
         key: React.Key;
@@ -127,6 +128,6 @@ const MarketSignalsSettings: React.FC = () => {
             </Button>
         </div>
     );
-};
+});
 
 export default MarketSignalsSettings;
