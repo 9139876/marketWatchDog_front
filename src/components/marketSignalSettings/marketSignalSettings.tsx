@@ -1,76 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 import {CheckCircleTwoTone} from "@ant-design/icons";
 import {observer} from "mobx-react";
+import {MarketSignalSettingsItem} from "../../models/marketSignalSettings/marketSignalSettingsItem";
+import {useStores} from "../../stores/hooks/useStores";
 
-const MarketSignalsSettings=observer(() => {
+const MarketSignalSettings = observer(() => {
 
-    interface DataType {
-        key: React.Key;
-        dealer: string;
-        symbol: string;
-        donchianAndRsi: string;
-        divergence: string;
-        havingSignal: boolean;
-    }
+    const {marketSignalSettingsStore} = useStores();
 
-    const data: DataType[] = [
-        {
-            key: '1',
-            dealer: "Альфа",
-            symbol: "EurUsd",
-            donchianAndRsi: "M15, M30",
-            divergence: "M30, H1",
-            havingSignal: true
-        },
-        {
-            key: '2',
-            dealer: "Альфа",
-            symbol: "GpbUsd",
-            donchianAndRsi: "M5, M30",
-            divergence: "M15, H1",
-            havingSignal: true
-        },
-        {
-            key: '3',
-            dealer: "Финам",
-            symbol: "Gold",
-            donchianAndRsi: "",
-            divergence: "M30, H1",
-            havingSignal: true
-        },
-        {
-            key: '4',
-            dealer: "Финам",
-            symbol: "Silver",
-            donchianAndRsi: "M15, M30",
-            divergence: "",
-            havingSignal: true
-        },
-        {
-            key: '5',
-            dealer: "Финам",
-            symbol: "Сбер",
-            donchianAndRsi: "",
-            divergence: "",
-            havingSignal: false
-        },
-        {
-            key: '6',
-            dealer: "Финам",
-            symbol: "Лукойл",
-            donchianAndRsi: "",
-            divergence: "",
-            havingSignal: false
-        },
-    ];
+    const [disableRefreshButton, setDisableRefreshButton] = useState(false);
 
-    const columns: TableColumnsType<DataType> = [
+    const refreshMarketSignalSettingsItems = async () => {
+        try {
+            setDisableRefreshButton(true);
+            await marketSignalSettingsStore.refreshMarketSignalSettingsItems();
+        } finally {
+            setDisableRefreshButton(false);
+        }
+    };
+
+    const columns: TableColumnsType<MarketSignalSettingsItem> = [
         {
             title: 'Дилер',
             dataIndex: 'dealer',
-            filters: data
+            filters: marketSignalSettingsStore.marketSignalSettingsItems
                 .map(x => x.dealer)
                 .filter((value, index, self) => self.indexOf(value) === index)
                 .map(x => ({text: x, value: x})),
@@ -112,10 +67,10 @@ const MarketSignalsSettings=observer(() => {
 
     return (
         <div>
-            <Table<DataType>
+            <Table<MarketSignalSettingsItem>
                 bordered
                 columns={columns}
-                dataSource={data}
+                dataSource={marketSignalSettingsStore.marketSignalSettingsItems}
                 pagination={false}
                 scroll={{y: 39 * 5}}
                 size={"small"}
@@ -123,6 +78,8 @@ const MarketSignalsSettings=observer(() => {
             <Button
                 style={{margin: 15}}
                 type="primary"
+                disabled={disableRefreshButton}
+                onClick={refreshMarketSignalSettingsItems}
             >
                 Обновить
             </Button>
@@ -130,4 +87,4 @@ const MarketSignalsSettings=observer(() => {
     );
 });
 
-export default MarketSignalsSettings;
+export default MarketSignalSettings;

@@ -1,7 +1,7 @@
 import RootStore from "../rootStore";
 import {makeAutoObservable} from "mobx";
-import {ApplicationLogEventItem} from "../../utils/applicationLog/ApplicationLogEventItem";
-import {ApplicationLogEventType} from "../../utils/applicationLog/applicationLogEventType";
+import {ApplicationLogEventItem} from "../../models/applicationLog/ApplicationLogEventItem";
+import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
 import {Nullable} from "../../global/common/nullable";
 import {SelectedEnumItem} from "../../global/selectedEnumItem";
 
@@ -13,13 +13,7 @@ export default class ApplicationLogStore {
         this.rootStore = rootStore;
     }
 
-    eventsList: ApplicationLogEventItem[] = [
-        {eventType: ApplicationLogEventType.Event, date: new Date(), text: 'This is the Event'},
-        {eventType: ApplicationLogEventType.ImportantEvent, date: new Date(), text: 'This is the ImportantEvent'},
-        {eventType: ApplicationLogEventType.Warning, date: new Date(), text: 'This is the Warning'},
-        {eventType: ApplicationLogEventType.Error, date: new Date(), text: 'This is the Error'},
-        {eventType: ApplicationLogEventType.Fatal, date: new Date(), text: 'This is the Fatal'},
-    ];
+    eventsList: ApplicationLogEventItem[] = [];
 
     selectedEventTypes: SelectedEnumItem<ApplicationLogEventType>[] = [
         {value: ApplicationLogEventType.Event, isSelected: true},

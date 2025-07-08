@@ -1,6 +1,6 @@
 import React from 'react';
 import {Collapse, Divider} from 'antd';
-import MarketSignalsSettings from "./marketSignalsSettings/marketSignalsSettings";
+import MarketSignalSettings from "./marketSignalSettings/marketSignalSettings";
 import {observer} from "mobx-react";
 import EventsList from "./log/eventsList";
 
@@ -20,7 +20,7 @@ const MainTree = observer(() => {
                     {
                         key: '1',
                         label: 'Настройки рыночных сигналов',
-                        children: <MarketSignalsSettings/>
+                        children: <MarketSignalSettings/>
                     },
                     {
                         key: '2',
