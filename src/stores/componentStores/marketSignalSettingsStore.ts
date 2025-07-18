@@ -10,7 +10,7 @@ export default class MarketSignalSettingsStore {
     constructor(rootStore: RootStore) {
         makeAutoObservable(this);
         this.rootStore = rootStore;
-        this.marketSignalSettingsApi = new MarketSignalSettingsApi(rootStore.applicationLogStore);
+        this.marketSignalSettingsApi = new MarketSignalSettingsApi(rootStore);
     }
 
     marketSignalSettingsItems: MarketSignalSettingsItem[] = [

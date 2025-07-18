@@ -1,9 +1,8 @@
 import {IApiResponseContainer, IApiResponseContainerEmpty} from "./dto/apiResponseContainer";
-import {BACKEND_ORIGIN} from "../../appsettings";
 import {IMap} from "../../global/common/iMap";
 import {stringifyNonEmptyParams} from "./stringifyNonEmptyParams";
 import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
-import ApplicationLogStore from "../../stores/componentStores/applicationLogStore";
+import RootStore from "../../stores/rootStore";
 
 export enum HttpClientMethod {
     GET = 'GET',
@@ -24,10 +23,10 @@ export interface IHttpClientOptions {
 }
 
 export class HttpClientFactory {
-    private applicationLogStore: ApplicationLogStore;
+    private readonly rootStore: RootStore;
 
-    constructor(applicationLogStore: ApplicationLogStore) {
-        this.applicationLogStore = applicationLogStore;
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
     }
 
     createClientAndCallWithoutResult = (options: IHttpClientOptions): Promise<IApiResponseContainerEmpty> => {
@@ -40,7 +39,7 @@ export class HttpClientFactory {
 
             const {request, method, controller, action} = options;
 
-            let url = `${BACKEND_ORIGIN}${controller}/${action}`;
+            let url = `${this.rootStore.applicationSettingsStore.getBackendOrigin()}${controller}/${action}`;
 
             if (request.query) {
                 url = `${url}${stringifyNonEmptyParams(request.query)}`;
@@ -72,13 +71,13 @@ export class HttpClientFactory {
                 const result = await this.parseResponse(apiResponse, url, needResult);
 
                 if (!result.isSuccess) {
-                    this.applicationLogStore.addEvent(ApplicationLogEventType.Error, result.errorMessage ?? 'Неизвестная ошибка');
+                    this.rootStore.applicationLogStore.addEvent(ApplicationLogEventType.Error, result.errorMessage ?? 'Неизвестная ошибка');
                 }
 
                 return result;
             } catch (ex) {
                 const errorMessage = `При вызове ${url} произошла ошибка ${ex}`;
-                this.applicationLogStore.addEvent(ApplicationLogEventType.Error, errorMessage);
+                this.rootStore.applicationLogStore.addEvent(ApplicationLogEventType.Error, errorMessage);
                 return {isSuccess: false, errorMessage: ex?.toString(), payload: null};
             }
         };

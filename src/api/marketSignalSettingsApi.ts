@@ -1,7 +1,7 @@
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import {MarketSignalSettingsItem} from "../models/marketSignalSettings/marketSignalSettingsItem";
-import ApplicationLogStore from "../stores/componentStores/applicationLogStore";
+import RootStore from "../stores/rootStore";
 
 const controller = '/bff/market-signal-settings';
 
@@ -9,8 +9,8 @@ export default class MarketSignalSettingsApi {
 
     private httpClientFactory: HttpClientFactory;
 
-    constructor(applicationLogStore: ApplicationLogStore) {
-        this.httpClientFactory = new HttpClientFactory(applicationLogStore);
+    constructor(rootStore: RootStore) {
+        this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
     getAll(): Promise<IApiResponseContainer<MarketSignalSettingsItem[]>> {

@@ -1,1 +1,0 @@
-export const BACKEND_ORIGIN: string = 'http://localhost:7789'
