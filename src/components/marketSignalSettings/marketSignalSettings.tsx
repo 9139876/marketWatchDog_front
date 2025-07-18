@@ -8,7 +8,7 @@ import {useStores} from "../../stores/hooks/useStores";
 
 const MarketSignalSettings = observer(() => {
 
-    const {marketSignalSettingsStore} = useStores();
+    const {marketSignalSettingsStore, editMarketSignalSettingsModalStore} = useStores();
 
     const [disableRefreshButton, setDisableRefreshButton] = useState(false);
 
@@ -37,7 +37,7 @@ const MarketSignalSettings = observer(() => {
             title: 'Инструмент',
             dataIndex: 'symbol',
             defaultSortOrder: 'ascend',
-            render: (text, item) => <a onClick={() => alert(item.key)}>{text}</a>,
+            render: (text, item) => <a onClick={() => editMarketSignalSettingsModalStore.showModal(item)}>{text}</a>,
             sorter: (a, b) => ('' + a.symbol).localeCompare(b.symbol)
         },
         {
@@ -55,13 +55,13 @@ const MarketSignalSettings = observer(() => {
         },
         {
             title: 'Таймфреймы для сигнала DonchianAndRsi',
-            dataIndex: 'donchianAndRsi',
-            sorter: (a, b) => ('' + a.donchianAndRsi).localeCompare(b.donchianAndRsi)
+            dataIndex: 'donchianAndRsiStr',
+            sorter: (a, b) => ('' + a.donchianAndRsiStr).localeCompare(b.donchianAndRsiStr)
         },
         {
             title: 'Таймфреймы для сигнала Divergence',
-            dataIndex: 'divergence',
-            sorter: (a, b) => ('' + a.divergence).localeCompare(b.divergence)
+            dataIndex: 'divergenceStr',
+            sorter: (a, b) => ('' + a.divergenceStr).localeCompare(b.divergenceStr)
         },
     ];
 

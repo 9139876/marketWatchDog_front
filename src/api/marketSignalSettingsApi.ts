@@ -21,4 +21,15 @@ export default class MarketSignalSettingsApi {
             request: {}
         });
     }
+
+    update(item: MarketSignalSettingsItem): Promise<IApiResponseContainer<MarketSignalSettingsItem[]>> {
+        return this.httpClientFactory.createClientAndCall({
+            controller,
+            action: 'update-symbol-market-signal',
+            method: HttpClientMethod.POST,
+            request: {
+                body: item
+            }
+        });
+    }
 }

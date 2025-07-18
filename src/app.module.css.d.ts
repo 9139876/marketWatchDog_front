@@ -3,6 +3,8 @@ declare const styles: {
     readonly "headerWrapper": string;
     readonly "bodyWrapper": string;
     readonly "footerWrapper": string;
+
+    readonly "checkboxGroupTitle": string;
 };
 export = styles;
 

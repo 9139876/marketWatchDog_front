@@ -1,11 +1,12 @@
 import React from 'react';
-import {Alert, Empty, Layout} from 'antd';
+import {Empty, Layout} from 'antd';
 import MainTree from "./components/mainTree";
 
 import {useStores} from "./stores/hooks/useStores";
 import {observer} from "mobx-react";
 import styles from "./app.module.css";
 import Header from "./components/header";
+import EditMarketSignalSettingsModal from "./components/modals/editMarketSignalSettingsModal";
 
 const {Footer} = Layout;
 
@@ -36,6 +37,8 @@ const App = observer(() => {
                     Market WatchDog ©{new Date().getFullYear()} Created by Insider.
                 </Footer>
             </div>
+
+            <EditMarketSignalSettingsModal/>
 
         </div>
     );

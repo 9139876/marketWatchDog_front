@@ -2,6 +2,7 @@ import RootStore from "../rootStore";
 import {makeAutoObservable} from "mobx";
 import {MarketSignalSettingsItem} from "../../models/marketSignalSettings/marketSignalSettingsItem";
 import MarketSignalSettingsApi from "../../api/marketSignalSettingsApi";
+import {Nullable} from "../../global/common/nullable";
 
 export default class MarketSignalSettingsStore {
     private rootStore: RootStore;
@@ -13,62 +14,21 @@ export default class MarketSignalSettingsStore {
         this.marketSignalSettingsApi = new MarketSignalSettingsApi(rootStore);
     }
 
-    marketSignalSettingsItems: MarketSignalSettingsItem[] = [
-        {
-            key: '1',
-            dealer: "Альфа",
-            symbol: "EurUsd",
-            donchianAndRsi: "M15, M30",
-            divergence: "M30, H1",
-            havingSignal: true
-        },
-        {
-            key: '2',
-            dealer: "Альфа",
-            symbol: "GpbUsd",
-            donchianAndRsi: "M5, M30",
-            divergence: "M15, H1",
-            havingSignal: true
-        },
-        {
-            key: '3',
-            dealer: "Финам",
-            symbol: "Gold",
-            donchianAndRsi: "",
-            divergence: "M30, H1",
-            havingSignal: true
-        },
-        {
-            key: '4',
-            dealer: "Финам",
-            symbol: "Silver",
-            donchianAndRsi: "M15, M30",
-            divergence: "",
-            havingSignal: true
-        },
-        {
-            key: '5',
-            dealer: "Финам",
-            symbol: "Сбер",
-            donchianAndRsi: "",
-            divergence: "",
-            havingSignal: false
-        },
-        {
-            key: '6',
-            dealer: "Финам",
-            symbol: "Лукойл",
-            donchianAndRsi: "",
-            divergence: "",
-            havingSignal: false
-        },
-    ];
+    marketSignalSettingsItems: MarketSignalSettingsItem[] = [];
 
     refreshMarketSignalSettingsItems = async () => {
         const result = await this.marketSignalSettingsApi.getAll();
 
         if (result.isSuccess) {
-            this.marketSignalSettingsItems = result.payload ?? [];
+            this.setMarketSignalSettingsItems(result.payload);
         }
+    }
+
+    setMarketSignalSettingsItems = (items: Nullable<MarketSignalSettingsItem[]>) => {
+        this.marketSignalSettingsItems = items ?? [];
+
+        this.marketSignalSettingsItems.forEach(si => si.havingSignal = si.divergence.map(x => x.isSelected).concat(si.donchianAndRsi.map(x => x.isSelected)).some(x => x));
+        this.marketSignalSettingsItems.forEach(si => si.divergenceStr = si.divergence.filter(x => x.isSelected).map(x => x.value).join(', '));
+        this.marketSignalSettingsItems.forEach(si => si.donchianAndRsiStr = si.donchianAndRsi.filter(x => x.isSelected).map(x => x.value).join(', '));
     }
 }
