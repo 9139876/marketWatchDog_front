@@ -3,7 +3,7 @@ import React, {ReactNode} from "react";
 import {useStores} from "../../stores/hooks/useStores";
 import {ApplicationLogEventItem} from "../../models/applicationLog/ApplicationLogEventItem";
 import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
-import {Button, Checkbox, CheckboxChangeEvent, CheckboxProps} from "antd";
+import {Button, Checkbox} from "antd";
 
 const EventsList = observer(() => {
 
@@ -40,7 +40,7 @@ const EventsList = observer(() => {
                 {applicationLogStore.eventsListForShow.map(mapToListItem)}
             </div>
 
-            <Checkbox.Group options={applicationLogStore.selectedEventTypes.map(x => x.value)} defaultValue={applicationLogStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)} onChange={onChange}/>
+            <Checkbox.Group options={applicationLogStore.selectedEventTypes.map(x => x.value)} value={applicationLogStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)} onChange={onChange}/>
 
             <Button style={{margin: '1em'}} onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.Event, 'This is the Event')}>
                 Event

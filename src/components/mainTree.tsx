@@ -3,6 +3,7 @@ import {Collapse, Divider} from 'antd';
 import MarketSignalSettings from "./marketSignalSettings/marketSignalSettings";
 import {observer} from "mobx-react";
 import EventsList from "./log/eventsList";
+import OpenedPositions from "./openedPositions/openedPositions";
 
 const MainTree = observer(() => {
 
@@ -37,7 +38,7 @@ const MainTree = observer(() => {
                     {
                         key: '1',
                         label: 'Открытые позиции',
-                        children: <div>Здесь потом что-то будет...</div>
+                        children: <OpenedPositions/>
                     },
                     {
                         key: '2',

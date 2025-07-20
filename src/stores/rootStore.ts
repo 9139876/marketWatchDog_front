@@ -5,6 +5,7 @@ import ApplicationLogStore from "./componentStores/applicationLogStore";
 import MarketSignalSettingsStore from "./componentStores/marketSignalSettingsStore";
 import ApplicationSettingsStore from "./componentStores/applicationSettingsStore";
 import EditMarketSignalSettingsModalStore from "./componentStores/modalStores/editMarketSignalSettingsModalStore";
+import OpenedPositionsStore from "./componentStores/openedPositionsStore";
 
 export default class RootStore {
     constructor() {
@@ -14,6 +15,7 @@ export default class RootStore {
         this.applicationLogStore = new ApplicationLogStore(this);
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
         this.applicationSettingsStore = new ApplicationSettingsStore(this);
+        this.openedPositionsStore = new OpenedPositionsStore(this);
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
@@ -24,6 +26,7 @@ export default class RootStore {
     applicationLogStore: ApplicationLogStore;
     marketSignalSettingsStore: MarketSignalSettingsStore;
     applicationSettingsStore: ApplicationSettingsStore;
+    openedPositionsStore: OpenedPositionsStore;
 
     //Modals
     editMarketSignalSettingsModalStore: EditMarketSignalSettingsModalStore;
@@ -34,6 +37,7 @@ export default class RootStore {
         // this.applicationLogStore = new ApplicationLogStore(this); - !!! логи стирать не нужно !!!
         // this.appSettingsStore = new AppSettingsStore(this); !!! настройки сбрасывать не нужно !!!
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
+        this.openedPositionsStore = new OpenedPositionsStore(this);
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);

@@ -36,7 +36,7 @@ export default class ApplicationLogStore {
         this.updateEventsListForShow();
     }
 
-    updateEventsListForShow() {
+    updateEventsListForShow(): void {
         const selectedEventTypesInternal = this.selectedEventTypes
             .filter(x => x.isSelected)
             .map(x => x.value);

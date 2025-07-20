@@ -22,7 +22,6 @@ export default class EditMarketSignalSettingsModalStore {
     selectedDivergenceTimeFrames: SelectedEnumItem<TimeFrameEnum>[] = [];
     selectedDonchianAndRsiTimeFrames: SelectedEnumItem<TimeFrameEnum>[] = [];
 
-
     changeSelectedDivergenceTimeFrames = (selectedEvents: TimeFrameEnum[]) => {
         this.selectedDivergenceTimeFrames.forEach(x => x.isSelected = selectedEvents.includes(x.value));
     }
@@ -59,10 +58,9 @@ export default class EditMarketSignalSettingsModalStore {
     showModal = (currentItem: MarketSignalSettingsItem) => {
         this.dealer = currentItem.dealer;
         this.symbol = currentItem.symbol;
-        this.isVisible = true;
         this.selectedDivergenceTimeFrames = JSON.parse(JSON.stringify(currentItem.divergence)); //иначе значения сохраняются, т.к. элементы массива объекты - ссылочные типы
         this.selectedDonchianAndRsiTimeFrames = JSON.parse(JSON.stringify(currentItem.donchianAndRsi));
-
+        this.isVisible = true;
     };
 
     hideModal = () => {
