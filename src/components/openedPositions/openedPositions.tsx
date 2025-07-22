@@ -1,120 +1,92 @@
 import {observer} from "mobx-react";
-import React from 'react';
-import {Button, Tree} from 'antd';
-import type {TreeDataNode, TreeProps} from 'antd';
+import React, {ReactNode} from 'react';
 import {useStores} from "../../stores/hooks/useStores";
-import OpenedPositionItem from "./openedPositionItem";
-import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
-// import styles from "./openedPositions.css";
 import "./openedPositions.css";
-
+import {OpenedPositionInfo} from "../../models/openedPositions/openedPositionInfo";
+import {Button} from "antd";
+import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 
 const OpenedPositions = observer(() => {
 
     const {openedPositionsStore} = useStores();
 
-    const treeData: TreeDataNode[] = [
-        {
-            title: 'Позиция 1',
-            key: '0-0',
-            children: [],
-        },
-        {
-            title: 'Позиция 2',
-            key: '1-0',
-            children: [
-                {
-                    title: 'Ордер 1',
-                    key: '1-0-0-0',
-                },
-                {
-                    title: 'Ордер 2',
-                    key: '1-0-0-1',
-                },
-                {
-                    title: 'Ордер 3',
-                    key: '1-0-0-2',
-                },
-            ],
-        },
-    ];
+    const onStopLossClick = (identifier: number) => {
+        console.log('identifier', identifier);
+    }
 
-    const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
-        console.log('selected', selectedKeys, info);
-    };
+    const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
+        return (
 
-    const mapOpenedPositions = (): TreeDataNode[] => {
+            <a onClick={() => onStopLossClick(item.identifier)}>
+                {
+                    !!item.stopLoss
+                        ? <div>item.stopLoss</div>
+                        : <div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>
+                }
+            </a>
+        );
+    }
 
-        return openedPositionsStore.openedPositions.map((item, index) => (
-            {
-                title: OpenedPositionItem(item),
-                key: index.toString(),
-                children: []
-            }));
-    };
+
+    const mapToRow = (item: OpenedPositionInfo): ReactNode => {
+        return (
+            <tr key={item.identifier}>
+                {/*Symbol*/}
+                <td>{`${item.dealer} - ${item.symbol}`}</td>
+
+                {/*Тип*/}
+                <td>{item.type === PositionDirectionTypeEnum.Long
+                    ? (<div style={{color: "blue", fontWeight: "bold"}}>Long</div>)
+                    : (<div style={{color: "red", fontWeight: "bold"}}>Short</div>)}</td>
+
+                {/*Время открытия*/}
+                <td>{`${new Date(item.openedTime).toLocaleDateString()} ${new Date(item.openedTime).toLocaleTimeString()}`}</td>
+
+                {/*Цена открытия*/}
+                <td>{item.priceOpen}</td>
+
+                {/*Текущая цена*/}
+                <td>{item.currentPrice}</td>
+
+                {/*Профит*/}
+                <td>{item.profit > 0 ? <div style={{color: "green", fontWeight: "bold"}}>{item.profit}</div> : <div style={{color: "red", fontWeight: "bold"}}>{item.profit}</div>}  </td>
+
+                {/*StopLoss*/}
+                <td>{mapToStopLossCell(item)}</td>
+
+                {/*Триггеры*/}
+                <td>Триггеры</td>
+            </tr>
+        );
+    }
 
     return (
-        // <div>
-        //     <Tree
-        //         showLine
-        //         onSelect={onSelect}
-        //         treeData={mapOpenedPositions()}
-        //         // treeData={treeData}
-        //     />
-        //
-        //     <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
-        //         Обновить
-        //     </Button>
-        // </div>
+        <>
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col" style={{width: "10%"}}>Symbol</th>
+                    <th scope="col" style={{width: "5%"}}>Тип</th>
+                    <th scope="col" style={{width: "5%"}}>Время открытия</th>
+                    <th scope="col" style={{width: "7%"}}>Цена открытия</th>
+                    <th scope="col" style={{width: "7%"}}>Текущая цена</th>
+                    <th scope="col" style={{width: "7%"}}>Профит</th>
+                    <th scope="col" style={{width: "10%"}}>StopLoss</th>
+                    <th scope="col">Триггеры</th>
+                </tr>
+                </thead>
 
-        // <table style={{border: "2px solid rgb(140 140 140)", width: "100%"}}>
-        // <table >//className='openedPositionsTable'>
-        <table>
-            <thead>
-            <tr>
-                <th scope="col">Person</th>
-                <th scope="col">Most interest in</th>
-                <th scope="col">Age</th>
-                <th scope="col">Triggers</th>
-            </tr>
-            </thead>
+                <tbody>
+                {openedPositionsStore.openedPositions.map(mapToRow)}
+                </tbody>
+            </table>
 
-            <tbody>
-            <tr>
-                <td>HTML tables</td>
-                <td>HTML tables</td>
-                <td>22</td>
-                <td>
-                    <tr>trigger 1</tr>
-                    <tr>trigger 2</tr>
-                    <tr>trigger 3</tr>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Dennis</th>
-                <td>Web accessibility</td>
-                <td>45</td>
-                <td>
-                    <td>22</td>
-                    <td>22</td>
-                    <td>22</td>
-                </td>
-            </tr>
-            <tr>
-                <td>Sarah</td>
-                <td>JavaScript frameworks</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Karen</td>
-                <td>Web performance</td>
-                <td>36</td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    );
+            <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
+                Обновить
+            </Button>
+        </>
+    )
+        ;
 });
 
 export default OpenedPositions;

@@ -5,17 +5,19 @@ export interface OpenedPositionInfo {
     identifier: number;
     dealer: string;
     symbol: string;
-    openedTime: Date;
     type: PositionDirectionTypeEnum;
-    volume: number;
+    openedTime: Date;
     priceOpen: number;
+    volume: number;
     currentPrice: number;
     profit: number;
 
     stopLoss: Nullable<number>;
-    takeProfit: Nullable<number>;
     toStopLossDistance: Nullable<number>;
     toStopLossDistanceInPoints: Nullable<number>;
+    ifStopLossFiredProfitInPercents: Nullable<number>;
+
+    takeProfit: Nullable<number>;
     toTakeProfitDistance: Nullable<number>;
     toTakeProfitDistanceInPoints: Nullable<number>;
 }
