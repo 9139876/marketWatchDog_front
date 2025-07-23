@@ -7,6 +7,8 @@ import {observer} from "mobx-react";
 import styles from "./app.module.css";
 import Header from "./components/header";
 import EditMarketSignalSettingsModal from "./components/modals/editMarketSignalSettingsModal";
+import ClosePositionModal from "./components/modals/closePositionModal";
+import AddTriggerModal from "./components/modals/addTriggerModal";
 
 const {Footer} = Layout;
 
@@ -39,6 +41,8 @@ const App = observer(() => {
             </div>
 
             <EditMarketSignalSettingsModal/>
+            <ClosePositionModal/>
+            <AddTriggerModal/>
 
         </div>
     );

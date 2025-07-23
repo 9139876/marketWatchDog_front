@@ -1,0 +1,42 @@
+import React, {FC} from "react";
+import {observer} from "mobx-react";
+import {useStores} from "../../stores/hooks/useStores";
+import {Button, Modal} from "antd";
+import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
+import {Nullable} from "../../global/common/nullable";
+
+const ClosePositionModal: FC = observer(() => {
+    const {closePositionModalStore} = useStores();
+
+    const getColorClassName = (value: Nullable<number>): string => {
+        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+    }
+
+    return (
+        <Modal
+            style={{minWidth: "50em"}}
+            title={'Закрытие позиции'}
+            closable={false}
+            open={closePositionModalStore.isVisible}
+            footer={[
+                <Button key="closePosition" type="primary" danger onClick={closePositionModalStore.closePosition}>
+                    Закрыть позицию
+                </Button>,
+                <Button key="cancel" type="default" onClick={closePositionModalStore.hideModal}>
+                    Отмена
+                </Button>,
+            ]}>
+            <div style={{fontSize: "large", fontWeight:"bold", fontFamily:"cursive"}}>
+                <div>{`Инструмент: ${closePositionModalStore.position?.dealer} - ${closePositionModalStore.position?.symbol}`}</div>
+                <div>{`Тип: ${closePositionModalStore.position?.type == PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
+                <div>{`Открыта: ${closePositionModalStore.position?.openedTimeStr}`}</div>
+
+                <div className={getColorClassName(closePositionModalStore.position?.profit)}>
+                    {`Профит: ${closePositionModalStore.position?.profitStr} ( ${(closePositionModalStore.position?.profitInPercents ?? 0) > 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbsStr}%${closePositionModalStore.position?.isLeverCorrect ? '' : ' (без учета плеча)'} )`}
+                </div>
+            </div>
+        </Modal>
+    );
+});
+
+export default ClosePositionModal;

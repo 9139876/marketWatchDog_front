@@ -7,17 +7,28 @@ export interface OpenedPositionInfo {
     symbol: string;
     type: PositionDirectionTypeEnum;
     openedTime: Date;
+    openedTimeStr: string;
     priceOpen: number;
     volume: number;
     currentPrice: number;
     profit: number;
+    profitInPercents: number;
+    lever: number;
+    isLeverCorrect: boolean;
 
     stopLoss: Nullable<number>;
     toStopLossDistance: Nullable<number>;
-    toStopLossDistanceInPoints: Nullable<number>;
     ifStopLossFiredProfitInPercents: Nullable<number>;
 
     takeProfit: Nullable<number>;
     toTakeProfitDistance: Nullable<number>;
-    toTakeProfitDistanceInPoints: Nullable<number>;
+
+    //calc Str
+    priceOpenStr: string;
+    currentPriceStr: string;
+    profitStr: string;
+    stopLossStr: string;
+    toStopLossDistanceStr: string;
+    ifStopLossFiredProfitInPercentsAbsStr: string;
+    profitInPercentsAbsStr: string;
 }

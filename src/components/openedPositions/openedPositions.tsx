@@ -5,74 +5,108 @@ import "./openedPositions.css";
 import {OpenedPositionInfo} from "../../models/openedPositions/openedPositionInfo";
 import {Button} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
+import {Nullable} from "../../global/common/nullable";
+import {CloseCircleTwoTone, PlusCircleTwoTone} from "@ant-design/icons";
+
 
 const OpenedPositions = observer(() => {
 
-    const {openedPositionsStore} = useStores();
+    const {openedPositionsStore, closePositionModalStore, addTriggerModalStore} = useStores();
 
-    const onStopLossClick = (identifier: number) => {
-        console.log('identifier', identifier);
+    const onClosePositionClick = (position: OpenedPositionInfo) => {
+        closePositionModalStore.showModal(position);
+    }
+
+    const onAddTriggerClick = (position: OpenedPositionInfo) => {
+        addTriggerModalStore.showModal(position);
+    }
+
+    const getColorClassName = (value: Nullable<number>): string => {
+        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
         return (
-
-            <a onClick={() => onStopLossClick(item.identifier)}>
-                {
-                    !!item.stopLoss
-                        ? <div>item.stopLoss</div>
-                        : <div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>
-                }
-            </a>
+            !!item.stopLoss
+                ? (<div style={{color: "black"}}>
+                    <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLoss}`}</div>
+                    <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
+                        {`${(item.ifStopLossFiredProfitInPercents ?? 0) > 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbsStr}%${item.isLeverCorrect ? '' : '(без учета плеча)'}`}
+                    </div>
+                </div>)
+                : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
         );
     }
 
 
     const mapToRow = (item: OpenedPositionInfo): ReactNode => {
+
+        const positionTypeIcon = item.type === PositionDirectionTypeEnum.Long
+            ? require('./img/long.png')
+            : require('./img/short.png');
+
         return (
             <tr key={item.identifier}>
+                {/*Закрытие позиции*/}
+                <td className="opened-position-cell">
+                    <CloseCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => onClosePositionClick(item)}/>
+                </td>
+
                 {/*Symbol*/}
-                <td>{`${item.dealer} - ${item.symbol}`}</td>
+                <td className="opened-position-cell">{`${item.dealer} - ${item.symbol}`}</td>
 
                 {/*Тип*/}
-                <td>{item.type === PositionDirectionTypeEnum.Long
-                    ? (<div style={{color: "blue", fontWeight: "bold"}}>Long</div>)
-                    : (<div style={{color: "red", fontWeight: "bold"}}>Short</div>)}</td>
+                <td className="opened-position-cell">
+                    <img src={positionTypeIcon} style={{width: "5em"}}/>
+                </td>
 
                 {/*Время открытия*/}
-                <td>{`${new Date(item.openedTime).toLocaleDateString()} ${new Date(item.openedTime).toLocaleTimeString()}`}</td>
+                <td className="opened-position-cell">{item.openedTimeStr}</td>
 
                 {/*Цена открытия*/}
-                <td>{item.priceOpen}</td>
+                <td className="opened-position-cell">{item.priceOpenStr}</td>
 
                 {/*Текущая цена*/}
-                <td>{item.currentPrice}</td>
+                <td className="opened-position-cell">{item.currentPriceStr}</td>
 
                 {/*Профит*/}
-                <td>{item.profit > 0 ? <div style={{color: "green", fontWeight: "bold"}}>{item.profit}</div> : <div style={{color: "red", fontWeight: "bold"}}>{item.profit}</div>}  </td>
+                <td className="opened-position-cell">
+                    <div>
+                        <div className={getColorClassName(item.profit)}>{item.profitStr}</div>
+
+                        <div className={getColorClassName(item.profitInPercents)}>
+                            {`${(item.profitInPercents ?? 0) > 0 ? '+' : '-'}${item.profitInPercentsAbsStr}%${item.isLeverCorrect ? '' : '(без учета плеча)'}`}
+                        </div>
+                    </div>
+                </td>
 
                 {/*StopLoss*/}
-                <td>{mapToStopLossCell(item)}</td>
+                <td className="opened-position-cell">{mapToStopLossCell(item)}</td>
 
                 {/*Триггеры*/}
-                <td>Триггеры</td>
+                <td className="opened-position-cell">
+                    <div>Триггеры</div>
+                    <PlusCircleTwoTone style={{fontSize: "1.5em"}} onClick={() => onAddTriggerClick(item)}/>
+                </td>
+
             </tr>
         );
     }
 
     return (
         <>
-            <table>
-                <thead>
+            <table className="opened-position-table">
+                <thead className="opened-position-thead">
                 <tr>
-                    <th scope="col" style={{width: "10%"}}>Symbol</th>
-                    <th scope="col" style={{width: "5%"}}>Тип</th>
-                    <th scope="col" style={{width: "5%"}}>Время открытия</th>
-                    <th scope="col" style={{width: "7%"}}>Цена открытия</th>
-                    <th scope="col" style={{width: "7%"}}>Текущая цена</th>
-                    <th scope="col" style={{width: "7%"}}>Профит</th>
-                    <th scope="col" style={{width: "10%"}}>StopLoss</th>
-                    <th scope="col">Триггеры</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "2%"}}></th>
+                    <th className="opened-position-cell" scope="col" style={{width: "10%"}}>Инструмент</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Тип</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Время открытия</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Цена открытия</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Текущая цена</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Профит</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "10%"}}>StopLoss</th>
+                    <th className="opened-position-cell" scope="col">Триггеры</th>
                 </tr>
                 </thead>
 

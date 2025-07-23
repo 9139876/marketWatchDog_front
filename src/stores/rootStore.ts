@@ -6,6 +6,8 @@ import MarketSignalSettingsStore from "./componentStores/marketSignalSettingsSto
 import ApplicationSettingsStore from "./componentStores/applicationSettingsStore";
 import EditMarketSignalSettingsModalStore from "./componentStores/modalStores/editMarketSignalSettingsModalStore";
 import OpenedPositionsStore from "./componentStores/openedPositionsStore";
+import ClosePositionModalStore from "./componentStores/modalStores/closePositionModalStore";
+import AddTriggerModalStore from "./componentStores/modalStores/addTriggerModalStore";
 
 export default class RootStore {
     constructor() {
@@ -19,6 +21,8 @@ export default class RootStore {
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
+        this.closePositionModalStore = new ClosePositionModalStore(this);
+        this.addTriggerModalStore = new AddTriggerModalStore(this);
     }
 
     testStore: TestStore;
@@ -30,6 +34,8 @@ export default class RootStore {
 
     //Modals
     editMarketSignalSettingsModalStore: EditMarketSignalSettingsModalStore;
+    closePositionModalStore: ClosePositionModalStore;
+    addTriggerModalStore:AddTriggerModalStore;
 
     clearAndRefresh = () => {
         this.testStore = new TestStore(this);
@@ -41,5 +47,7 @@ export default class RootStore {
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
+        this.closePositionModalStore = new ClosePositionModalStore(this);
+        this.addTriggerModalStore = new AddTriggerModalStore(this);
     }
 }
