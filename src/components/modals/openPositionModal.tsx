@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
 import {Button, InputNumber, Modal, Select} from "antd";
@@ -6,6 +6,17 @@ import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDi
 
 const OpenPositionModal: FC = observer(() => {
     const {openPositionModalStore, marketSignalSettingsStore} = useStores();
+
+    const [disableRefreshButton, setDisableRefreshButton] = useState(false);
+
+    const checkPosition = async () => {
+        try {
+            setDisableRefreshButton(true);
+            await openPositionModalStore.checkPosition();
+        } finally {
+            setDisableRefreshButton(false);
+        }
+    };
 
     const getSymbols = () => {
         return marketSignalSettingsStore.marketSignalSettingsItems.map(item =>
@@ -25,7 +36,7 @@ const OpenPositionModal: FC = observer(() => {
                 <Button key="openPosition" type="primary" onClick={openPositionModalStore.openPosition} disabled={!openPositionModalStore.allCorrect}>
                     Открыть позицию
                 </Button>,
-                <Button key="checkPosition" type="primary" onClick={openPositionModalStore.checkPosition}>
+                <Button key="checkPosition" type="primary" onClick={checkPosition} disabled={disableRefreshButton}>
                     Проверить
                 </Button>,
                 <Button key="cancel" type="default" onClick={openPositionModalStore.hideModal}>
@@ -110,6 +121,26 @@ const OpenPositionModal: FC = observer(() => {
 
                     <div style={{color: openPositionModalStore.lossPercentIfStopLossFiredIsValid ? "darkgreen" : "red"}}>
                         {openPositionModalStore.lossValueIfStopLossFiredAbsStr.length > 0 ? `${openPositionModalStore.lossValueIfStopLossFiredAbsStr} (${openPositionModalStore.lossPercentIfStopLossFiredAbsStr}%)` : ''}
+                    </div>
+                </div>
+
+                <div style={{display: "flex", paddingTop: "0.5em"}}>
+                    <div style={{paddingRight: "0.5em"}}>Требуемая маржа:</div>
+
+                    <div>{openPositionModalStore.marginStr}</div>
+                </div>
+
+                <div style={{display: "flex", paddingTop: "0.5em"}}>
+                    <div style={{paddingRight: "0.5em"}}>Свободная маржа:</div>
+
+                    <div>{openPositionModalStore.marginFreeStr}</div>
+                </div>
+
+                <div style={{display: "flex", paddingTop: "0.5em"}}>
+                    <div style={{paddingRight: "0.5em"}}>Отношение потерь StopLoss к свободной марже:</div>
+
+                    <div style={{color: openPositionModalStore.lossDivMarginFreeIsValid ? "darkgreen" : "red"}}>
+                        {openPositionModalStore.lossDivMarginFreePercentStr.length > 0 ? `${openPositionModalStore.lossDivMarginFreePercentStr}%` : ''}
                     </div>
                 </div>
 

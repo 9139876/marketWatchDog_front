@@ -6,4 +6,8 @@ export interface CheckOpenPositionResponse {
     lossValueIfStopLossFiredAbsStr: string;
     lossPercentIfStopLossFiredAbsStr: string;
     lossPercentIfStopLossFiredIsValid: boolean;
+    marginStr: string;
+    marginFreeStr: string;
+    lossDivMarginFreePercentStr: string;
+    lossDivMarginFreeIsValid: boolean;
 }

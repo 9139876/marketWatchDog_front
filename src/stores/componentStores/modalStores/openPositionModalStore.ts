@@ -28,6 +28,11 @@ export default class OpenPositionModalStore {
     lossPercentIfStopLossFiredAbsStr: string = '';
     lossPercentIfStopLossFiredIsValid: boolean = false;
 
+    marginStr: string = '';
+    marginFreeStr: string = '';
+    lossDivMarginFreePercentStr: string = '';
+    lossDivMarginFreeIsValid: boolean = false;
+
     showModal = () => {
         this.isVisible = true;
     };
@@ -86,6 +91,10 @@ export default class OpenPositionModalStore {
             this.lossValueIfStopLossFiredAbsStr = result.payload!.lossValueIfStopLossFiredAbsStr;
             this.lossPercentIfStopLossFiredAbsStr = result.payload!.lossPercentIfStopLossFiredAbsStr;
             this.lossPercentIfStopLossFiredIsValid = result.payload!.lossPercentIfStopLossFiredIsValid;
+            this.marginStr = result.payload!.marginStr;
+            this.marginFreeStr = result.payload!.marginFreeStr;
+            this.lossDivMarginFreePercentStr = result.payload!.lossDivMarginFreePercentStr;
+            this.lossDivMarginFreeIsValid = result.payload!.lossDivMarginFreeIsValid;
         }
     }
 
@@ -110,5 +119,9 @@ export default class OpenPositionModalStore {
         this.lossValueIfStopLossFiredAbsStr = '';
         this.lossPercentIfStopLossFiredAbsStr = '';
         this.lossPercentIfStopLossFiredIsValid = false;
+        this.marginStr = '';
+        this.marginFreeStr = '';
+        this.lossDivMarginFreePercentStr = '';
+        this.lossDivMarginFreeIsValid = false
     };
 }
