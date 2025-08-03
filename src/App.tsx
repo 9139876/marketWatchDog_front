@@ -9,6 +9,7 @@ import Header from "./components/header";
 import EditMarketSignalSettingsModal from "./components/modals/editMarketSignalSettingsModal";
 import ClosePositionModal from "./components/modals/closePositionModal";
 import AddTriggerModal from "./components/modals/addTriggerModal";
+import OpenPositionModal from "./components/modals/openPositionModal";
 
 const {Footer} = Layout;
 
@@ -41,6 +42,7 @@ const App = observer(() => {
             </div>
 
             <EditMarketSignalSettingsModal/>
+            <OpenPositionModal/>
             <ClosePositionModal/>
             <AddTriggerModal/>
 

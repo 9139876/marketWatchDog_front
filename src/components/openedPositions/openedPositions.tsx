@@ -11,7 +11,11 @@ import {CloseCircleTwoTone, PlusCircleTwoTone} from "@ant-design/icons";
 
 const OpenedPositions = observer(() => {
 
-    const {openedPositionsStore, closePositionModalStore, addTriggerModalStore} = useStores();
+    const {openedPositionsStore, openPositionModalStore, closePositionModalStore, addTriggerModalStore} = useStores();
+
+    const onOpenPositionClick = () => {
+        openPositionModalStore.showModal();
+    }
 
     const onClosePositionClick = (position: OpenedPositionInfo) => {
         closePositionModalStore.showModal(position);
@@ -115,9 +119,15 @@ const OpenedPositions = observer(() => {
                 </tbody>
             </table>
 
-            <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
-                Обновить
-            </Button>
+            <div style={{paddingTop: "1em", display: "flex", alignItems: "center"}}>
+                <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={onOpenPositionClick}/>
+
+                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontStyle:"italic"}}>Открыть позицию</div>
+
+                <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
+                    Обновить
+                </Button>
+            </div>
         </>
     )
         ;
