@@ -1,7 +1,8 @@
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
-import {MarketSignalSettingsItem} from "../models/marketSignalSettings/marketSignalSettingsItem";
 import RootStore from "../stores/rootStore";
+import {MarketSignalSettingsItemDto} from "../models/marketSignalSettings/MarketSignalSettingsItemDto";
+import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 
 const controller = '/bff/market-signal-settings';
 
@@ -13,19 +14,19 @@ export default class MarketSignalSettingsApi {
         this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
-    getAll(): Promise<IApiResponseContainer<MarketSignalSettingsItem[]>> {
+    getAll(dealerType: DealerTypeEnum): Promise<IApiResponseContainer<MarketSignalSettingsItemDto[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: 'get-all',
+            action: `get-all/${dealerType}`,
             method: HttpClientMethod.GET,
             request: {}
         });
     }
 
-    update(item: MarketSignalSettingsItem): Promise<IApiResponseContainer<MarketSignalSettingsItem[]>> {
+    update(dealerType: DealerTypeEnum, item: MarketSignalSettingsItemDto): Promise<IApiResponseContainer<MarketSignalSettingsItemDto[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: 'update-symbol-market-signal',
+            action: `update-symbol-market-signal/${dealerType}`,
             method: HttpClientMethod.POST,
             request: {
                 body: item

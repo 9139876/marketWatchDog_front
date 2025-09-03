@@ -4,6 +4,7 @@ import {MarketSignalSettingsItem} from "../../../models/marketSignalSettings/mar
 import {SelectedEnumItem} from "../../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../../../models/enums/timeFrameEnum";
 import MarketSignalSettingsApi from "../../../api/marketSignalSettingsApi";
+import {MarketSignalSettingsItemDto} from "../../../models/marketSignalSettings/MarketSignalSettingsItemDto";
 
 export default class EditMarketSignalSettingsModalStore {
     private rootStore: RootStore;
@@ -15,7 +16,6 @@ export default class EditMarketSignalSettingsModalStore {
         this.marketSignalSettingsApi = new MarketSignalSettingsApi(rootStore);
     }
 
-    dealer: string = '';
     symbol: string = '';
     isVisible: boolean = false;
 
@@ -32,23 +32,17 @@ export default class EditMarketSignalSettingsModalStore {
 
     saveAndClose = async () => {
         try {
-            const item: MarketSignalSettingsItem =
+            const item: MarketSignalSettingsItemDto =
                 {
-                    dealer: this.dealer,
                     symbol: this.symbol,
                     divergence: this.selectedDivergenceTimeFrames,
-                    donchianAndRsi: this.selectedDonchianAndRsiTimeFrames,
-                    //-----
-                    divergenceStr: "",
-                    donchianAndRsiStr: "",
-                    havingSignal: false,
-                    key: null
+                    donchianAndRsi: this.selectedDonchianAndRsiTimeFrames
                 };
 
-            const result = await this.marketSignalSettingsApi.update(item);
+            const result = await this.marketSignalSettingsApi.update(this.rootStore.appStateStore.getDealerType(), item);
 
             if (result.isSuccess) {
-                this.rootStore.marketSignalSettingsStore.setMarketSignalSettingsItems(result.payload);
+                this.rootStore.marketSignalSettingsStore.updateMarketSignalSettingsItems(result.payload);
             }
         } finally {
             this.hideModal();
@@ -56,7 +50,6 @@ export default class EditMarketSignalSettingsModalStore {
     };
 
     showModal = (currentItem: MarketSignalSettingsItem) => {
-        this.dealer = currentItem.dealer;
         this.symbol = currentItem.symbol;
         this.selectedDivergenceTimeFrames = JSON.parse(JSON.stringify(currentItem.divergence)); //иначе значения сохраняются, т.к. элементы массива объекты - ссылочные типы
         this.selectedDonchianAndRsiTimeFrames = JSON.parse(JSON.stringify(currentItem.donchianAndRsi));
@@ -65,7 +58,6 @@ export default class EditMarketSignalSettingsModalStore {
 
     hideModal = () => {
         this.isVisible = false;
-        this.dealer = '';
         this.symbol = '';
         this.selectedDivergenceTimeFrames = [];
         this.selectedDonchianAndRsiTimeFrames = [];

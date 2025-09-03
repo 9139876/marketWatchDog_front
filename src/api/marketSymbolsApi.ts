@@ -15,9 +15,9 @@ export default class MarketSymbolsApi {
     getMarketSymbols(dealerType: DealerTypeEnum): Promise<IApiResponseContainer<string[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: 'get-market-symbols',
+            action: `get-market-symbols/${dealerType}`,
             method: HttpClientMethod.GET,
-            request: {query: {dealerTypeStr: dealerType}}
+            request: {}
         });
     }
 }

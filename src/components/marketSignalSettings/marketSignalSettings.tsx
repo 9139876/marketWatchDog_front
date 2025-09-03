@@ -23,17 +23,6 @@ const MarketSignalSettings = observer(() => {
 
     const columns: TableColumnsType<MarketSignalSettingsItem> = [
         {
-            title: 'Дилер',
-            dataIndex: 'dealer',
-            filters: marketSignalSettingsStore.marketSignalSettingsItems
-                .map(x => x.dealer)
-                .filter((value, index, self) => self.indexOf(value) === index)
-                .map(x => ({text: x, value: x})),
-            onFilter: (value, record) => record.dealer.indexOf(value as string) === 0,
-            sorter: (a, b) => ('' + a.dealer).localeCompare(b.dealer),
-            width: '10%'
-        },
-        {
             title: 'Инструмент',
             dataIndex: 'symbol',
             defaultSortOrder: 'ascend',

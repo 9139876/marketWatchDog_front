@@ -6,17 +6,11 @@ import EventsList from "./log/eventsList";
 import OpenedPositions from "./openedPositions/openedPositions";
 
 const MainTree = observer(() => {
-
-    const onChange = (key: string | string[]) => {
-        console.log(key);
-    };
-
     return (
         <>
             <Divider orientation="left">Рыночные сигналы</Divider>
             <Collapse
                 size="large"
-                onChange={onChange}
                 items={[
                     {
                         key: '1',
@@ -33,7 +27,6 @@ const MainTree = observer(() => {
             <Divider orientation="left">Рыночные позиции</Divider>
             <Collapse
                 size="large"
-                onChange={onChange}
                 items={[
                     {
                         key: '1',
@@ -50,7 +43,6 @@ const MainTree = observer(() => {
             <Divider orientation="left">Лог</Divider>
             <Collapse
                 size="large"
-                onChange={onChange}
                 items={[
                     {
                         key: '1',

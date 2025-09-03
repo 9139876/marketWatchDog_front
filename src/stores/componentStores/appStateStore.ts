@@ -43,6 +43,7 @@ export default class AppStateStore {
 
             //INITIALIZE
             await this.rootStore.sharedStore.refreshMarketSymbols();
+            this.rootStore.marketSignalSettingsStore.setMarketSymbols(this.rootStore.sharedStore.getMarketSymbols());
 
             this.connectedToServer = true;
         } else {
