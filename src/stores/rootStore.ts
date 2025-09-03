@@ -1,24 +1,22 @@
 import {makeAutoObservable} from "mobx";
-import TestStore from "./componentStores/testStore";
 import AppStateStore from "./componentStores/appStateStore";
-import ApplicationLogStore from "./componentStores/applicationLogStore";
+import LogStore from "./componentStores/logStore";
 import MarketSignalSettingsStore from "./componentStores/marketSignalSettingsStore";
-import ApplicationSettingsStore from "./componentStores/applicationSettingsStore";
 import EditMarketSignalSettingsModalStore from "./componentStores/modalStores/editMarketSignalSettingsModalStore";
 import OpenedPositionsStore from "./componentStores/openedPositionsStore";
 import ClosePositionModalStore from "./componentStores/modalStores/closePositionModalStore";
 import AddTriggerModalStore from "./componentStores/modalStores/addTriggerModalStore";
 import OpenPositionModalStore from "./componentStores/modalStores/openPositionModalStore";
+import SharedStore from "./componentStores/sharedStore";
 
 export default class RootStore {
     constructor() {
         makeAutoObservable(this);
-        this.testStore = new TestStore(this);
         this.appStateStore = new AppStateStore(this);
-        this.applicationLogStore = new ApplicationLogStore(this);
+        this.logStore = new LogStore(this);
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
-        this.applicationSettingsStore = new ApplicationSettingsStore(this);
         this.openedPositionsStore = new OpenedPositionsStore(this);
+        this.sharedStore = new SharedStore(this);
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
@@ -27,12 +25,11 @@ export default class RootStore {
         this.addTriggerModalStore = new AddTriggerModalStore(this);
     }
 
-    testStore: TestStore;
     appStateStore: AppStateStore;
-    applicationLogStore: ApplicationLogStore;
+    logStore: LogStore;
     marketSignalSettingsStore: MarketSignalSettingsStore;
-    applicationSettingsStore: ApplicationSettingsStore;
     openedPositionsStore: OpenedPositionsStore;
+    sharedStore: SharedStore;
 
     //Modals
     editMarketSignalSettingsModalStore: EditMarketSignalSettingsModalStore;
@@ -41,12 +38,11 @@ export default class RootStore {
     addTriggerModalStore: AddTriggerModalStore;
 
     clearAndRefresh = () => {
-        this.testStore = new TestStore(this);
-        this.appStateStore = new AppStateStore(this);
-        // this.applicationLogStore = new ApplicationLogStore(this); - !!! логи стирать не нужно !!!
-        // this.appSettingsStore = new AppSettingsStore(this); !!! настройки сбрасывать не нужно !!!
+        // this.logStore = new LogStore(this); - !!! логи стирать не нужно !!!
+        // this.appStateStore = new AppStateStore(this); !!! настройки сбрасывать не нужно !!!
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
         this.openedPositionsStore = new OpenedPositionsStore(this);
+        this.sharedStore = new SharedStore(this);
 
         //Modals
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);

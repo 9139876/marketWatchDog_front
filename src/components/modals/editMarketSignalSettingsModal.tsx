@@ -4,7 +4,7 @@ import {FC} from "react";
 import React from "react";
 import {useStores} from "../../stores/hooks/useStores";
 import styles from "../../app.module.css";
-import {TimeFrameEnum} from "../../models/marketSignalSettings/timeFrameEnum";
+import {TimeFrameEnum} from "../../models/enums/timeFrameEnum";
 
 
 const EditMarketSignalSettingsModal: FC = observer(() => {

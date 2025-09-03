@@ -39,7 +39,7 @@ export class HttpClientFactory {
 
             const {request, method, controller, action} = options;
 
-            let url = `${this.rootStore.applicationSettingsStore.getBackendOrigin()}${controller}/${action}`;
+            let url = `${this.rootStore.appStateStore.getBackendOrigin()}${controller}/${action}`;
 
             if (request.query) {
                 url = `${url}${stringifyNonEmptyParams(request.query)}`;
@@ -71,13 +71,13 @@ export class HttpClientFactory {
                 const result = await this.parseResponse(apiResponse, url, needResult);
 
                 if (!result.isSuccess) {
-                    this.rootStore.applicationLogStore.addEvent(ApplicationLogEventType.Error, result.errorMessage ?? 'Неизвестная ошибка');
+                    this.rootStore.logStore.addEvent(ApplicationLogEventType.Error, result.errorMessage ?? 'Неизвестная ошибка');
                 }
 
                 return result;
             } catch (ex) {
                 const errorMessage = `При вызове ${url} произошла ошибка ${ex}`;
-                this.rootStore.applicationLogStore.addEvent(ApplicationLogEventType.Error, errorMessage);
+                this.rootStore.logStore.addEvent(ApplicationLogEventType.Error, errorMessage);
                 return {isSuccess: false, errorMessage: ex?.toString(), payload: null};
             }
         };

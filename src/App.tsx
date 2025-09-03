@@ -24,7 +24,7 @@ const App = observer(() => {
             </div>
 
             <div className={styles.bodyWrapper}>
-                {appStateStore.connectedToServer
+                {appStateStore.getConnectedToServerStatus()
                     ? <MainTree/>
                     : <Empty style={{paddingTop: '5em'}} styles={{image: {height: '10em'}}} description={<div style={{color: 'red', fontSize: '3em', fontFamily: 'cursive'}}>Нет соединения с сервером :(</div>}/>}
             </div>

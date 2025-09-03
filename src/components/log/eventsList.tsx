@@ -7,7 +7,7 @@ import {Button, Checkbox} from "antd";
 
 const EventsList = observer(() => {
 
-    const {applicationLogStore} = useStores();
+    const {logStore} = useStores();
 
     const mapToListItem = (item: ApplicationLogEventItem): ReactNode => {
 
@@ -31,30 +31,30 @@ const EventsList = observer(() => {
 
     const onChange = (checkedValues: string[]) => {
         const selectedTypes = checkedValues.map(x => ApplicationLogEventType[x  as keyof typeof ApplicationLogEventType]);
-        applicationLogStore.changeSelectedEventTypes(selectedTypes);
+        logStore.changeSelectedEventTypes(selectedTypes);
     };
 
     return (
         <div>
             <div style={{minHeight: '12em', maxHeight: '12em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
-                {applicationLogStore.eventsListForShow.map(mapToListItem)}
+                {logStore.eventsListForShow.map(mapToListItem)}
             </div>
 
-            <Checkbox.Group options={applicationLogStore.selectedEventTypes.map(x => x.value)} value={applicationLogStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)} onChange={onChange}/>
+            <Checkbox.Group options={logStore.selectedEventTypes.map(x => x.value)} value={logStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)} onChange={onChange}/>
 
-            <Button style={{margin: '1em'}} onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.Event, 'This is the Event')}>
+            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Event, 'This is the Event')}>
                 Event
             </Button>
-            <Button onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.ImportantEvent, 'This is the ImportantEvent')}>
+            <Button onClick={() => logStore.addEvent(ApplicationLogEventType.ImportantEvent, 'This is the ImportantEvent')}>
                 ImportantEvent
             </Button>
-            <Button style={{margin: '1em'}} onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.Warning, 'This is the Warning')}>
+            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Warning, 'This is the Warning')}>
                 Warning
             </Button>
-            <Button onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.Error, 'This is the Error')}>
+            <Button onClick={() => logStore.addEvent(ApplicationLogEventType.Error, 'This is the Error')}>
                 Error
             </Button>
-            <Button style={{margin: '1em'}} onClick={() => applicationLogStore.addEvent(ApplicationLogEventType.Fatal, 'This is the Fatal')}>
+            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Fatal, 'This is the Fatal')}>
                 Fatal
             </Button>
         </div>

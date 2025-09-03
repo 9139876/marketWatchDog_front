@@ -1,21 +1,20 @@
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import RootStore from "../stores/rootStore";
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
-import {OpenedPositionInfo} from "../models/openedPositions/openedPositionInfo";
 
-const controller = '/bff/opened-positions';
+const controller = '/bff/health-check';
 
-export default class OpenedPositionsApi {
+export default class ServerHealthCheckApi {
     private httpClientFactory: HttpClientFactory;
 
     constructor(rootStore: RootStore) {
         this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
-    getAll(): Promise<IApiResponseContainer<OpenedPositionInfo[]>> {
+    ping(): Promise<IApiResponseContainer<string>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: 'get-all',
+            action: 'ping',
             method: HttpClientMethod.GET,
             request: {}
         });

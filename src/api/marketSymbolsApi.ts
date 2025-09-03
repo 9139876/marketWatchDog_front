@@ -1,23 +1,23 @@
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import RootStore from "../stores/rootStore";
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
-import {OpenedPositionInfo} from "../models/openedPositions/openedPositionInfo";
+import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 
-const controller = '/bff/opened-positions';
+const controller = '/bff/market-symbols';
 
-export default class OpenedPositionsApi {
+export default class MarketSymbolsApi {
     private httpClientFactory: HttpClientFactory;
 
     constructor(rootStore: RootStore) {
         this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
-    getAll(): Promise<IApiResponseContainer<OpenedPositionInfo[]>> {
+    getMarketSymbols(dealerType: DealerTypeEnum): Promise<IApiResponseContainer<string[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: 'get-all',
+            action: 'get-market-symbols',
             method: HttpClientMethod.GET,
-            request: {}
+            request: {query: {dealerTypeStr: dealerType}}
         });
     }
 }

@@ -2,7 +2,7 @@ import RootStore from "../../rootStore";
 import {makeAutoObservable} from "mobx";
 import {MarketSignalSettingsItem} from "../../../models/marketSignalSettings/marketSignalSettingsItem";
 import {SelectedEnumItem} from "../../../global/selectedEnumItem";
-import {TimeFrameEnum} from "../../../models/marketSignalSettings/timeFrameEnum";
+import {TimeFrameEnum} from "../../../models/enums/timeFrameEnum";
 import MarketSignalSettingsApi from "../../../api/marketSignalSettingsApi";
 
 export default class EditMarketSignalSettingsModalStore {

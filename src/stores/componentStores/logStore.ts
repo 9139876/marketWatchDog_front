@@ -5,7 +5,7 @@ import {ApplicationLogEventType} from "../../models/applicationLog/applicationLo
 import {Nullable} from "../../global/common/nullable";
 import {SelectedEnumItem} from "../../global/selectedEnumItem";
 
-export default class ApplicationLogStore {
+export default class LogStore {
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
