@@ -1,7 +1,7 @@
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import RootStore from "../stores/rootStore";
-import {MarketSignalSettingsItemDto} from "../models/marketSignalSettings/MarketSignalSettingsItemDto";
+import {MarketSignalSettingsItemDto} from "../models/marketSymbolsAndSignalSettings/marketSignalSettingsItemDto";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 
 const controller = '/bff/market-signal-settings';

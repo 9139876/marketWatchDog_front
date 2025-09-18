@@ -3,8 +3,8 @@ import {Button, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 import {CheckCircleTwoTone} from "@ant-design/icons";
 import {observer} from "mobx-react";
-import {MarketSignalSettingsItem} from "../../models/marketSignalSettings/marketSignalSettingsItem";
 import {useStores} from "../../stores/hooks/useStores";
+import SymbolInfoWithMarketSignalSettingsModel from "../../models/marketSymbolsAndSignalSettings/symbolInfoWithMarketSignalSettingsModel";
 
 const MarketSignalSettings = observer(() => {
 
@@ -21,7 +21,7 @@ const MarketSignalSettings = observer(() => {
         }
     };
 
-    const columns: TableColumnsType<MarketSignalSettingsItem> = [
+    const columns: TableColumnsType<SymbolInfoWithMarketSignalSettingsModel> = [
         {
             title: 'Инструмент',
             dataIndex: 'symbol',
@@ -30,9 +30,46 @@ const MarketSignalSettings = observer(() => {
             sorter: (a, b) => ('' + a.symbol).localeCompare(b.symbol)
         },
         {
+            title: 'MaxDailyProfit / Margin (%)',
+            dataIndex: 'dailyMovingProfitToMarginPercentRatio',
+            sorter: (a, b) => (parseFloat(a.dailyMovingProfitToMarginPercentRatio) > parseFloat(b.dailyMovingProfitToMarginPercentRatio)) ? 1 : -1,
+            filters: [
+                {text: '10', value: 10},
+                {text: '20', value: 20},
+                {text: '30', value: 30},
+                {text: '40', value: 40},
+                {text: '50', value: 50},
+                {text: '60', value: 60},
+                {text: '70', value: 70},
+                {text: '80', value: 80},
+                {text: '90', value: 90},
+                {text: '100', value: 100}],
+            onFilter: (value, record) => parseFloat(record.dailyMovingProfitToMarginPercentRatio) >= value,
+            width: '10%',
+            align: 'center',
+        },
+        {
+            title: 'MaxDailyProfit / SpreadLoss',
+            dataIndex: 'dailyMovingProfitToSpreadLossRatio',
+            sorter: (a, b) => (parseFloat(a.dailyMovingProfitToSpreadLossRatio) > parseFloat(b.dailyMovingProfitToSpreadLossRatio)) ? 1 : -1,
+            filters: [
+                {text: '10', value: 10},
+                {text: '20', value: 20},
+                {text: '30', value: 30},
+                {text: '40', value: 40},
+                {text: '50', value: 50},
+                {text: '60', value: 60},
+                {text: '70', value: 70},
+                {text: '80', value: 80},
+                {text: '90', value: 90},
+                {text: '100', value: 100}],
+            onFilter: (value, record) => parseFloat(record.dailyMovingProfitToSpreadLossRatio) >= value,
+            width: '10%',
+            align: 'center',
+        },
+        {
             title: 'Под наблюдением',
             dataIndex: 'havingSignal',
-            //
             render: (value) => value ? <CheckCircleTwoTone/> : <div/>,
             sorter: (a, b) => (a.havingSignal === b.havingSignal) ? 0 : (a.havingSignal ? -1 : 1),
             filters: [
@@ -56,7 +93,7 @@ const MarketSignalSettings = observer(() => {
 
     return (
         <div>
-            <Table<MarketSignalSettingsItem>
+            <Table<SymbolInfoWithMarketSignalSettingsModel>
                 bordered
                 columns={columns}
                 dataSource={marketSignalSettingsStore.marketSignalSettingsItems}

@@ -2,6 +2,7 @@ import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClien
 import RootStore from "../stores/rootStore";
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
+import SymbolInfoDto from "../models/marketSymbolsAndSignalSettings/symbolInfoDto";
 
 const controller = '/bff/market-symbols';
 
@@ -12,10 +13,10 @@ export default class MarketSymbolsApi {
         this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
-    getMarketSymbols(dealerType: DealerTypeEnum): Promise<IApiResponseContainer<string[]>> {
+    getSymbolsInfo(dealerType: DealerTypeEnum): Promise<IApiResponseContainer<SymbolInfoDto[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: `get-market-symbols/${dealerType}`,
+            action: `get-symbols-info/${dealerType}`,
             method: HttpClientMethod.GET,
             request: {}
         });

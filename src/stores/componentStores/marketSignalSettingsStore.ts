@@ -1,11 +1,12 @@
 import RootStore from "../rootStore";
 import {makeAutoObservable} from "mobx";
-import {MarketSignalSettingsItem} from "../../models/marketSignalSettings/marketSignalSettingsItem";
 import MarketSignalSettingsApi from "../../api/marketSignalSettingsApi";
 import {Nullable} from "../../global/common/nullable";
-import {MarketSignalSettingsItemDto} from "../../models/marketSignalSettings/MarketSignalSettingsItemDto";
-import {SelectedEnumItem} from "../../global/selectedEnumItem";
+import {MarketSignalSettingsItemDto} from "../../models/marketSymbolsAndSignalSettings/marketSignalSettingsItemDto";
+import SelectedEnumItem from "../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../../models/enums/timeFrameEnum";
+import SymbolInfoWithMarketSignalSettingsModel from "../../models/marketSymbolsAndSignalSettings/symbolInfoWithMarketSignalSettingsModel";
+import SymbolInfoDto from "../../models/marketSymbolsAndSignalSettings/symbolInfoDto";
 
 export default class MarketSignalSettingsStore {
     private rootStore: RootStore;
@@ -17,54 +18,68 @@ export default class MarketSignalSettingsStore {
         this.marketSignalSettingsApi = new MarketSignalSettingsApi(rootStore);
     }
 
-    marketSignalSettingsItems: MarketSignalSettingsItem[] = [];
+    marketSignalSettingsItems: SymbolInfoWithMarketSignalSettingsModel[] = [];
 
     refreshMarketSignalSettingsItems = async () => {
         const result = await this.marketSignalSettingsApi.getAll(this.rootStore.appStateStore.getDealerType());
 
         if (result.isSuccess) {
-            this.updateMarketSignalSettingsItems(result.payload);
+            this.updateMarketSignalSettings(result.payload);
         }
     }
 
-    setMarketSymbols = (symbols: string[]) => {
-        this.marketSignalSettingsItems = symbols.map((symbol, index) => {
-            return {
-                symbol: symbol,
-                donchianAndRsi: [],
-                donchianAndRsiStr: 'Нет данных',
-                divergence: [],
-                divergenceStr: 'Нет данных',
-                havingSignal: false,
-                key: index
-            };
-        });
+    trySetSymbolsInfo = async (symbols: SymbolInfoDto[]): Promise<boolean> => {
+        const marketSignalsSettingsResponse = await this.marketSignalSettingsApi.getAll(this.rootStore.appStateStore.getDealerType());
+
+        if (marketSignalsSettingsResponse.isSuccess){
+            this.marketSignalSettingsItems = this.map(symbols, marketSignalsSettingsResponse.payload);
+            return true;
+        }
+
+        return false;
     }
 
-    updateMarketSignalSettingsItems = (items: Nullable<MarketSignalSettingsItemDto[]>) => {
-        items ??= [];
+    updateMarketSignalSettings = (marketSignalsSettings: Nullable<MarketSignalSettingsItemDto[]>) => {
+        this.marketSignalSettingsItems = this.map(this.marketSignalSettingsItems, marketSignalsSettings);
+    }
 
-        const buffer: MarketSignalSettingsItem[] = [];
+    private map = (symbols: SymbolInfoDto[], marketSignalsSettings: Nullable<MarketSignalSettingsItemDto[]>): SymbolInfoWithMarketSignalSettingsModel[] => {
+        marketSignalsSettings ??= [];
 
-        for (let marketSignalSettingsItem of this.marketSignalSettingsItems) {
-            const newData = items.filter(x => x.symbol === marketSignalSettingsItem.symbol);
-            const item = newData.length > 0 ? newData[0] : null;
+        return symbols.map((item, index) => {
+            const newData = marketSignalsSettings!.filter(x => x.symbol === item.symbol);
+            const marketSignalsSettingsItem = newData.length > 0 ? newData[0] : null;
 
-            const donchianAndRsi = item?.donchianAndRsi ?? this.getDefaultItems();
-            const divergence = item?.divergence ?? this.getDefaultItems();
+            const donchianAndRsi = marketSignalsSettingsItem?.donchianAndRsi ?? this.getDefaultItems();
+            const divergence = marketSignalsSettingsItem?.divergence ?? this.getDefaultItems();
 
-            buffer.push({
-                symbol: marketSignalSettingsItem.symbol,
+            return {
+                symbol: item.symbol,
+                spreadInPoints: item.spreadInPoints,
+                tradeContractSize: item.tradeContractSize,
+                tradePointSize: item.tradePointSize,
+                tradePointValue: item.tradePointValue,
+                minPositionSize: item.minPositionSize,
+                minPositionSizeStep: item.minPositionSizeStep,
+                marginByContract: item.marginByContract,
+                averageDailyRangeInCurrency: item.averageDailyRangeInCurrency,
+                marginByMinPositionSize: item.marginByMinPositionSize,
+                spreadLossByContract: item.spreadLossByContract,
+                spreadLossByMinPositionSize: item.spreadLossByMinPositionSize,
+                dailyMovingProfitByContract: item.dailyMovingProfitByContract,
+                dailyMovingProfitByMinPositionSize: item.dailyMovingProfitByMinPositionSize,
+                spreadLossToMarginPercentRatio: item.spreadLossToMarginPercentRatio,
+                dailyMovingProfitToMarginPercentRatio: item.dailyMovingProfitToMarginPercentRatio,
+                dailyMovingProfitToSpreadLossRatio: item.dailyMovingProfitToSpreadLossRatio,
+
                 donchianAndRsi: donchianAndRsi,
                 donchianAndRsiStr: donchianAndRsi.filter(x => x.isSelected).map(x => x.value).join(', '),
                 divergence: divergence,
                 divergenceStr: divergence.filter(x => x.isSelected).map(x => x.value).join(', '),
                 havingSignal: divergence.map(x => x.isSelected).concat(donchianAndRsi.map(x => x.isSelected)).some(x => x),
-                key: marketSignalSettingsItem.key
-            });
-        }
-
-        this.marketSignalSettingsItems = buffer;
+                key: (item as SymbolInfoWithMarketSignalSettingsModel)?.key ?? index
+            };
+        });
     }
 
     private getDefaultItems = (): SelectedEnumItem<TimeFrameEnum>[] => {

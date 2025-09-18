@@ -37,14 +37,7 @@ export default class AppStateStore {
     }
 
     connectToServer = async () => {
-        const result = await this.serverHealthCheckApi.ping();
-
-        if (result.isSuccess && result.payload === 'pong') {
-
-            //INITIALIZE
-            await this.rootStore.sharedStore.refreshMarketSymbols();
-            this.rootStore.marketSignalSettingsStore.setMarketSymbols(this.rootStore.sharedStore.getMarketSymbols());
-
+        if (await this.connectToServerInternal()) {
             this.connectedToServer = true;
         } else {
             alert(`Попытка соединения с ${this.backendOrigin} не удалась :(`)
@@ -54,5 +47,29 @@ export default class AppStateStore {
     disconnectToServer = () => {
         this.rootStore.clearAndRefresh();
         this.connectedToServer = false;
+    }
+
+    private connectToServerInternal = async (): Promise<boolean> => {
+        //Ping
+        const pingResult = await this.serverHealthCheckApi.ping();
+
+        if (!pingResult.isSuccess || pingResult.payload !== 'pong') {
+            return false;
+        }
+
+        //INITIALIZE
+        const successRefreshSymbolsInfo = await this.rootStore.sharedStore.tryRefreshSymbolsInfo();
+
+        if (!successRefreshSymbolsInfo) {
+            return false;
+        }
+
+        const successSetSymbolsInfo = await this.rootStore.marketSignalSettingsStore.trySetSymbolsInfo(this.rootStore.sharedStore.getMarketSymbols());
+
+        if (!successSetSymbolsInfo) {
+            return false;
+        }
+
+        return true;
     }
 }

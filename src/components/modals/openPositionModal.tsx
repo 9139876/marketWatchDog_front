@@ -5,7 +5,7 @@ import {Button, InputNumber, Modal, Select} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 
 const OpenPositionModal: FC = observer(() => {
-    const {openPositionModalStore, marketSignalSettingsStore, sharedStore} = useStores();
+    const {openPositionModalStore, sharedStore} = useStores();
 
     const [disableRefreshButton, setDisableRefreshButton] = useState(false);
 
@@ -21,8 +21,8 @@ const OpenPositionModal: FC = observer(() => {
     const getSymbols = () => {
         return sharedStore.getMarketSymbols().map(item =>
             ({
-                value: item,
-                label: item
+                value: item.symbol,
+                label: item.symbol
             }));
     }
 

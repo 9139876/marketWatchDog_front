@@ -3,7 +3,7 @@ import {makeAutoObservable} from "mobx";
 import {ApplicationLogEventItem} from "../../models/applicationLog/ApplicationLogEventItem";
 import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
 import {Nullable} from "../../global/common/nullable";
-import {SelectedEnumItem} from "../../global/selectedEnumItem";
+import SelectedEnumItem from "../../global/selectedEnumItem";
 
 export default class LogStore {
     private rootStore: RootStore;

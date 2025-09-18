@@ -1,8 +1,10 @@
+import SymbolInfoDto from "./symbolInfoDto";
 import React from "react";
-import {SelectedEnumItem} from "../../global/selectedEnumItem";
+import SelectedEnumItem from "../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../enums/timeFrameEnum";
 
-export interface MarketSignalSettingsItem {
+export default interface SymbolInfoWithMarketSignalSettingsModel extends SymbolInfoDto {
+
     key: React.Key | null;
     symbol: string;
     donchianAndRsi: SelectedEnumItem<TimeFrameEnum>[];
@@ -10,4 +12,5 @@ export interface MarketSignalSettingsItem {
     divergence: SelectedEnumItem<TimeFrameEnum>[];
     divergenceStr: string;
     havingSignal: boolean;
+
 }

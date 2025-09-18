@@ -1,10 +1,10 @@
 import RootStore from "../../rootStore";
 import {makeAutoObservable} from "mobx";
-import {MarketSignalSettingsItem} from "../../../models/marketSignalSettings/marketSignalSettingsItem";
-import {SelectedEnumItem} from "../../../global/selectedEnumItem";
+import SelectedEnumItem from "../../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../../../models/enums/timeFrameEnum";
 import MarketSignalSettingsApi from "../../../api/marketSignalSettingsApi";
-import {MarketSignalSettingsItemDto} from "../../../models/marketSignalSettings/MarketSignalSettingsItemDto";
+import {MarketSignalSettingsItemDto} from "../../../models/marketSymbolsAndSignalSettings/marketSignalSettingsItemDto";
+import SymbolInfoWithMarketSignalSettingsModel from "../../../models/marketSymbolsAndSignalSettings/symbolInfoWithMarketSignalSettingsModel";
 
 export default class EditMarketSignalSettingsModalStore {
     private rootStore: RootStore;
@@ -42,14 +42,14 @@ export default class EditMarketSignalSettingsModalStore {
             const result = await this.marketSignalSettingsApi.update(this.rootStore.appStateStore.getDealerType(), item);
 
             if (result.isSuccess) {
-                this.rootStore.marketSignalSettingsStore.updateMarketSignalSettingsItems(result.payload);
+                this.rootStore.marketSignalSettingsStore.updateMarketSignalSettings(result.payload);
             }
         } finally {
             this.hideModal();
         }
     };
 
-    showModal = (currentItem: MarketSignalSettingsItem) => {
+    showModal = (currentItem: SymbolInfoWithMarketSignalSettingsModel) => {
         this.symbol = currentItem.symbol;
         this.selectedDivergenceTimeFrames = JSON.parse(JSON.stringify(currentItem.divergence)); //иначе значения сохраняются, т.к. элементы массива объекты - ссылочные типы
         this.selectedDonchianAndRsiTimeFrames = JSON.parse(JSON.stringify(currentItem.donchianAndRsi));

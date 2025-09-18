@@ -1,4 +1,4 @@
-import {SelectedEnumItem} from "../../global/selectedEnumItem";
+import SelectedEnumItem from "../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../enums/timeFrameEnum";
 
 export interface MarketSignalSettingsItemDto {
