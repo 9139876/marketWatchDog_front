@@ -8,7 +8,7 @@ const OpenedPositionItem = (openedPositionInfo: OpenedPositionInfo): ReactNode =
 
     return (
         <div>
-            <div>{`${openedPositionInfo.dealer}-${openedPositionInfo.symbol}`}</div>
+            <div>{openedPositionInfo.symbol}</div>
 
             <div>{openedPositionInfo.type === PositionDirectionTypeEnum.Long
                 ? (<div>Длинная</div>)

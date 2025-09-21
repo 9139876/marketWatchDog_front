@@ -24,9 +24,9 @@ const AddTriggerModal: FC = observer(() => {
             <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "cursive"}}>
                 <div style={{fontSize: "larger", textDecoration:"underline"}}>Позиция:</div>
                 <div style={{color:"blue"}}>
-                    <div>{`Инструмент: ${addTriggerModalStore.position?.dealer} - ${addTriggerModalStore.position?.symbol}`}</div>
-                    <div>{`Тип: ${addTriggerModalStore.position?.type == PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
-                    <div>{`Открыта: ${addTriggerModalStore.position?.openedTimeStr}`}</div>
+                    <div>{`Инструмент: ${addTriggerModalStore.position?.symbol}`}</div>
+                    <div>{`Тип: ${addTriggerModalStore.position?.type === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
+                    <div>{`Открыта: ${addTriggerModalStore.position?.openedTime}`}</div>
                 </div>
                 <hr></hr>
             </div>

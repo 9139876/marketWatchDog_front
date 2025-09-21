@@ -25,8 +25,8 @@ const OpenedPositions = observer(() => {
         addTriggerModalStore.showModal(position);
     }
 
-    const getColorClassName = (value: Nullable<number>): string => {
-        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+    const getColorClassName = (value: Nullable<string>): string => {
+        return !!value && parseFloat(value) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
@@ -35,7 +35,7 @@ const OpenedPositions = observer(() => {
                 ? (<div style={{color: "black"}}>
                     <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLoss}`}</div>
                     <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
-                        {`${(item.ifStopLossFiredProfitInPercents ?? 0) > 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbsStr}%${item.isLeverCorrect ? '' : '(без учета плеча)'}`}
+                        {`${(item.ifStopLossFiredProfitInPercents ?? 0) > 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbs}%'}`}
                     </div>
                 </div>)
                 : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
@@ -49,6 +49,10 @@ const OpenedPositions = observer(() => {
             ? require('./img/long.png')
             : require('./img/short.png');
 
+        const positionTypeIconAltText = item.type === PositionDirectionTypeEnum.Long
+            ? 'long'
+            : 'short';
+
         return (
             <tr key={item.identifier}>
                 {/*Закрытие позиции*/}
@@ -57,29 +61,29 @@ const OpenedPositions = observer(() => {
                 </td>
 
                 {/*Symbol*/}
-                <td className="opened-position-cell">{`${item.dealer} - ${item.symbol}`}</td>
+                <td className="opened-position-cell">{item.symbol}</td>
 
                 {/*Тип*/}
                 <td className="opened-position-cell">
-                    <img src={positionTypeIcon} style={{width: "5em"}}/>
+                    <img alt={positionTypeIconAltText} src={positionTypeIcon} style={{width: "5em"}}/>
                 </td>
 
                 {/*Время открытия*/}
-                <td className="opened-position-cell">{item.openedTimeStr}</td>
+                <td className="opened-position-cell">{item.openedTime}</td>
 
                 {/*Цена открытия*/}
-                <td className="opened-position-cell">{item.priceOpenStr}</td>
+                <td className="opened-position-cell">{item.priceOpen}</td>
 
                 {/*Текущая цена*/}
-                <td className="opened-position-cell">{item.currentPriceStr}</td>
+                <td className="opened-position-cell">{item.currentPrice}</td>
 
                 {/*Профит*/}
                 <td className="opened-position-cell">
                     <div>
-                        <div className={getColorClassName(item.profit)}>{item.profitStr}</div>
+                        <div className={getColorClassName(item.profit)}>{item.profit}</div>
 
                         <div className={getColorClassName(item.profitInPercents)}>
-                            {`${(item.profitInPercents ?? 0) > 0 ? '+' : '-'}${item.profitInPercentsAbsStr}%${item.isLeverCorrect ? '' : '(без учета плеча)'}`}
+                            {`${(parseFloat(item.profitInPercents) ?? 0) > 0 ? '+' : '-'}${item.profitInPercentsAbs}%`}
                         </div>
                     </div>
                 </td>
@@ -122,7 +126,7 @@ const OpenedPositions = observer(() => {
             <div style={{paddingTop: "1em", display: "flex", alignItems: "center"}}>
                 <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={onOpenPositionClick}/>
 
-                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontStyle:"italic"}}>Открыть позицию</div>
+                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontStyle: "italic"}}>Открыть позицию</div>
 
                 <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
                     Обновить

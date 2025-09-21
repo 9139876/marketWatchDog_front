@@ -39,7 +39,6 @@ export default class OpenPositionModalStore {
 
     setCurrentSymbol = (value: string | null) => {
         this.currentSymbol = value ?? '';
-
         this.notValidReasons = [];
         this.allCorrect = false;
     }
@@ -74,6 +73,7 @@ export default class OpenPositionModalStore {
         }
 
         const request: CheckOpenPositionRequest = {
+            dealerType: this.rootStore.appStateStore.getDealerType(),
             symbol: this.currentSymbol,
             positionType: this.positionType,
             inLotsSize: this.inLotsSize,

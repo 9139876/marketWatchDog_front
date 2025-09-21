@@ -8,8 +8,8 @@ import {Nullable} from "../../global/common/nullable";
 const ClosePositionModal: FC = observer(() => {
     const {closePositionModalStore} = useStores();
 
-    const getColorClassName = (value: Nullable<number>): string => {
-        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+    const getColorClassName = (value: Nullable<string>): string => {
+        return !!value && parseFloat(value) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     return (
@@ -27,12 +27,12 @@ const ClosePositionModal: FC = observer(() => {
                 </Button>,
             ]}>
             <div style={{fontSize: "large", fontWeight:"bold", fontFamily:"cursive"}}>
-                <div>{`Инструмент: ${closePositionModalStore.position?.dealer} - ${closePositionModalStore.position?.symbol}`}</div>
-                <div>{`Тип: ${closePositionModalStore.position?.type == PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
-                <div>{`Открыта: ${closePositionModalStore.position?.openedTimeStr}`}</div>
+                <div>{`Инструмент: ${closePositionModalStore.position?.symbol}`}</div>
+                <div>{`Тип: ${closePositionModalStore.position?.type === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
+                <div>{`Открыта: ${closePositionModalStore.position?.openedTime}`}</div>
 
                 <div className={getColorClassName(closePositionModalStore.position?.profit)}>
-                    {`Профит: ${closePositionModalStore.position?.profitStr} ( ${(closePositionModalStore.position?.profitInPercents ?? 0) > 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbsStr}%${closePositionModalStore.position?.isLeverCorrect ? '' : ' (без учета плеча)'} )`}
+                    {`Профит: ${closePositionModalStore.position?.profit} (${(closePositionModalStore.position?.profitInPercents ?? 0) > 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbs}%)`}
                 </div>
             </div>
         </Modal>
