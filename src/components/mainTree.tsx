@@ -4,6 +4,8 @@ import MarketSignalSettings from "./marketSignalSettings/marketSignalSettings";
 import {observer} from "mobx-react";
 import EventsList from "./log/eventsList";
 import OpenedPositions from "./openedPositions/openedPositions";
+import FrontEndLog from "./log/frontEndLog";
+import MarketSignalHistoryList from "./marketSignalHistory/marketSignalHistoryList";
 
 const MainTree = observer(() => {
     return (
@@ -20,7 +22,7 @@ const MainTree = observer(() => {
                     {
                         key: '2',
                         label: 'История рыночных сигналов',
-                        children: <div>Здесь потом что-то будет...</div>,
+                        children: <MarketSignalHistoryList/>,
                     },
                 ]}
             />
@@ -48,6 +50,11 @@ const MainTree = observer(() => {
                         key: '1',
                         label: 'События',
                         children: <EventsList/>
+                    },
+                    {
+                        key: '2',
+                        label: 'Ошибки',
+                        children: <FrontEndLog/>
                     }
                 ]}
             />

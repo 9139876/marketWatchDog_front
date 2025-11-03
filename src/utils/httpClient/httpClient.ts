@@ -1,7 +1,6 @@
 import {IApiResponseContainer, IApiResponseContainerEmpty} from "./dto/apiResponseContainer";
 import {IMap} from "../../global/common/iMap";
 import {stringifyNonEmptyParams} from "./stringifyNonEmptyParams";
-import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
 import RootStore from "../../stores/rootStore";
 
 export enum HttpClientMethod {
@@ -71,13 +70,13 @@ export class HttpClientFactory {
                 const result = await this.parseResponse(apiResponse, url, needResult);
 
                 if (!result.isSuccess) {
-                    this.rootStore.logStore.addEvent(ApplicationLogEventType.Error, result.errorMessage ?? 'Неизвестная ошибка');
+                    this.rootStore.frontEndLogStore.addEvent(result.errorMessage ?? 'Неизвестная ошибка');
                 }
 
                 return result;
             } catch (ex) {
                 const errorMessage = `При вызове ${url} произошла ошибка ${ex}`;
-                this.rootStore.logStore.addEvent(ApplicationLogEventType.Error, errorMessage);
+                this.rootStore.frontEndLogStore.addEvent(errorMessage);
                 return {isSuccess: false, errorMessage: ex?.toString(), payload: null};
             }
         };
@@ -89,9 +88,21 @@ export class HttpClientFactory {
         const text = await response.text();
 
         return !!text
-            ? JSON.parse(text) as Promise<IApiResponseContainer<any>>
+            ? JSON.parse(text, HttpClientFactory.ReviveDateTime) as Promise<IApiResponseContainer<any>>
             : needResult
                 ? {isSuccess: false, errorMessage: `Пустой результат при вызове ${url}`, payload: null}
                 : {isSuccess: true, errorMessage: null, payload: null};
+    }
+
+    private static ReviveDateTime(key: any, value: any): any {
+        if (typeof value === 'string' && (key.toLowerCase().includes('time') || key.toLowerCase().includes('date'))) {
+            const date = new Date(value)
+
+            if (!!date.getDate()) {
+                return date;
+            }
+        }
+
+        return value;
     }
 }

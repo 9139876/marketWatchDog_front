@@ -1,61 +1,51 @@
 import {observer} from "mobx-react";
 import React, {ReactNode} from "react";
 import {useStores} from "../../stores/hooks/useStores";
-import {ApplicationLogEventItem} from "../../models/applicationLog/ApplicationLogEventItem";
-import {ApplicationLogEventType} from "../../models/applicationLog/applicationLogEventType";
+import {MarketEventItem} from "../../models/marketEvents/marketEventItem";
+import {MarketEventType} from "../../models/marketEvents/marketEventType";
 import {Button, Checkbox} from "antd";
+import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 
 const EventsList = observer(() => {
 
-    const {logStore} = useStores();
+    const {eventStore} = useStores();
 
-    const mapToListItem = (item: ApplicationLogEventItem): ReactNode => {
+    const mapToListItem = (item: MarketEventItem): ReactNode => {
 
-        const text = `[${item.date.toLocaleDateString()} ${item.date.toLocaleTimeString()}]: ${item.text}`;
+        const text = `[${formatDateTimeRusStr(item.time)}]: ${item.symbol} - ${item.description}`;
 
         switch (item.eventType) {
-            case ApplicationLogEventType.Event:
+            case MarketEventType.ChangeStopLoss:
                 return <div style={{color: "darkgreen"}}>&#9679; {text}</div>
-            case ApplicationLogEventType.ImportantEvent:
+            case MarketEventType.UpdatePosition:
                 return <div style={{color: "blue"}}>&#9679; {text}</div>
-            case ApplicationLogEventType.Warning:
-                return <div style={{color: "orange"}}>&#9679; {text}</div>
-            case ApplicationLogEventType.Error:
+            case MarketEventType.PositionWatchDogError:
                 return <div style={{color: "red"}}>&#9679; {text}</div>
-            case ApplicationLogEventType.Fatal:
-                return <div style={{color: "darkred"}}>&#9679; {text}</div>
             default:
                 return <div style={{color: "black"}}>&#9679; {text}</div>
         }
     }
 
     const onChange = (checkedValues: string[]) => {
-        const selectedTypes = checkedValues.map(x => ApplicationLogEventType[x  as keyof typeof ApplicationLogEventType]);
-        logStore.changeSelectedEventTypes(selectedTypes);
+        const selectedTypes = checkedValues.map(x => MarketEventType[x as keyof typeof MarketEventType]);
+        eventStore.changeSelectedEventTypes(selectedTypes);
     };
 
     return (
         <div>
+            <Checkbox.Group
+                style={{margin: '0em 0em 1em 1em', fontFamily: 'monospace', fontWeight: 'bold'}}
+                options={eventStore.selectedEventTypes.map(x => x.value)}
+                value={eventStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)}
+                onChange={onChange}
+            />
+
             <div style={{minHeight: '12em', maxHeight: '12em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
-                {logStore.eventsListForShow.map(mapToListItem)}
+                {eventStore.eventsListForShow.map(mapToListItem)}
             </div>
 
-            <Checkbox.Group options={logStore.selectedEventTypes.map(x => x.value)} value={logStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)} onChange={onChange}/>
-
-            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Event, 'This is the Event')}>
-                Event
-            </Button>
-            <Button onClick={() => logStore.addEvent(ApplicationLogEventType.ImportantEvent, 'This is the ImportantEvent')}>
-                ImportantEvent
-            </Button>
-            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Warning, 'This is the Warning')}>
-                Warning
-            </Button>
-            <Button onClick={() => logStore.addEvent(ApplicationLogEventType.Error, 'This is the Error')}>
-                Error
-            </Button>
-            <Button style={{margin: '1em'}} onClick={() => logStore.addEvent(ApplicationLogEventType.Fatal, 'This is the Fatal')}>
-                Fatal
+            <Button style={{margin: '1em'}} onClick={async () => await eventStore.getNewMarketEvents()}>
+                Get from server
             </Button>
         </div>
 

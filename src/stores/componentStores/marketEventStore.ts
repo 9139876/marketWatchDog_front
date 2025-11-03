@@ -1,0 +1,66 @@
+import RootStore from "../rootStore";
+import {makeAutoObservable} from "mobx";
+import {MarketEventItem} from "../../models/marketEvents/marketEventItem";
+import {MarketEventType} from "../../models/marketEvents/marketEventType";
+import SelectedEnumItem from "../../global/selectedEnumItem";
+import MarketEventsApi from "../../api/marketEventsApi";
+
+export default class MarketEventStore {
+    private rootStore: RootStore;
+    private marketEventsApi: MarketEventsApi;
+
+    constructor(rootStore: RootStore) {
+        makeAutoObservable(this);
+        this.rootStore = rootStore;
+        this.marketEventsApi = new MarketEventsApi(rootStore);
+    }
+
+    private eventsList: MarketEventItem[] = [];
+
+    selectedEventTypes: SelectedEnumItem<MarketEventType>[] = [
+        {value: MarketEventType.ChangeStopLoss, isSelected: true},
+        {value: MarketEventType.UpdatePosition, isSelected: true},
+        {value: MarketEventType.PositionWatchDogError, isSelected: true}
+    ];
+
+    eventsListForShow: MarketEventItem[] = [];
+
+    getNewMarketEvents = async () => {
+        const lastMarketEventDate = this.eventsList.length === 0
+            ? this.getStartOfDayToday()
+            : this.eventsList.sort((a, b) => b.time.getTime() - a.time.getTime())[0].time;
+
+        const result = await this.marketEventsApi.getNewMarketEvents(this.rootStore.appStateStore.getDealerType(), lastMarketEventDate);
+
+        if (result.isSuccess) {
+            const newMarketEvents = result.payload ?? [];
+
+            if (newMarketEvents.length > 0) {
+                this.eventsList.push(...newMarketEvents);
+                this.updateEventsListForShow();
+            }
+        }
+    }
+
+    changeSelectedEventTypes(selectedEvents: MarketEventType[]) {
+        this.selectedEventTypes.forEach(x => x.isSelected = selectedEvents.includes(x.value));
+        this.updateEventsListForShow();
+    }
+
+    private updateEventsListForShow(): void {
+        const selectedEventTypesInternal = this.selectedEventTypes
+            .filter(x => x.isSelected)
+            .map(x => x.value);
+
+        this.eventsListForShow = this.eventsList
+            .filter(x => selectedEventTypesInternal.includes(x.eventType))
+            .sort((a, b) => b.time.getTime() - a.time.getTime());
+    }
+
+    private getStartOfDayToday(): Date {
+        const result = new Date();
+        result.setUTCHours(0, 0, 0, 0);
+
+        return result;
+    };
+}
