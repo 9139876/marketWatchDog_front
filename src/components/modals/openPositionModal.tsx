@@ -7,16 +7,25 @@ import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDi
 const OpenPositionModal: FC = observer(() => {
     const {openPositionModalStore, sharedStore} = useStores();
 
-    const [disableRefreshButton, setDisableRefreshButton] = useState(false);
+    const [disableControls, setDisableControls] = useState(false);
 
     const checkPosition = async () => {
         try {
-            setDisableRefreshButton(true);
+            setDisableControls(true);
             await openPositionModalStore.checkPosition();
         } finally {
-            setDisableRefreshButton(false);
+            setDisableControls(false);
         }
     };
+
+    const onSymbolChange = async (value: string | null) => {
+        try {
+            setDisableControls(true);
+            await openPositionModalStore.setCurrentSymbol(value);
+        } finally {
+            setDisableControls(false);
+        }
+    }
 
     const getSymbols = () => {
         return sharedStore.getMarketSymbols().map(item =>
@@ -36,7 +45,7 @@ const OpenPositionModal: FC = observer(() => {
                 <Button key="openPosition" type="primary" onClick={openPositionModalStore.openPosition} disabled={!openPositionModalStore.allCorrect}>
                     Открыть позицию
                 </Button>,
-                <Button key="checkPosition" type="primary" onClick={checkPosition} disabled={disableRefreshButton}>
+                <Button key="checkPosition" type="primary" onClick={checkPosition} disabled={disableControls}>
                     Проверить
                 </Button>,
                 <Button key="cancel" type="default" onClick={openPositionModalStore.hideModal}>
@@ -56,7 +65,8 @@ const OpenPositionModal: FC = observer(() => {
                         filterSort={(optionA, optionB) => (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())}
                         options={getSymbols()}
                         value={openPositionModalStore.currentSymbol}
-                        onChange={openPositionModalStore.setCurrentSymbol}
+                        onChange={onSymbolChange}
+                        disabled={disableControls}
                     />
                 </div>
 

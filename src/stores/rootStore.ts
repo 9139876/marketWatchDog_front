@@ -44,7 +44,7 @@ export default class RootStore {
     addTriggerModalStore: AddTriggerModalStore;
 
     clearAndRefresh = () => {
-        this.appStateStore = new AppStateStore(this);
+        // this.appStateStore = new AppStateStore(this); -- Не нужно!
         this.eventStore = new MarketEventStore(this);
         this.frontEndLogStore = new FrontEndLogStore(this);
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);

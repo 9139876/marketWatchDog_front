@@ -37,10 +37,27 @@ export default class OpenPositionModalStore {
         this.isVisible = true;
     };
 
-    setCurrentSymbol = (value: string | null) => {
+    setCurrentSymbol = async (value: string | null) => {
+        this.clearFields();
         this.currentSymbol = value ?? '';
-        this.notValidReasons = [];
-        this.allCorrect = false;
+
+        if (this.currentSymbol !== '') {
+            const request: CheckOpenPositionRequest = {
+                dealerType: this.rootStore.appStateStore.getDealerType(),
+                symbol: this.currentSymbol,
+                positionType: this.positionType,
+                inLotsSize: this.inLotsSize,
+                stopLossValue: 1
+            };
+
+            const result = await this.openPositionApi.checkOpenPosition(request);
+
+            if (result.isSuccess) {
+                this.currentPriceStr = result.payload!.currentPriceStr;
+                this.marginStr = result.payload!.marginStr;
+                this.marginFreeStr = result.payload!.marginFreeStr;
+            }
+        }
     }
 
     setPositionType = (value: string | null) => {
@@ -111,6 +128,10 @@ export default class OpenPositionModalStore {
         this.currentSymbol = '';
         this.positionType = PositionDirectionTypeEnum.Long;
         this.inLotsSize = 0.1;
+        this.clearFields();
+    };
+
+    private clearFields = () => {
         this.stopLossValue = null;
         this.notValidReasons = [];
         this.allCorrect = false;
@@ -123,5 +144,5 @@ export default class OpenPositionModalStore {
         this.marginFreeStr = '';
         this.lossDivMarginFreePercentStr = '';
         this.lossDivMarginFreeIsValid = false
-    };
+    }
 }

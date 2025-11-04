@@ -12,15 +12,23 @@ const MarketSignalHistoryList = observer(() => {
 
     const mapToListItem = (item: MarketSignalHistoryItem): ReactNode => {
 
-        const text = `[${formatDateTimeRusStr(item.time)}]: ${item.message.marketSignalDirectionType} ${item.symbol} ${item.timeframe} - ${item.message.marketSignalType}`;
+        const title = `[${formatDateTimeRusStr(item.time)}]: ${item.message.marketSignalDirectionType} ${item.symbol} ${item.timeframe} ${item.message.marketSignalType}`;
+
+        const content: ReactNode =
+            <div>
+                <div> &#9679; {title} </div>
+                <div> {item.message.signal} </div>
+                {item.message.lines.map(line => <div>{line}</div>)}
+                <hr/>
+            </div>;
 
         switch (item.message.marketSignalDirectionType) {
             case MarketSignalDirectionTypeEnum.Buy:
-                return <div style={{color: "darkgreen"}}>&#9679; {text}</div>
+                return <div style={{color: "darkgreen"}}> {content} </div>
             case MarketSignalDirectionTypeEnum.Sell:
-                return <div style={{color: "red"}}>&#9679; {text}</div>
+                return <div style={{color: "red"}}> {content} </div>
             default:
-                return <div style={{color: "black"}}>&#9679; {text}</div>
+                return <div style={{color: "black"}}> {content} </div>
         }
     }
 

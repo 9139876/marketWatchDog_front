@@ -17,7 +17,7 @@ export default class OpenedPositionsStore {
     openedPositions: OpenedPositionInfo[] = [];
 
     refreshOpenedPositions = async () => {
-        const result = await this.openedPositionsApi.getAll();
+        const result = await this.openedPositionsApi.getAll(this.rootStore.appStateStore.getDealerType());
 
         if (result.isSuccess) {
             this.openedPositions = result.payload ?? [];
