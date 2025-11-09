@@ -4,8 +4,8 @@ import {PositionDirectionTypeEnum} from "./positionDirectionTypeEnum";
 export interface OpenedPositionInfo {
     identifier: number;
     symbol: string;
-    type: PositionDirectionTypeEnum;
-    openedTime: string;
+    positionDirectionType: PositionDirectionTypeEnum;
+    openedTime: Date;
     tradePointSize: string;
     tradePointValue: string;
     volume: string;

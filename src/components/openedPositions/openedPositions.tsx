@@ -6,12 +6,15 @@ import {OpenedPositionInfo} from "../../models/openedPositions/openedPositionInf
 import {Button} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {Nullable} from "../../global/common/nullable";
-import {CloseCircleTwoTone, PlusCircleTwoTone} from "@ant-design/icons";
+import {CloseCircleTwoTone, MinusCircleTwoTone, PlusCircleTwoTone} from "@ant-design/icons";
+import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
+import OpenedPositionInfoWithWatchDogs from "../../models/openedPositions/openedPositionInfoWithWatchDogs";
+import PositionWatchDogStoredModel from "../../models/watchDog/positionWatchDogStoredModel";
 
 
 const OpenedPositions = observer(() => {
 
-    const {openedPositionsStore, openPositionModalStore, closePositionModalStore, addTriggerModalStore} = useStores();
+    const {openedPositionsStore, openPositionModalStore, closePositionModalStore, addWatchDogModalStore, editWatchDogModalStore, deleteWatchDogModalStore} = useStores();
 
     const onOpenPositionClick = () => {
         openPositionModalStore.showModal();
@@ -21,12 +24,12 @@ const OpenedPositions = observer(() => {
         closePositionModalStore.showModal(position);
     }
 
-    const onAddTriggerClick = (position: OpenedPositionInfo) => {
-        addTriggerModalStore.showModal(position);
+    const onAddWatchDogClick = async (position: OpenedPositionInfo) => {
+        await addWatchDogModalStore.showModal(position);
     }
 
     const getColorClassName = (value: Nullable<string>): string => {
-        return !!value && parseFloat(value) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+        return !!value && parseFloat(value.replace(',', '.')) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
@@ -35,33 +38,41 @@ const OpenedPositions = observer(() => {
                 ? (<div style={{color: "black"}}>
                     <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLoss}`}</div>
                     <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
-                        {`${(item.ifStopLossFiredProfitInPercents ?? 0) > 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbs}%'}`}
+                        {`${(parseFloat((item.ifStopLossFiredProfitInPercents ?? '').replace(',', '.')) ?? 0) >= 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbs}%`}
                     </div>
                 </div>)
                 : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
         );
     }
 
+    const mapWatchDog = (position: OpenedPositionInfo, watchDog: PositionWatchDogStoredModel): ReactNode => {
+        return <div style={{display: 'flex', marginBottom: '1em'}}>
+            <div onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
+                {watchDog.type}
+            </div>
+            <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => deleteWatchDogModalStore.showModal(position, watchDog.type)}/>
+        </div>
+    }
 
-    const mapToRow = (item: OpenedPositionInfo): ReactNode => {
+    const mapToRow = (item: OpenedPositionInfoWithWatchDogs): ReactNode => {
 
-        const positionTypeIcon = item.type === PositionDirectionTypeEnum.Long
+        const positionTypeIcon = item.openedPositionInfo.positionDirectionType === PositionDirectionTypeEnum.Long
             ? require('./img/long.png')
             : require('./img/short.png');
 
-        const positionTypeIconAltText = item.type === PositionDirectionTypeEnum.Long
+        const positionTypeIconAltText = item.openedPositionInfo.positionDirectionType === PositionDirectionTypeEnum.Long
             ? 'long'
             : 'short';
 
         return (
-            <tr key={item.identifier}>
+            <tr key={item.openedPositionInfo.identifier}>
                 {/*Закрытие позиции*/}
                 <td className="opened-position-cell">
-                    <CloseCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => onClosePositionClick(item)}/>
+                    <CloseCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => onClosePositionClick(item.openedPositionInfo)}/>
                 </td>
 
                 {/*Symbol*/}
-                <td className="opened-position-cell">{item.symbol}</td>
+                <td className="opened-position-cell">{item.openedPositionInfo.symbol}</td>
 
                 {/*Тип*/}
                 <td className="opened-position-cell">
@@ -69,32 +80,35 @@ const OpenedPositions = observer(() => {
                 </td>
 
                 {/*Время открытия*/}
-                <td className="opened-position-cell">{item.openedTime}</td>
+                <td className="opened-position-cell">{formatDateTimeRusStr(item.openedPositionInfo.openedTime)}</td>
 
                 {/*Цена открытия*/}
-                <td className="opened-position-cell">{item.priceOpen}</td>
+                <td className="opened-position-cell">{item.openedPositionInfo.priceOpen}</td>
 
                 {/*Текущая цена*/}
-                <td className="opened-position-cell">{item.currentPrice}</td>
+                <td className="opened-position-cell">{item.openedPositionInfo.currentPrice}</td>
 
                 {/*Профит*/}
                 <td className="opened-position-cell">
                     <div>
-                        <div className={getColorClassName(item.profit)}>{item.profit}</div>
+                        <div className={getColorClassName(item.openedPositionInfo.profit)}>{item.openedPositionInfo.profit}</div>
 
-                        <div className={getColorClassName(item.profitInPercents)}>
-                            {`${(parseFloat(item.profitInPercents) ?? 0) > 0 ? '+' : '-'}${item.profitInPercentsAbs}%`}
+                        <div className={getColorClassName(item.openedPositionInfo.profitInPercents)}>
+                            {`${(parseFloat(item.openedPositionInfo.profitInPercents.replace(',', '.')) ?? 0) >= 0 ? '+' : '-'}${item.openedPositionInfo.profitInPercentsAbs}%`}
                         </div>
                     </div>
                 </td>
 
                 {/*StopLoss*/}
-                <td className="opened-position-cell">{mapToStopLossCell(item)}</td>
+                <td className="opened-position-cell">{mapToStopLossCell(item.openedPositionInfo)}</td>
 
-                {/*Триггеры*/}
+                {/*WatchDogs*/}
                 <td className="opened-position-cell">
-                    <div>Триггеры</div>
-                    <PlusCircleTwoTone style={{fontSize: "1.5em"}} onClick={() => onAddTriggerClick(item)}/>
+                    <div>
+                        {item.watchDogs.map(wd => mapWatchDog(item.openedPositionInfo, wd))}
+                    </div>
+
+                    <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={() => onAddWatchDogClick(item.openedPositionInfo)}/>
                 </td>
 
             </tr>
@@ -114,7 +128,7 @@ const OpenedPositions = observer(() => {
                     <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Текущая цена</th>
                     <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Профит</th>
                     <th className="opened-position-cell" scope="col" style={{width: "10%"}}>StopLoss</th>
-                    <th className="opened-position-cell" scope="col">Триггеры</th>
+                    <th className="opened-position-cell" scope="col">WatchDogs</th>
                 </tr>
                 </thead>
 

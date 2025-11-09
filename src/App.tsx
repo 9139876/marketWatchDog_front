@@ -8,8 +8,10 @@ import styles from "./app.module.css";
 import Header from "./components/header";
 import EditMarketSignalSettingsModal from "./components/modals/editMarketSignalSettingsModal";
 import ClosePositionModal from "./components/modals/closePositionModal";
-import AddTriggerModal from "./components/modals/addTriggerModal";
+import AddWatchDogModal from "./components/modals/addWatchDogModal";
 import OpenPositionModal from "./components/modals/openPositionModal";
+import DeleteWatchDogModal from "./components/modals/deleteWatchDogModal";
+import EditWatchDogModal from "./components/modals/editWatchDogModal";
 
 const {Footer} = Layout;
 
@@ -44,8 +46,9 @@ const App = observer(() => {
             <EditMarketSignalSettingsModal/>
             <OpenPositionModal/>
             <ClosePositionModal/>
-            <AddTriggerModal/>
-
+            <AddWatchDogModal/>
+            <EditWatchDogModal/>
+            <DeleteWatchDogModal/>
         </div>
     );
 });

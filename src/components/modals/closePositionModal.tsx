@@ -26,13 +26,13 @@ const ClosePositionModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight:"bold", fontFamily:"cursive"}}>
+            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "cursive"}}>
                 <div>{`Инструмент: ${closePositionModalStore.position?.symbol}`}</div>
-                <div>{`Тип: ${closePositionModalStore.position?.type === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
+                <div>{`Тип: ${closePositionModalStore.position?.positionDirectionType === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
                 <div>{`Открыта: ${closePositionModalStore.position?.openedTime}`}</div>
 
                 <div className={getColorClassName(closePositionModalStore.position?.profit)}>
-                    {`Профит: ${closePositionModalStore.position?.profit} (${(closePositionModalStore.position?.profitInPercents ?? 0) > 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbs}%)`}
+                    {`Профит: ${closePositionModalStore.position?.profit} (${parseFloat(closePositionModalStore.position?.profit ?? '0') >= 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbs}%)`}
                 </div>
             </div>
         </Modal>

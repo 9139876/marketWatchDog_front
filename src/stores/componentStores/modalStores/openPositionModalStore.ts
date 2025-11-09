@@ -116,9 +116,35 @@ export default class OpenPositionModalStore {
     }
 
     openPosition = async () => {
-        try {
 
-        } finally {
+        if (this.currentSymbol.length === 0 || this.inLotsSize === 0 || this.stopLossValue == null) {
+            this.notValidReasons = ['Не все поля заполнены корректно!'];
+            return;
+        }
+
+        const request: CheckOpenPositionRequest = {
+            dealerType: this.rootStore.appStateStore.getDealerType(),
+            symbol: this.currentSymbol,
+            positionType: this.positionType,
+            inLotsSize: this.inLotsSize,
+            stopLossValue: this.stopLossValue
+        };
+
+        const result = await this.openPositionApi.openPosition(request);
+
+        let message: string;
+
+        if (result.isSuccess) {
+            message = result.payload?.success === true
+                ? `Позиция по ${this.currentSymbol} успешно открыта!`
+                : `Не удалось открыть позицию по ${this.currentSymbol} - ${result.payload?.retcodeDescription}`;
+        } else {
+            message = `Ошибка при открытии позиции по ${this.currentSymbol} - ${result.errorMessage}`;
+        }
+
+        alert(message);
+
+        if (result.isSuccess && result.payload?.success === true) {
             this.hideModal();
         }
     }

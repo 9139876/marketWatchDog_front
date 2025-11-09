@@ -11,7 +11,9 @@
 
 // Not delete!!!
 
-export function firstOrDefault<T>(array: Array<T>, predicate: (arg: T) => boolean) {
+import {Nullable} from "../../global/common/nullable";
+
+export function firstOrDefault<T>(array: Array<T>, predicate: (arg: T) => boolean): Nullable<T> {
     if (!array) {
         return null;
     }

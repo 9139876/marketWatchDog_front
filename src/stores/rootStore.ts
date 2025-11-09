@@ -5,11 +5,13 @@ import MarketSignalSettingsStore from "./componentStores/marketSignalSettingsSto
 import EditMarketSignalSettingsModalStore from "./componentStores/modalStores/editMarketSignalSettingsModalStore";
 import OpenedPositionsStore from "./componentStores/openedPositionsStore";
 import ClosePositionModalStore from "./componentStores/modalStores/closePositionModalStore";
-import AddTriggerModalStore from "./componentStores/modalStores/addTriggerModalStore";
+import AddWatchDogModalStore from "./componentStores/modalStores/addWatchDogModalStore";
 import OpenPositionModalStore from "./componentStores/modalStores/openPositionModalStore";
 import SharedStore from "./componentStores/sharedStore";
 import FrontEndLogStore from "./componentStores/frontEndLogStore";
 import MarketSignalHistoryStore from "./componentStores/marketSignalHistoryStore";
+import EditWatchDogModalStore from "./componentStores/modalStores/editWatchDogModalStore";
+import DeleteWatchDogModalStore from "./componentStores/modalStores/deleteWatchDogModalStore";
 
 export default class RootStore {
     constructor() {
@@ -26,7 +28,9 @@ export default class RootStore {
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
         this.closePositionModalStore = new ClosePositionModalStore(this);
         this.openPositionModalStore = new OpenPositionModalStore(this);
-        this.addTriggerModalStore = new AddTriggerModalStore(this);
+        this.addWatchDogModalStore = new AddWatchDogModalStore(this);
+        this.editWatchDogModalStore = new EditWatchDogModalStore(this);
+        this.deleteWatchDogModalStore = new DeleteWatchDogModalStore(this);
     }
 
     appStateStore: AppStateStore;
@@ -41,7 +45,9 @@ export default class RootStore {
     editMarketSignalSettingsModalStore: EditMarketSignalSettingsModalStore;
     openPositionModalStore: OpenPositionModalStore;
     closePositionModalStore: ClosePositionModalStore;
-    addTriggerModalStore: AddTriggerModalStore;
+    addWatchDogModalStore: AddWatchDogModalStore;
+    editWatchDogModalStore: EditWatchDogModalStore;
+    deleteWatchDogModalStore: DeleteWatchDogModalStore;
 
     clearAndRefresh = () => {
         // this.appStateStore = new AppStateStore(this); -- Не нужно!
@@ -56,6 +62,8 @@ export default class RootStore {
         this.editMarketSignalSettingsModalStore = new EditMarketSignalSettingsModalStore(this);
         this.closePositionModalStore = new ClosePositionModalStore(this);
         this.openPositionModalStore = new OpenPositionModalStore(this);
-        this.addTriggerModalStore = new AddTriggerModalStore(this);
+        this.addWatchDogModalStore = new AddWatchDogModalStore(this);
+        this.editWatchDogModalStore = new EditWatchDogModalStore(this);
+        this.deleteWatchDogModalStore = new DeleteWatchDogModalStore(this);
     }
 }
