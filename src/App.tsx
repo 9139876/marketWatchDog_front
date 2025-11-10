@@ -10,7 +10,6 @@ import EditMarketSignalSettingsModal from "./components/modals/editMarketSignalS
 import ClosePositionModal from "./components/modals/closePositionModal";
 import AddWatchDogModal from "./components/modals/addWatchDogModal";
 import OpenPositionModal from "./components/modals/openPositionModal";
-import DeleteWatchDogModal from "./components/modals/deleteWatchDogModal";
 import EditWatchDogModal from "./components/modals/editWatchDogModal";
 
 const {Footer} = Layout;
@@ -48,7 +47,6 @@ const App = observer(() => {
             <ClosePositionModal/>
             <AddWatchDogModal/>
             <EditWatchDogModal/>
-            <DeleteWatchDogModal/>
         </div>
     );
 });

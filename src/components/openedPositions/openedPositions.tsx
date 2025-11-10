@@ -3,18 +3,21 @@ import React, {ReactNode} from 'react';
 import {useStores} from "../../stores/hooks/useStores";
 import "./openedPositions.css";
 import {OpenedPositionInfo} from "../../models/openedPositions/openedPositionInfo";
-import {Button} from "antd";
+import {Button, message, Popconfirm} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {Nullable} from "../../global/common/nullable";
 import {CloseCircleTwoTone, MinusCircleTwoTone, PlusCircleTwoTone} from "@ant-design/icons";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import OpenedPositionInfoWithWatchDogs from "../../models/openedPositions/openedPositionInfoWithWatchDogs";
 import PositionWatchDogStoredModel from "../../models/watchDog/positionWatchDogStoredModel";
+import {PositionWatchDogTypeEnum} from "../../models/watchDog/positionWatchDogTypeEnum";
+import {NoticeType} from "antd/es/message/interface";
 
 
 const OpenedPositions = observer(() => {
 
-    const {openedPositionsStore, openPositionModalStore, closePositionModalStore, addWatchDogModalStore, editWatchDogModalStore, deleteWatchDogModalStore} = useStores();
+    const {openedPositionsStore, openPositionModalStore, closePositionModalStore, addWatchDogModalStore, editWatchDogModalStore} = useStores();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const onOpenPositionClick = () => {
         openPositionModalStore.showModal();
@@ -26,6 +29,16 @@ const OpenedPositions = observer(() => {
 
     const onAddWatchDogClick = async (position: OpenedPositionInfo) => {
         await addWatchDogModalStore.showModal(position);
+    }
+
+    const onDeleteWatchDog = async (position: OpenedPositionInfo, watchDogType: PositionWatchDogTypeEnum) => {
+        const result = await openedPositionsStore.deleteWatchDog(position, watchDogType);
+        const noticeType: NoticeType = result.isSuccess ? 'success' : 'error';
+
+        messageApi.open({
+            type: noticeType,
+            content: result.message
+        });
     }
 
     const getColorClassName = (value: Nullable<string>): string => {
@@ -47,10 +60,20 @@ const OpenedPositions = observer(() => {
 
     const mapWatchDog = (position: OpenedPositionInfo, watchDog: PositionWatchDogStoredModel): ReactNode => {
         return <div style={{display: 'flex', marginBottom: '1em'}}>
-            <div onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
+            <Popconfirm
+                style={{fontSize: "1.5em"}}
+                title={`Удалить ${watchDog.type}?`}
+                onConfirm={async () => await onDeleteWatchDog(position, watchDog.type)}
+                okText="Да"
+                okType={'danger'}
+                cancelText="Нет"
+            >
+                <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em", marginRight: '0.5em'}}/>
+            </Popconfirm>
+
+            <Button variant={'link'} style={{fontWeight: 'bold', fontSize: "1em"}} onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
                 {watchDog.type}
-            </div>
-            <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => deleteWatchDogModalStore.showModal(position, watchDog.type)}/>
+            </Button>
         </div>
     }
 
@@ -68,7 +91,7 @@ const OpenedPositions = observer(() => {
             <tr key={item.openedPositionInfo.identifier}>
                 {/*Закрытие позиции*/}
                 <td className="opened-position-cell">
-                    <CloseCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em"}} onClick={() => onClosePositionClick(item.openedPositionInfo)}/>
+                    <CloseCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "3em"}} onClick={() => onClosePositionClick(item.openedPositionInfo)}/>
                 </td>
 
                 {/*Symbol*/}
@@ -117,6 +140,7 @@ const OpenedPositions = observer(() => {
 
     return (
         <>
+            {contextHolder}
             <table className="opened-position-table">
                 <thead className="opened-position-thead">
                 <tr>

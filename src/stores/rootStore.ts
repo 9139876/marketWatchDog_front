@@ -11,7 +11,6 @@ import SharedStore from "./componentStores/sharedStore";
 import FrontEndLogStore from "./componentStores/frontEndLogStore";
 import MarketSignalHistoryStore from "./componentStores/marketSignalHistoryStore";
 import EditWatchDogModalStore from "./componentStores/modalStores/editWatchDogModalStore";
-import DeleteWatchDogModalStore from "./componentStores/modalStores/deleteWatchDogModalStore";
 
 export default class RootStore {
     constructor() {
@@ -30,7 +29,6 @@ export default class RootStore {
         this.openPositionModalStore = new OpenPositionModalStore(this);
         this.addWatchDogModalStore = new AddWatchDogModalStore(this);
         this.editWatchDogModalStore = new EditWatchDogModalStore(this);
-        this.deleteWatchDogModalStore = new DeleteWatchDogModalStore(this);
     }
 
     appStateStore: AppStateStore;
@@ -47,7 +45,6 @@ export default class RootStore {
     closePositionModalStore: ClosePositionModalStore;
     addWatchDogModalStore: AddWatchDogModalStore;
     editWatchDogModalStore: EditWatchDogModalStore;
-    deleteWatchDogModalStore: DeleteWatchDogModalStore;
 
     clearAndRefresh = () => {
         // this.appStateStore = new AppStateStore(this); -- Не нужно!
@@ -64,6 +61,5 @@ export default class RootStore {
         this.openPositionModalStore = new OpenPositionModalStore(this);
         this.addWatchDogModalStore = new AddWatchDogModalStore(this);
         this.editWatchDogModalStore = new EditWatchDogModalStore(this);
-        this.deleteWatchDogModalStore = new DeleteWatchDogModalStore(this);
     }
 }
