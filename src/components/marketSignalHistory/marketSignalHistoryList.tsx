@@ -1,5 +1,4 @@
 import {observer} from "mobx-react";
-import {Button} from "antd";
 import React, {ReactNode} from "react";
 import {useStores} from "../../stores/hooks/useStores";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
@@ -37,12 +36,7 @@ const MarketSignalHistoryList = observer(() => {
             <div style={{minHeight: '12em', maxHeight: '12em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
                 {marketSignalHistoryStore.marketSignalsListForShow.map(mapToListItem)}
             </div>
-
-            <Button style={{margin: '1em'}} onClick={async () => await marketSignalHistoryStore.getNewMarketSignals()}>
-                Get from server
-            </Button>
         </div>
-
     );
 });
 

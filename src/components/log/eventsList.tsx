@@ -3,7 +3,7 @@ import React, {ReactNode} from "react";
 import {useStores} from "../../stores/hooks/useStores";
 import {MarketEventItem} from "../../models/marketEvents/marketEventItem";
 import {MarketEventType} from "../../models/marketEvents/marketEventType";
-import {Button, Checkbox} from "antd";
+import {Checkbox} from "antd";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 
 const EventsList = observer(() => {
@@ -43,10 +43,6 @@ const EventsList = observer(() => {
             <div style={{minHeight: '12em', maxHeight: '12em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
                 {eventStore.eventsListForShow.map(mapToListItem)}
             </div>
-
-            <Button style={{margin: '1em'}} onClick={async () => await eventStore.getNewMarketEvents()}>
-                Get from server
-            </Button>
         </div>
 
     );

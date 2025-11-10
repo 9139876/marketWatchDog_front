@@ -16,7 +16,7 @@ export default class MarketSignalHistoryStore {
     private marketSignalsList: MarketSignalHistoryItem[] = [];
     marketSignalsListForShow: MarketSignalHistoryItem[] = [];
 
-    getNewMarketSignals = async () => {
+    refreshMarketSignals = async () => {
         const lastMarketEventDate = this.marketSignalsList.length === 0
             ? this.getStartOfDayToday()
             : this.marketSignalsList.sort((a, b) => b.time.getTime() - a.time.getTime())[0].time;

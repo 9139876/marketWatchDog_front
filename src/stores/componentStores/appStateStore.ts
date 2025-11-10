@@ -9,6 +9,7 @@ export default class AppStateStore {
     private connectedToServer: boolean = false;
     private backendOrigin: string = 'http://localhost:6100';
     private dealerTypeEnum: DealerTypeEnum = DealerTypeEnum.AlfaForex;
+    lastUpdatedTime: Date = new Date(1991, 0, 1);
 
     constructor(rootStore: RootStore) {
         makeAutoObservable(this);
@@ -39,6 +40,7 @@ export default class AppStateStore {
     connectToServer = async () => {
         if (await this.connectToServerInternal()) {
             this.connectedToServer = true;
+            await this.update();
         } else {
             alert(`Попытка соединения с ${this.backendOrigin} не удалась :(`)
         }
@@ -64,12 +66,25 @@ export default class AppStateStore {
             return false;
         }
 
-        const successSetSymbolsInfo = await this.rootStore.marketSignalSettingsStore.trySetSymbolsInfo(this.rootStore.sharedStore.getMarketSymbols());
+        return await this.rootStore.marketSignalSettingsStore.trySetSymbolsInfo(this.rootStore.sharedStore.getMarketSymbols());
+    }
 
-        if (!successSetSymbolsInfo) {
-            return false;
+    private update = async () => {
+        try {
+            if (!this.connectedToServer) {
+                return;
+            }
+
+            await this.rootStore.marketSignalHistoryStore.refreshMarketSignals();
+            await this.rootStore.eventStore.refreshMarketEvents();
+            await this.rootStore.openedPositionsStore.refreshOpenedPositions();
+
+            this.lastUpdatedTime = new Date();
+        } catch {
+        } finally {
+            if (this.connectedToServer) {
+                setTimeout(async () => await this.update(), 3000);
+            }
         }
-
-        return true;
     }
 }

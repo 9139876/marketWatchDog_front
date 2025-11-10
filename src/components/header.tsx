@@ -5,6 +5,7 @@ import {useStores} from "../stores/hooks/useStores";
 import {Alert, Button, Input, Select} from "antd";
 import React, {useState} from "react";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
+import {formatDateTimeRusStr} from "../utils/helpers/stringHelper";
 
 const Header = observer(() => {
 
@@ -38,7 +39,11 @@ const Header = observer(() => {
             <div>
                 {
                     appStateStore.getConnectedToServerStatus()
-                        ? <div style={{marginLeft: '1em'}}>
+                        ? <div style={{marginLeft: '1em', display: 'flex', alignItems: 'center'}}>
+                            <div style={{marginRight: '1em', fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em'}}>
+                                {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
+                            </div>
+
                             <Alert
                                 type='success'
                                 message={`Подключено к ${origin} дилер ${appStateStore.getDealerType()}`}

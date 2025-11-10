@@ -165,10 +165,6 @@ const OpenedPositions = observer(() => {
                 <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={onOpenPositionClick}/>
 
                 <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontStyle: "italic"}}>Открыть позицию</div>
-
-                <Button style={{margin: '1em'}} onClick={() => openedPositionsStore.refreshOpenedPositions()}>
-                    Обновить
-                </Button>
             </div>
         </>
     )

@@ -35,11 +35,11 @@ const MainTree = observer(() => {
                         label: 'Открытые позиции',
                         children: <OpenedPositions/>
                     },
-                    {
-                        key: '2',
-                        label: 'Закрытые позиции',
-                        children: <div>Здесь потом что-то будет...</div>,
-                    },
+                    // {
+                    //     key: '2',
+                    //     label: 'Закрытые позиции',
+                    //     children: <div>Здесь потом что-то будет...</div>,
+                    // },
                 ]}
             />
             <Divider orientation="left">Лог</Divider>

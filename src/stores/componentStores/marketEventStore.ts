@@ -25,7 +25,7 @@ export default class MarketEventStore {
 
     eventsListForShow: MarketEventItem[] = [];
 
-    getNewMarketEvents = async () => {
+    refreshMarketEvents = async () => {
         const lastMarketEventDate = this.eventsList.length === 0
             ? this.getStartOfDayToday()
             : this.eventsList.sort((a, b) => b.time.getTime() - a.time.getTime())[0].time;
