@@ -37,7 +37,7 @@ const AddWatchDogModal: FC = observer(() => {
                     style={{width: 400, marginBottom: '1em'}}
                     value={addWatchDogModalStore.currentPositionWatchDog?.type}
                     onChange={addWatchDogModalStore.setCurrentPositionWatchDog}
-                    options={addWatchDogModalStore.positionWatchDogs.map(x => ({value: x.type, label: x.type}))}
+                    options={addWatchDogModalStore.positionWatchDogs.map(x => ({value: x.type, label: x.typeDescription}))}
                 />
 
                 <TextArea

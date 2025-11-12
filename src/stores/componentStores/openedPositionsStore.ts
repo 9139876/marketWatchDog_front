@@ -6,7 +6,6 @@ import PositionWatchDogStoredModel from "../../models/watchDog/positionWatchDogS
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import PositionWatchDogApi from "../../api/positionWatchDogApi";
 import {OpenedPositionInfo} from "../../models/openedPositions/openedPositionInfo";
-import {PositionWatchDogTypeEnum} from "../../models/watchDog/positionWatchDogTypeEnum";
 import IActionResult from "../../models/common/actionResult";
 
 export default class OpenedPositionsStore {
@@ -39,7 +38,7 @@ export default class OpenedPositionsStore {
         }
     }
 
-    deleteWatchDog = async (position: OpenedPositionInfo, watchDogType: PositionWatchDogTypeEnum): Promise<IActionResult> => {
+    deleteWatchDog = async (position: OpenedPositionInfo, watchDogType: string): Promise<IActionResult> => {
 
         const result = await this.positionWatchDogApi.deletePositionWatchDog(this.rootStore.appStateStore.getDealerType(), position.identifier, watchDogType);
 

@@ -10,7 +10,6 @@ import {CloseCircleTwoTone, MinusCircleTwoTone, PlusCircleTwoTone} from "@ant-de
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import OpenedPositionInfoWithWatchDogs from "../../models/openedPositions/openedPositionInfoWithWatchDogs";
 import PositionWatchDogStoredModel from "../../models/watchDog/positionWatchDogStoredModel";
-import {PositionWatchDogTypeEnum} from "../../models/watchDog/positionWatchDogTypeEnum";
 import {NoticeType} from "antd/es/message/interface";
 
 
@@ -31,7 +30,7 @@ const OpenedPositions = observer(() => {
         await addWatchDogModalStore.showModal(position);
     }
 
-    const onDeleteWatchDog = async (position: OpenedPositionInfo, watchDogType: PositionWatchDogTypeEnum) => {
+    const onDeleteWatchDog = async (position: OpenedPositionInfo, watchDogType: string) => {
         const result = await openedPositionsStore.deleteWatchDog(position, watchDogType);
         const noticeType: NoticeType = result.isSuccess ? 'success' : 'error';
 
@@ -62,17 +61,17 @@ const OpenedPositions = observer(() => {
         return <div style={{display: 'flex', marginBottom: '1em'}}>
             <Popconfirm
                 style={{fontSize: "1.5em"}}
-                title={`Удалить ${watchDog.type}?`}
+                title={`Удалить ${watchDog.typeDescription}?`}
                 onConfirm={async () => await onDeleteWatchDog(position, watchDog.type)}
                 okText="Да"
                 okType={'danger'}
                 cancelText="Нет"
             >
-                <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em", marginRight: '0.5em'}}/>
+                <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em", marginRight: '0.6em'}}/>
             </Popconfirm>
 
             <Button variant={'link'} style={{fontWeight: 'bold', fontSize: "1em"}} onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
-                {watchDog.type}
+                {watchDog.typeDescription}
             </Button>
         </div>
     }
@@ -127,11 +126,16 @@ const OpenedPositions = observer(() => {
 
                 {/*WatchDogs*/}
                 <td className="opened-position-cell">
-                    <div>
-                        {item.watchDogs.map(wd => mapWatchDog(item.openedPositionInfo, wd))}
-                    </div>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <div>
+                            {item.watchDogs.map(wd => mapWatchDog(item.openedPositionInfo, wd))}
+                        </div>
 
-                    <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={() => onAddWatchDogClick(item.openedPositionInfo)}/>
+                        <div style={{marginRight: '1em', marginLeft: 'auto'}}>
+                            <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={() => onAddWatchDogClick(item.openedPositionInfo)}/>
+                        </div>
+
+                    </div>
                 </td>
 
             </tr>

@@ -3,7 +3,6 @@ import RootStore from "../stores/rootStore";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 import {IApiResponseContainer, IApiResponseContainerEmpty} from "../utils/httpClient/dto/apiResponseContainer";
 import PositionWatchDogStoredModel from "../models/watchDog/positionWatchDogStoredModel";
-import {PositionWatchDogTypeEnum} from "../models/watchDog/positionWatchDogTypeEnum";
 
 const controller = '/bff/position-watch-dog';
 
@@ -38,7 +37,7 @@ export default class PositionWatchDogApi {
         });
     }
 
-    deletePositionWatchDog(dealerType: DealerTypeEnum, positionIdentifier: number, watchDogType: PositionWatchDogTypeEnum): Promise<IApiResponseContainer<PositionWatchDogStoredModel[]>> {
+    deletePositionWatchDog(dealerType: DealerTypeEnum, positionIdentifier: number, watchDogType: string): Promise<IApiResponseContainer<PositionWatchDogStoredModel[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
             action: `deactivate-position-watch-dog/${dealerType}`,

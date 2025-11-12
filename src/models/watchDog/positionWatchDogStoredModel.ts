@@ -1,9 +1,9 @@
 import {DealerTypeEnum} from "../enums/dealerTypeEnum";
-import {PositionWatchDogTypeEnum} from "./positionWatchDogTypeEnum";
 
 export default interface PositionWatchDogStoredModel {
     dealerType: DealerTypeEnum;
-    type: PositionWatchDogTypeEnum;
+    type: string;
+    typeDescription: string;
     serialized: string;
     positionIdentifier: number;
 }

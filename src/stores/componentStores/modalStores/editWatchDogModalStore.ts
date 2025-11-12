@@ -1,7 +1,6 @@
 import RootStore from "../../rootStore";
 import PositionWatchDogApi from "../../../api/positionWatchDogApi";
 import {makeAutoObservable} from "mobx";
-import {PositionWatchDogTypeEnum} from "../../../models/watchDog/positionWatchDogTypeEnum";
 import {Nullable} from "../../../global/common/nullable";
 import {OpenedPositionInfo} from "../../../models/openedPositions/openedPositionInfo";
 import PositionWatchDogStoredModel from "../../../models/watchDog/positionWatchDogStoredModel";
@@ -23,7 +22,7 @@ export default class EditWatchDogModalStore {
     position: Nullable<OpenedPositionInfo>;
     watchDog: Nullable<PositionWatchDogStoredModel>;
 
-    showModal = async (positionIdentifier: number, watchDogType: PositionWatchDogTypeEnum) => {
+    showModal = async (positionIdentifier: number, watchDogType: string) => {
         const position = firstOrDefault(this.rootStore.openedPositionsStore.openedPositions, op => op.openedPositionInfo.identifier === positionIdentifier);
 
         if (!position) {
@@ -54,8 +53,8 @@ export default class EditWatchDogModalStore {
         const result = await this.positionWatchDogApi.updatePositionWatchDog(this.watchDog);
 
         const message = result.isSuccess
-            ? `${this.watchDog.type} успешно изменен`
-            : `Ошибка при редактировании ${this.watchDog.type} - ${result.errorMessage}`;
+            ? `${this.watchDog.typeDescription} успешно изменен`
+            : `Ошибка при редактировании ${this.watchDog.typeDescription} - ${result.errorMessage}`;
 
         alert(message);
 

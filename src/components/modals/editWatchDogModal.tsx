@@ -13,7 +13,7 @@ const EditWatchDogModal: FC = observer(() => {
     return (
         <Modal
             style={{minWidth: "50em"}}
-            title={'Редактирование WatchDog'}
+            title={`Редактирование ${editWatchDogModalStore.watchDog?.typeDescription}`}
             closable={false}
             open={editWatchDogModalStore.isVisible}
             footer={[

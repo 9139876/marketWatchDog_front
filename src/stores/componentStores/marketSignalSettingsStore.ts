@@ -7,6 +7,7 @@ import SelectedEnumItem from "../../global/selectedEnumItem";
 import {TimeFrameEnum} from "../../models/enums/timeFrameEnum";
 import SymbolInfoWithMarketSignalSettingsModel from "../../models/marketSymbolsAndSignalSettings/symbolInfoWithMarketSignalSettingsModel";
 import SymbolInfoDto from "../../models/marketSymbolsAndSignalSettings/symbolInfoDto";
+import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 
 export default class MarketSignalSettingsStore {
     private rootStore: RootStore;
@@ -31,7 +32,7 @@ export default class MarketSignalSettingsStore {
     trySetSymbolsInfo = async (symbols: SymbolInfoDto[]): Promise<boolean> => {
         const marketSignalsSettingsResponse = await this.marketSignalSettingsApi.getAll(this.rootStore.appStateStore.getDealerType());
 
-        if (marketSignalsSettingsResponse.isSuccess){
+        if (marketSignalsSettingsResponse.isSuccess) {
             this.marketSignalSettingsItems = this.map(symbols, marketSignalsSettingsResponse.payload);
             return true;
         }
@@ -47,8 +48,7 @@ export default class MarketSignalSettingsStore {
         marketSignalsSettings ??= [];
 
         return symbols.map((item, index) => {
-            const newData = marketSignalsSettings!.filter(x => x.symbol === item.symbol);
-            const marketSignalsSettingsItem = newData.length > 0 ? newData[0] : null;
+            const marketSignalsSettingsItem = firstOrDefault(marketSignalsSettings, x => x.symbol === item.symbol);
 
             const donchianAndRsi = marketSignalsSettingsItem?.donchianAndRsi ?? this.getDefaultItems();
             const divergence = marketSignalsSettingsItem?.divergence ?? this.getDefaultItems();

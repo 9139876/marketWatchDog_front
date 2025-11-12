@@ -2,6 +2,7 @@ import RootStore from "../rootStore";
 import {makeAutoObservable} from "mobx";
 import MarketSignalHistoryApi from "../../api/marketSignalHistoryApi";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
+import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 
 export default class MarketSignalHistoryStore {
     private rootStore: RootStore;
@@ -17,9 +18,7 @@ export default class MarketSignalHistoryStore {
     marketSignalsListForShow: MarketSignalHistoryItem[] = [];
 
     refreshMarketSignals = async () => {
-        const lastMarketEventDate = this.marketSignalsList.length === 0
-            ? this.getStartOfDayToday()
-            : this.marketSignalsList.sort((a, b) => b.time.getTime() - a.time.getTime())[0].time;
+        const lastMarketEventDate = firstOrDefault(this.marketSignalsList.sort((a, b) => b.time.getTime() - a.time.getTime()))?.time ?? this.getStartOfDayToday();
 
         const result = await this.marketSignalHistoryApi.getNewMarketSignals(this.rootStore.appStateStore.getDealerType(), lastMarketEventDate);
 

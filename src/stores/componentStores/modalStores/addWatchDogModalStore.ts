@@ -4,8 +4,8 @@ import {Nullable} from "../../../global/common/nullable";
 import {OpenedPositionInfo} from "../../../models/openedPositions/openedPositionInfo";
 import PositionWatchDogApi from "../../../api/positionWatchDogApi";
 import PositionWatchDogStoredModel from "../../../models/watchDog/positionWatchDogStoredModel";
-import {PositionWatchDogTypeEnum} from "../../../models/watchDog/positionWatchDogTypeEnum";
 import React from "react";
+import {firstOrDefault} from "../../../utils/extensions/arrayExtensions";
 
 export default class AddWatchDogModalStore {
     private rootStore: RootStore;
@@ -33,8 +33,8 @@ export default class AddWatchDogModalStore {
         const result = await this.positionWatchDogApi.addPositionWatchDog(this.currentPositionWatchDog);
 
         const message = result.isSuccess
-            ? `${this.currentPositionWatchDog.type} успешно создан`
-            : `Ошибка при создании ${this.currentPositionWatchDog.type} - ${result.errorMessage}`;
+            ? `${this.currentPositionWatchDog.typeDescription} успешно создан`
+            : `Ошибка при создании ${this.currentPositionWatchDog.typeDescription} - ${result.errorMessage}`;
 
         alert(message);
 
@@ -61,8 +61,7 @@ export default class AddWatchDogModalStore {
             return;
         }
 
-        const currentPositionWatchDogType = PositionWatchDogTypeEnum[value as keyof typeof PositionWatchDogTypeEnum];
-        this.currentPositionWatchDog = this.positionWatchDogs.filter(x => x.type === currentPositionWatchDogType)[0];
+        this.currentPositionWatchDog = firstOrDefault(this.positionWatchDogs, x => x.type === value);
     }
 
     editCurrentPositionWatchDogSerializedParams = (value: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
