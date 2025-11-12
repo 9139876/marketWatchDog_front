@@ -9,6 +9,7 @@ export default class AppStateStore {
     private connectedToServer: boolean = false;
     private backendOrigin: string = 'http://localhost:6100';
     private dealerTypeEnum: DealerTypeEnum = DealerTypeEnum.AlfaForex;
+    updateInterval: number = 5;
     lastUpdatedTime: Date = new Date(1991, 0, 1);
 
     constructor(rootStore: RootStore) {
@@ -35,6 +36,18 @@ export default class AppStateStore {
 
     setBackendOrigin = (origin: string) => {
         this.backendOrigin = origin;
+    }
+
+    setUpdateInterval = (intervalStr: string | null) => {
+        const interval = parseInt(intervalStr ?? '0');
+
+        if (interval < 3) {
+            this.updateInterval = 3;
+        } else if (interval > 30) {
+            this.updateInterval = 30;
+        } else {
+            this.updateInterval = interval;
+        }
     }
 
     connectToServer = async () => {
@@ -83,7 +96,7 @@ export default class AppStateStore {
         } catch {
         } finally {
             if (this.connectedToServer) {
-                setTimeout(async () => await this.update(), 3000);
+                setTimeout(async () => await this.update(), this.updateInterval * 1000);
             }
         }
     }

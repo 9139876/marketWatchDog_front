@@ -2,7 +2,7 @@
 
 import {observer} from "mobx-react";
 import {useStores} from "../stores/hooks/useStores";
-import {Alert, Button, Input, Select} from "antd";
+import {Alert, Button, Input, InputNumber, Select} from "antd";
 import React, {useState} from "react";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 import {formatDateTimeRusStr} from "../utils/helpers/stringHelper";
@@ -40,13 +40,28 @@ const Header = observer(() => {
                 {
                     appStateStore.getConnectedToServerStatus()
                         ? <div style={{marginLeft: '1em', display: 'flex', alignItems: 'center'}}>
+                            <div style={{display: "flex", alignItems: 'center', marginRight: '1em'}}>
+                                <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em'}}>Интервал обновления:</div>
+
+                                <InputNumber<string>
+                                    style={{width: "4em"}}
+                                    value={appStateStore.updateInterval.toString()}
+                                    min="3"
+                                    max="30"
+                                    step="1"
+                                    onChange={appStateStore.setUpdateInterval}
+                                    stringMode
+                                />
+                            </div>
+
                             <div style={{marginRight: '1em', fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em'}}>
                                 {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
                             </div>
 
                             <Alert
+                                style={{ fontWeight: 'bold', fontFamily: 'math', fontSize: '1.2em'}}
                                 type='success'
-                                message={`Подключено к ${origin} дилер ${appStateStore.getDealerType()}`}
+                                message={`${origin} - ${appStateStore.getDealerType()}`}
                                 showIcon/>
                         </div>
                         :
