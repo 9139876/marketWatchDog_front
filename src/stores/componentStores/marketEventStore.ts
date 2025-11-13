@@ -5,6 +5,7 @@ import {MarketEventType} from "../../models/marketEvents/marketEventType";
 import SelectedEnumItem from "../../global/selectedEnumItem";
 import MarketEventsApi from "../../api/marketEventsApi";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
+import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
 
 export default class MarketEventStore {
     private rootStore: RootStore;
@@ -27,9 +28,13 @@ export default class MarketEventStore {
     eventsListForShow: MarketEventItem[] = [];
 
     refreshMarketEvents = async () => {
-        const lastMarketEventDate = firstOrDefault(this.eventsList.sort((a, b) => b.time.getTime() - a.time.getTime()))?.time ?? this.getStartOfDayToday();
+        const request: GetNewItemsRequest = {
+            dealerType: this.rootStore.appStateStore.getDealerType(),
+            after: this.getStartOfDayToday(),
+            lastId: firstOrDefault(this.eventsList.sort((a, b) => b.id - a.id))?.id ?? -1
+        };
 
-        const result = await this.marketEventsApi.getNewMarketEvents(this.rootStore.appStateStore.getDealerType(), lastMarketEventDate);
+        const result = await this.marketEventsApi.getNewMarketEvents(request);
 
         if (result.isSuccess) {
             const newMarketEvents = result.payload ?? [];

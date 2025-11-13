@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 import MarketSignalHistoryApi from "../../api/marketSignalHistoryApi";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
+import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
 
 export default class MarketSignalHistoryStore {
     private rootStore: RootStore;
@@ -18,9 +19,13 @@ export default class MarketSignalHistoryStore {
     marketSignalsListForShow: MarketSignalHistoryItem[] = [];
 
     refreshMarketSignals = async () => {
-        const lastMarketEventDate = firstOrDefault(this.marketSignalsList.sort((a, b) => b.time.getTime() - a.time.getTime()))?.time ?? this.getStartOfDayToday();
+        const request: GetNewItemsRequest = {
+            dealerType: this.rootStore.appStateStore.getDealerType(),
+            after: this.getStartOfDayToday(),
+            lastId: firstOrDefault(this.marketSignalsList.sort((a, b) => b.id - a.id))?.id ?? -1
+        };
 
-        const result = await this.marketSignalHistoryApi.getNewMarketSignals(this.rootStore.appStateStore.getDealerType(), lastMarketEventDate);
+        const result = await this.marketSignalHistoryApi.getNewMarketSignals(request);
 
         if (result.isSuccess) {
             const newMarketSignals = result.payload ?? [];
@@ -34,7 +39,7 @@ export default class MarketSignalHistoryStore {
 
     private updateEventsListForShow(): void {
         this.marketSignalsListForShow = this.marketSignalsList
-            .sort((a, b) => b.time.getTime() - a.time.getTime());
+            .sort((a, b) => b.id - a.id);
     }
 
     private getStartOfDayToday(): Date {

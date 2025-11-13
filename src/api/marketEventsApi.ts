@@ -1,8 +1,8 @@
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import RootStore from "../stores/rootStore";
 import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
-import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 import {MarketEventItem} from "../models/marketEvents/marketEventItem";
+import GetNewItemsRequest from "../models/common/getNewItemsRequest";
 
 const controller = '/bff/market-events';
 export default class MarketEventsApi {
@@ -12,15 +12,13 @@ export default class MarketEventsApi {
         this.httpClientFactory = new HttpClientFactory(rootStore);
     }
 
-    getNewMarketEvents(dealerType: DealerTypeEnum, after: Date): Promise<IApiResponseContainer<MarketEventItem[]>> {
+    getNewMarketEvents(request: GetNewItemsRequest): Promise<IApiResponseContainer<MarketEventItem[]>> {
         return this.httpClientFactory.createClientAndCall({
             controller,
-            action: `get-new-market-events/${dealerType}`,
-            method: HttpClientMethod.GET,
+            action: 'get-new-market-events',
+            method: HttpClientMethod.POST,
             request: {
-                query: {
-                    after: after.toISOString()
-                }
+                body: request
             }
         });
     }
