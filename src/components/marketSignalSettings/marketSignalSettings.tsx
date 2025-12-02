@@ -32,7 +32,7 @@ const MarketSignalSettings = observer(() => {
         {
             title: 'MaxDailyProfit / Margin (%)',
             dataIndex: 'dailyMovingProfitToMarginPercentRatio',
-            sorter: (a, b) => (parseFloat(a.dailyMovingProfitToMarginPercentRatio) > parseFloat(b.dailyMovingProfitToMarginPercentRatio)) ? 1 : -1,
+            sorter: (a, b) => (a.dailyMovingProfitToMarginPercentRatio > b.dailyMovingProfitToMarginPercentRatio) ? 1 : -1,
             filters: [
                 {text: '10', value: 10},
                 {text: '20', value: 20},
@@ -44,14 +44,14 @@ const MarketSignalSettings = observer(() => {
                 {text: '80', value: 80},
                 {text: '90', value: 90},
                 {text: '100', value: 100}],
-            onFilter: (value, record) => parseFloat(record.dailyMovingProfitToMarginPercentRatio) >= value,
+            onFilter: (value, record) => record.dailyMovingProfitToMarginPercentRatio >= value,
             width: '10%',
             align: 'center',
         },
         {
             title: 'MaxDailyProfit / SpreadLoss',
             dataIndex: 'dailyMovingProfitToSpreadLossRatio',
-            sorter: (a, b) => (parseFloat(a.dailyMovingProfitToSpreadLossRatio) > parseFloat(b.dailyMovingProfitToSpreadLossRatio)) ? 1 : -1,
+            sorter: (a, b) => (a.dailyMovingProfitToSpreadLossRatio > b.dailyMovingProfitToSpreadLossRatio) ? 1 : -1,
             filters: [
                 {text: '10', value: 10},
                 {text: '20', value: 20},
@@ -63,7 +63,7 @@ const MarketSignalSettings = observer(() => {
                 {text: '80', value: 80},
                 {text: '90', value: 90},
                 {text: '100', value: 100}],
-            onFilter: (value, record) => parseFloat(record.dailyMovingProfitToSpreadLossRatio) >= value,
+            onFilter: (value, record) => record.dailyMovingProfitToSpreadLossRatio >= value,
             width: '10%',
             align: 'center',
         },
