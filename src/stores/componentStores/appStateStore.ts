@@ -7,7 +7,7 @@ export default class AppStateStore {
     private rootStore: RootStore;
     private serverHealthCheckApi: ServerHealthCheckApi;
     private connectedToServer: boolean = false;
-    private backendOrigin: string = 'http://localhost:6100';
+    private backendOrigin: string = 'http://wd-back-dev.loc';
     private dealerTypeEnum: DealerTypeEnum = DealerTypeEnum.AlfaForex;
     updateInterval: number = 5;
     lastUpdatedTime: Date = new Date(1991, 0, 1);

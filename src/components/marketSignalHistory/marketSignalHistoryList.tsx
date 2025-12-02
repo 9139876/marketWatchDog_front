@@ -1,11 +1,12 @@
 import {observer} from "mobx-react";
 import React, {ReactNode, useState} from "react";
 import {useStores} from "../../stores/hooks/useStores";
-import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
-import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
+import {formatTimeRusStr} from "../../utils/helpers/stringHelper";
 import {MarketSignalDirectionTypeEnum} from "../../models/marketSignal/marketSignalDirectionTypeEnum";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {Button} from "antd";
+import MarketSignalHistoryGroupItem from "../../models/marketSignal/marketSignalHistoryGroupItem";
+import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
 
 const MarketSignalHistoryList = observer(() => {
 
@@ -23,16 +24,28 @@ const MarketSignalHistoryList = observer(() => {
         }
     }
 
-    const mapToListItem = (item: MarketSignalHistoryItem): ReactNode => {
+    const mapToListItem = (item: MarketSignalHistoryGroupItem): ReactNode => {
+        const title = formatTimeRusStr(item.time);
 
-        const title = `[${formatDateTimeRusStr(item.time)}]: ${item.message.marketSignalDirectionType} ${item.symbol} ${item.timeframe}`;
+        return <div>
+            <h2>{title}</h2>
 
+            <div>
+                {item.signals.map(mapSignalToListItem)}
+            </div>
+
+            <hr/>
+        </div>;
+    }
+
+    const mapSignalToListItem = (item: MarketSignalHistoryItem): ReactNode => {
         const content: ReactNode =
             <div>
-                <div> &#9679; {title} </div>
-                <div> {item.message.signal} </div>
+                <div>
+                    <div>{`${item.symbol} - ${item.timeframe}`}</div>
+                    <div>{item.message.signal}</div>
+                </div>
                 {item.message.lines.map(line => <div>{line}</div>)}
-                {/*<hr/>*/}
             </div>;
 
         const inner = () => {
@@ -57,8 +70,8 @@ const MarketSignalHistoryList = observer(() => {
     }
 
     return (
-        <div style={{minHeight: '12em', maxHeight: '18em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
-            {marketSignalHistoryStore.marketSignalsListForShow.map(mapToListItem)}
+        <div style={{minHeight: '12em', maxHeight: '36em', overflow: 'auto', border: 'black', borderStyle: 'double', padding: '0.5em'}}>
+            {marketSignalHistoryStore.marketSignalsGroupsForShow.map(mapToListItem)}
         </div>
     );
 });

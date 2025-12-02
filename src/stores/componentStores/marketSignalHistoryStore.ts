@@ -4,6 +4,7 @@ import MarketSignalHistoryApi from "../../api/marketSignalHistoryApi";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
+import MarketSignalHistoryGroupItem from "../../models/marketSignal/marketSignalHistoryGroupItem";
 
 export default class MarketSignalHistoryStore {
     private rootStore: RootStore;
@@ -16,7 +17,7 @@ export default class MarketSignalHistoryStore {
     }
 
     private marketSignalsList: MarketSignalHistoryItem[] = [];
-    marketSignalsListForShow: MarketSignalHistoryItem[] = [];
+    marketSignalsGroupsForShow: MarketSignalHistoryGroupItem[] = [];
 
     refreshMarketSignals = async () => {
         const request: GetNewItemsRequest = {
@@ -38,8 +39,24 @@ export default class MarketSignalHistoryStore {
     }
 
     private updateEventsListForShow(): void {
-        this.marketSignalsListForShow = this.marketSignalsList
-            .sort((a, b) => b.id - a.id);
+        const buffer: MarketSignalHistoryGroupItem[] = [];
+
+        this.marketSignalsList
+            .forEach(item => {
+                let group = firstOrDefault(buffer, x => x.time === item.time);
+
+                if(!group){
+                    group = {time: item.time, signals: []};
+                    buffer.push(group);
+                }
+
+                group!.signals.push(item);
+            });
+
+        console.log('buffer', buffer);
+
+        this.marketSignalsGroupsForShow = buffer
+            .sort((a, b) => b.time.getTime() - a.time.getTime());
     }
 
     private getStartOfDayToday(): Date {

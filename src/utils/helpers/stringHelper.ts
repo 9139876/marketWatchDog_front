@@ -4,14 +4,17 @@ export function formatDateTimeStr(dateStr: any): string {
 }
 
 export function formatDateTimeRusStr(dateStr: any): string {
-    const date = new Date(dateStr);
-    return [addFirstZeroIfNeed(date.getDate()), addFirstZeroIfNeed(date.getMonth() + 1), date.getFullYear()].join('.') + ' '
-        + [addFirstZeroIfNeed(date.getHours()), addFirstZeroIfNeed(date.getMinutes()), addFirstZeroIfNeed(date.getSeconds())].join(':');
+    return formatDateRusStr(dateStr) + ' ' + formatTimeRusStr(dateStr);
 }
 
 export function formatDateRusStr(dateStr: any): string {
     const date = new Date(dateStr);
     return [addFirstZeroIfNeed(date.getDate()), addFirstZeroIfNeed(date.getMonth() + 1), date.getFullYear()].join('.');
+}
+
+export function formatTimeRusStr(dateStr: any): string {
+    const date = new Date(dateStr);
+    return [addFirstZeroIfNeed(date.getHours()), addFirstZeroIfNeed(date.getMinutes()), addFirstZeroIfNeed(date.getSeconds())].join(':');
 }
 
 export function formatDateStr(dateStr: any): string {
