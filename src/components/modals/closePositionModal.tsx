@@ -8,8 +8,8 @@ import {Nullable} from "../../global/common/nullable";
 const ClosePositionModal: FC = observer(() => {
     const {closePositionModalStore} = useStores();
 
-    const getColorClassName = (value: Nullable<string>): string => {
-        return !!value && parseFloat(value) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+    const getColorClassName = (value: Nullable<number>): string => {
+        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     return (
@@ -32,7 +32,7 @@ const ClosePositionModal: FC = observer(() => {
                 <div>{`Открыта: ${closePositionModalStore.position?.openedTime}`}</div>
 
                 <div className={getColorClassName(closePositionModalStore.position?.profit)}>
-                    {`Профит: ${closePositionModalStore.position?.profit} (${parseFloat(closePositionModalStore.position?.profit ?? '0') >= 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbs}%)`}
+                    {`Профит: ${closePositionModalStore.position?.profitStr} (${(closePositionModalStore.position?.profit ?? 0) >= 0 ? '+' : '-'}${closePositionModalStore.position?.profitInPercentsAbsStr}%)`}
                 </div>
             </div>
         </Modal>

@@ -40,17 +40,17 @@ const OpenedPositions = observer(() => {
         });
     }
 
-    const getColorClassName = (value: Nullable<string>): string => {
-        return !!value && parseFloat(value.replace(',', '.')) >= 0 ? "opened-position-green-text" : "opened-position-red-text";
+    const getColorClassName = (value: Nullable<number>): string => {
+        return !!value && value >= 0 ? "opened-position-green-text" : "opened-position-red-text";
     }
 
     const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
         return (
-            !!item.stopLoss
+            !!item.stopLossStr
                 ? (<div style={{color: "black"}}>
-                    <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLoss}`}</div>
+                    <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLossStr}`}</div>
                     <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
-                        {`${(parseFloat((item.ifStopLossFiredProfitInPercents ?? '').replace(',', '.')) ?? 0) >= 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbs}%`}
+                        {`${(item.ifStopLossFiredProfitInPercents ?? 0) >= 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbsStr}%`}
                     </div>
                 </div>)
                 : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
@@ -105,18 +105,18 @@ const OpenedPositions = observer(() => {
                 <td className="opened-position-cell">{formatDateTimeRusStr(item.openedPositionInfo.openedTime)}</td>
 
                 {/*Цена открытия*/}
-                <td className="opened-position-cell">{item.openedPositionInfo.priceOpen}</td>
+                <td className="opened-position-cell">{item.openedPositionInfo.priceOpenStr}</td>
 
                 {/*Текущая цена*/}
-                <td className="opened-position-cell">{item.openedPositionInfo.currentPrice}</td>
+                <td className="opened-position-cell">{item.openedPositionInfo.currentPriceStr}</td>
 
                 {/*Профит*/}
                 <td className="opened-position-cell">
                     <div>
-                        <div className={getColorClassName(item.openedPositionInfo.profit)}>{item.openedPositionInfo.profit}</div>
+                        <div className={getColorClassName(item.openedPositionInfo.profit)}>{item.openedPositionInfo.profitStr}</div>
 
                         <div className={getColorClassName(item.openedPositionInfo.profitInPercents)}>
-                            {`${(parseFloat(item.openedPositionInfo.profitInPercents.replace(',', '.')) ?? 0) >= 0 ? '+' : '-'}${item.openedPositionInfo.profitInPercentsAbs}%`}
+                            {`${item.openedPositionInfo.profitInPercents >= 0 ? '+' : '-'}${item.openedPositionInfo.profitInPercentsAbsStr}%`}
                         </div>
                     </div>
                 </td>
