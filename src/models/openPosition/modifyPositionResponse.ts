@@ -1,3 +1,5 @@
+import {Nullable} from "../../global/common/nullable";
+
 export default interface ModifyPositionResponse {
     success: boolean;
     retcodeDescription: string;
@@ -13,5 +15,5 @@ export default interface ModifyPositionResponse {
     marginFreeStr: string;
     marginLevel: number;
     marginLevelStr: string;
-    comment: string;
+    comment: Nullable<string>;
 }
