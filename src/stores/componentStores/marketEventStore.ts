@@ -6,6 +6,7 @@ import SelectedEnumItem from "../../global/selectedEnumItem";
 import MarketEventsApi from "../../api/marketEventsApi";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
+import {getStartOfDayToday} from "../../utils/helpers/dateHelpers";
 
 export default class MarketEventStore {
     private rootStore: RootStore;
@@ -30,7 +31,7 @@ export default class MarketEventStore {
     refreshMarketEvents = async () => {
         const request: GetNewItemsRequest = {
             dealerType: this.rootStore.appStateStore.getDealerType(),
-            after: this.getStartOfDayToday(),
+            after: getStartOfDayToday(),
             lastId: firstOrDefault(this.eventsList.sort((a, b) => b.id - a.id))?.id ?? -1
         };
 
@@ -60,11 +61,4 @@ export default class MarketEventStore {
             .filter(x => selectedEventTypesInternal.includes(x.eventType))
             .sort((a, b) => b.time.getTime() - a.time.getTime());
     }
-
-    private getStartOfDayToday(): Date {
-        const result = new Date();
-        result.setUTCHours(0, 0, 0, 0);
-
-        return result;
-    };
 }

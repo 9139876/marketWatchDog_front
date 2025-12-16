@@ -11,6 +11,7 @@ import SharedStore from "./componentStores/sharedStore";
 import FrontEndLogStore from "./componentStores/frontEndLogStore";
 import MarketSignalHistoryStore from "./componentStores/marketSignalHistoryStore";
 import EditWatchDogModalStore from "./componentStores/modalStores/editWatchDogModalStore";
+import DealsHistoryStore from "./componentStores/dealsHistoryStore";
 
 export default class RootStore {
     constructor() {
@@ -21,6 +22,7 @@ export default class RootStore {
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
         this.marketSignalHistoryStore = new MarketSignalHistoryStore(this);
         this.openedPositionsStore = new OpenedPositionsStore(this);
+        this.dealsHistoryStore = new DealsHistoryStore(this);
         this.sharedStore = new SharedStore(this);
 
         //Modals
@@ -37,6 +39,7 @@ export default class RootStore {
     marketSignalSettingsStore: MarketSignalSettingsStore;
     marketSignalHistoryStore: MarketSignalHistoryStore;
     openedPositionsStore: OpenedPositionsStore;
+    dealsHistoryStore: DealsHistoryStore;
     sharedStore: SharedStore;
 
     //Modals
@@ -53,6 +56,7 @@ export default class RootStore {
         this.marketSignalSettingsStore = new MarketSignalSettingsStore(this);
         this.marketSignalHistoryStore = new MarketSignalHistoryStore(this);
         this.openedPositionsStore = new OpenedPositionsStore(this);
+        this.dealsHistoryStore = new DealsHistoryStore(this);
         this.sharedStore = new SharedStore(this);
 
         //Modals

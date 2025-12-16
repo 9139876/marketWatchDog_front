@@ -6,6 +6,7 @@ import EventsList from "./log/eventsList";
 import OpenedPositions from "./openedPositions/openedPositions";
 import FrontEndLog from "./log/frontEndLog";
 import MarketSignalHistoryList from "./marketSignalHistory/marketSignalHistoryList";
+import ClosedPositions from "./dealsHistory/closedPositions";
 
 const MainTree = observer(() => {
     return (
@@ -35,11 +36,11 @@ const MainTree = observer(() => {
                         label: 'Открытые позиции',
                         children: <OpenedPositions/>
                     },
-                    // {
-                    //     key: '2',
-                    //     label: 'Закрытые позиции',
-                    //     children: <div>Здесь потом что-то будет...</div>,
-                    // },
+                    {
+                        key: '2',
+                        label: 'История сделок',
+                        children: <ClosedPositions/>,
+                    },
                 ]}
             />
             <Divider orientation="left">Лог</Divider>

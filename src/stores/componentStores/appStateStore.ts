@@ -91,6 +91,7 @@ export default class AppStateStore {
             await this.rootStore.marketSignalHistoryStore.refreshMarketSignals();
             await this.rootStore.eventStore.refreshMarketEvents();
             await this.rootStore.openedPositionsStore.refreshOpenedPositions();
+            await this.rootStore.dealsHistoryStore.refreshClosedPositionModels();
 
             this.lastUpdatedTime = new Date();
         } catch {

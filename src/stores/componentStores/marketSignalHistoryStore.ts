@@ -5,6 +5,7 @@ import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHisto
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
 import MarketSignalHistoryGroupItem from "../../models/marketSignal/marketSignalHistoryGroupItem";
+import {getStartOfDayToday} from "../../utils/helpers/dateHelpers";
 
 export default class MarketSignalHistoryStore {
     private rootStore: RootStore;
@@ -22,7 +23,7 @@ export default class MarketSignalHistoryStore {
     refreshMarketSignals = async () => {
         const request: GetNewItemsRequest = {
             dealerType: this.rootStore.appStateStore.getDealerType(),
-            after: this.getStartOfDayToday(),
+            after: getStartOfDayToday(),
             lastId: firstOrDefault(this.marketSignalsList.sort((a, b) => b.id - a.id))?.id ?? -1
         };
 
@@ -58,11 +59,4 @@ export default class MarketSignalHistoryStore {
         this.marketSignalsGroupsForShow = buffer
             .sort((a, b) => b.time.getTime() - a.time.getTime());
     }
-
-    private getStartOfDayToday(): Date {
-        const result = new Date();
-        result.setUTCHours(0, 0, 0, 0);
-
-        return result;
-    };
 }
