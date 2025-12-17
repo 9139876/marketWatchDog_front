@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
 import {Collapse, CollapseProps, Timeline} from "antd";
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
 import ClosedPositionModel from "../../models/dealsHistory/closedPositionModel";
 import {TimelineItemProps} from "antd/es/timeline/TimelineItem";
 import {formatTimeRusStr} from "../../utils/helpers/stringHelper";
@@ -12,8 +12,8 @@ const ClosedPositions = observer(() => {
 
     const createEventItem = (date: string, text: string): ReactNode => {
         return <div style={{display: 'flex'}}>
-            <div style={{fontWeight: 'bold', marginRight: '0.5em'}}>[{date}]</div>
-            <div style={{fontWeight:'normal'}}>{text}</div>
+            <div style={{fontFamily: 'monospace', fontWeight: 'bold', marginRight: '0.5em'}}>[{date}]</div>
+            <div style={{fontFamily: 'monospace', fontWeight: 'normal'}}>{text}</div>
         </div>
     }
 
@@ -35,11 +35,11 @@ const ClosedPositions = observer(() => {
             children: createEventItem(formatTimeRusStr(model.closeTime), `Закрытие позиции по цене ${model.priceCloseStr} (${model.closeReasonDescription})`)
         });
 
-        return <Timeline style={{marginLeft: '1em'}} items={items}/>
+        return <Timeline style={{marginLeft: '1em', fontFamily: 'monospace'}} items={items}/>
     }
 
-    const getItems = (): CollapseProps['items'] => {
-        return dealsHistoryStore.getClosedPositionModels().map(
+    const getItems = (items: ClosedPositionModel[]): CollapseProps['items'] => {
+        return items.map(
             (item, index) => ({
                 key: index,
                 label: `${item.symbol} - ${item.typeDescription} ${item.volumeStr} лот, профит ${item.profitStr} рублей` + (item.comment?.length > 0 ? ` (${item.comment})` : ''),
@@ -49,10 +49,18 @@ const ClosedPositions = observer(() => {
 
     return (
         <div style={{minHeight: '12em', maxHeight: '24em', overflow: 'auto', padding: '0.5em'}}>
-            <Collapse
-                style={{fontWeight:'bold'}}
-                items={getItems()}
-            />
+            {dealsHistoryStore.closedPositionModelGroupsForShow.map(group =>
+                <div>
+                    <h2 style={{fontFamily: 'monospace'}}>{group.key}</h2>
+
+                    <Collapse
+                        style={{fontWeight: 'bold', fontFamily: 'monospace'}}
+                        items={getItems(group.items)}
+                    />
+
+                    <hr/>
+                </div>
+            )}
         </div>
     );
 });

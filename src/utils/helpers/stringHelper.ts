@@ -7,14 +7,28 @@ export function formatDateTimeRusStr(dateStr: any): string {
     return formatDateRusStr(dateStr) + ' ' + formatTimeRusStr(dateStr);
 }
 
+export function formatShortDateTimeRusStr(dateStr: any): string {
+    return formatDateRusStrWoYear(dateStr) + ' ' + formatTimeRusStrWoSeconds(dateStr);
+}
+
 export function formatDateRusStr(dateStr: any): string {
     const date = new Date(dateStr);
     return [addFirstZeroIfNeed(date.getDate()), addFirstZeroIfNeed(date.getMonth() + 1), date.getFullYear()].join('.');
 }
 
+export function formatDateRusStrWoYear(dateStr: any): string {
+    const date = new Date(dateStr);
+    return [addFirstZeroIfNeed(date.getDate()), addFirstZeroIfNeed(date.getMonth() + 1)].join('.');
+}
+
 export function formatTimeRusStr(dateStr: any): string {
     const date = new Date(dateStr);
     return [addFirstZeroIfNeed(date.getHours()), addFirstZeroIfNeed(date.getMinutes()), addFirstZeroIfNeed(date.getSeconds())].join(':');
+}
+
+export function formatTimeRusStrWoSeconds(dateStr: any): string {
+    const date = new Date(dateStr);
+    return [addFirstZeroIfNeed(date.getHours()), addFirstZeroIfNeed(date.getMinutes())].join(':');
 }
 
 export function formatDateStr(dateStr: any): string {

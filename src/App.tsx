@@ -33,9 +33,9 @@ const App = observer(() => {
             <div className={styles.footerWrapper}>
                 <Footer style={{
                     textAlign: 'right',
-                    fontFamily: 'cursive',
+                    fontFamily: 'monospace',
                     fontWeight: 'bold',
-                    fontSize: 'large',
+                    fontSize: '1.5em',
                     padding: '1em'
                 }}>
                     Market WatchDog ©{new Date().getFullYear()} Created by Insider.

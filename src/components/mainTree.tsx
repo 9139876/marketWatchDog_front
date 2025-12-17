@@ -11,8 +11,9 @@ import ClosedPositions from "./dealsHistory/closedPositions";
 const MainTree = observer(() => {
     return (
         <>
-            <Divider orientation="left">Рыночные сигналы</Divider>
+            <Divider style={{fontFamily: 'monospace', fontSize:'1.5em'}} orientation="left">Рыночные сигналы</Divider>
             <Collapse
+                style={{fontFamily: 'monospace', fontSize:'1.5em'}}
                 size="large"
                 items={[
                     {
@@ -27,8 +28,9 @@ const MainTree = observer(() => {
                     },
                 ]}
             />
-            <Divider orientation="left">Рыночные позиции</Divider>
+            <Divider style={{fontFamily: 'monospace', fontSize:'1.5em'}} orientation="left">Рыночные позиции</Divider>
             <Collapse
+                style={{fontFamily: 'monospace', fontSize:'1.5em'}}
                 size="large"
                 items={[
                     {
@@ -43,8 +45,9 @@ const MainTree = observer(() => {
                     },
                 ]}
             />
-            <Divider orientation="left">Лог</Divider>
+            <Divider style={{fontFamily: 'monospace', fontSize:'1.5em'}} orientation="left">Лог</Divider>
             <Collapse
+                style={{fontFamily: 'monospace', fontSize:'1.5em'}}
                 size="large"
                 items={[
                     {

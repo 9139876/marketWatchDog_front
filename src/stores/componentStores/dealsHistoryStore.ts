@@ -5,6 +5,8 @@ import ClosedPositionModel from "../../models/dealsHistory/closedPositionModel";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import {getStartOfDayBeforeToday} from "../../utils/helpers/dateHelpers";
+import GroupItem from "../../models/marketSignal/groupItem";
+import {formatDateRusStr} from "../../utils/helpers/stringHelper";
 
 export default class DealsHistoryStore {
     private rootStore: RootStore;
@@ -18,9 +20,7 @@ export default class DealsHistoryStore {
 
     private closedPositionModels: ClosedPositionModel[] = [];
 
-    getClosedPositionModels = (): ClosedPositionModel[] => {
-        return this.closedPositionModels;
-    };
+    closedPositionModelGroupsForShow: GroupItem<ClosedPositionModel>[] = [];
 
     refreshClosedPositionModels = async () => {
         const request: GetNewItemsRequest = {
@@ -38,8 +38,30 @@ export default class DealsHistoryStore {
                 const buffer: ClosedPositionModel[] = [];
                 buffer.push(...this.closedPositionModels)
                 buffer.push(...newClosedPositionModels)
-                this.closedPositionModels = buffer.sort((a, b) => b.closeTime.getTime() - a.closeTime.getTime())
+
+                this.closedPositionModels = buffer.sort((a, b) => b.closeTime.getTime() - a.closeTime.getTime());
+                this.updateClosedPositionModelGroupsForShow();
             }
         }
+    }
+
+    private updateClosedPositionModelGroupsForShow(): void {
+        const buffer: GroupItem<ClosedPositionModel>[] = [];
+
+        this.closedPositionModels
+            .forEach(item => {
+                const dateKey = formatDateRusStr(item.closeTime)
+                let group = firstOrDefault(buffer, x => x.key === dateKey);
+
+                if (!group) {
+                    group = {key: dateKey, items: []};
+                    buffer.push(group);
+                }
+
+                group!.items.push(item);
+            });
+
+        this.closedPositionModelGroupsForShow = buffer
+            .sort((a, b) => b.items[0].closeTime.getTime() - a.items[0].closeTime.getTime());
     }
 }

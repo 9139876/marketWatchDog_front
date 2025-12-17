@@ -1,11 +1,10 @@
 import {observer} from "mobx-react";
 import React, {ReactNode, useState} from "react";
 import {useStores} from "../../stores/hooks/useStores";
-import {formatTimeRusStr} from "../../utils/helpers/stringHelper";
 import {MarketSignalDirectionTypeEnum} from "../../models/marketSignal/marketSignalDirectionTypeEnum";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {Button} from "antd";
-import MarketSignalHistoryGroupItem from "../../models/marketSignal/marketSignalHistoryGroupItem";
+import GroupItem from "../../models/marketSignal/groupItem";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
 
 const MarketSignalHistoryList = observer(() => {
@@ -24,14 +23,12 @@ const MarketSignalHistoryList = observer(() => {
         }
     }
 
-    const mapToListItem = (item: MarketSignalHistoryGroupItem): ReactNode => {
-        const title = formatTimeRusStr(item.time);
-
+    const mapToListItem = (group: GroupItem<MarketSignalHistoryItem>): ReactNode => {
         return <div>
-            <h2>{title}</h2>
+            <h2 style={{fontFamily: 'monospace'}}>{group.key}</h2>
 
             <div>
-                {item.signals.map(mapSignalToListItem)}
+                {group.items.map(mapSignalToListItem)}
             </div>
 
             <hr/>
@@ -42,8 +39,8 @@ const MarketSignalHistoryList = observer(() => {
         const content: ReactNode =
             <div>
                 <div>
-                    <div>{`${item.symbol} - ${item.timeframe}`}</div>
-                    <div>{item.message.signal}</div>
+                    <div style={{fontFamily: 'monospace'}}>{`${item.symbol} - ${item.timeframe}`}</div>
+                    <div style={{fontFamily: 'monospace'}}>{item.message.signal}</div>
                 </div>
                 {item.message.lines.map(line => <div>{line}</div>)}
             </div>;

@@ -4,8 +4,9 @@ import MarketSignalHistoryApi from "../../api/marketSignalHistoryApi";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
 import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
-import MarketSignalHistoryGroupItem from "../../models/marketSignal/marketSignalHistoryGroupItem";
+import GroupItem from "../../models/marketSignal/groupItem";
 import {getStartOfDayToday} from "../../utils/helpers/dateHelpers";
+import {formatShortDateTimeRusStr} from "../../utils/helpers/stringHelper";
 
 export default class MarketSignalHistoryStore {
     private rootStore: RootStore;
@@ -18,7 +19,7 @@ export default class MarketSignalHistoryStore {
     }
 
     private marketSignalsList: MarketSignalHistoryItem[] = [];
-    marketSignalsGroupsForShow: MarketSignalHistoryGroupItem[] = [];
+    marketSignalsGroupsForShow: GroupItem<MarketSignalHistoryItem>[] = [];
 
     refreshMarketSignals = async () => {
         const request: GetNewItemsRequest = {
@@ -40,21 +41,22 @@ export default class MarketSignalHistoryStore {
     }
 
     private updateEventsListForShow(): void {
-        const buffer: MarketSignalHistoryGroupItem[] = [];
+        const buffer: GroupItem<MarketSignalHistoryItem>[] = [];
 
         this.marketSignalsList
             .forEach(item => {
-                let group = firstOrDefault(buffer, x => x.time === item.time);
+                const dateKey = formatShortDateTimeRusStr(item.time)
+                let group = firstOrDefault(buffer, x => x.key === dateKey);
 
                 if(!group){
-                    group = {time: item.time, signals: []};
+                    group = {key: dateKey, items: []};
                     buffer.push(group);
                 }
 
-                group!.signals.push(item);
+                group!.items.push(item);
             });
 
         this.marketSignalsGroupsForShow = buffer
-            .sort((a, b) => b.time.getTime() - a.time.getTime());
+            .sort((a, b) => b.items[0].time.getTime() - a.items[0].time.getTime());
     }
 }
