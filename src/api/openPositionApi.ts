@@ -1,6 +1,6 @@
 import {HttpClientFactory, HttpClientMethod} from "../utils/httpClient/httpClient";
 import RootStore from "../stores/rootStore";
-import {IApiResponseContainer} from "../utils/httpClient/dto/apiResponseContainer";
+import {IApiResponseContainer, IApiResponseContainerEmpty} from "../utils/httpClient/dto/apiResponseContainer";
 import {CheckOpenPositionResponse} from "../models/openPosition/checkOpenPositionResponse";
 import {CheckOpenPositionRequest} from "../models/openPosition/checkOpenPositionRequest";
 import ModifyPositionResponse from "../models/openPosition/modifyPositionResponse";
@@ -33,7 +33,7 @@ export default class OpenPositionApi {
         });
     }
 
-    closePosition(dealerType: DealerTypeEnum, symbol: string): Promise<IApiResponseContainer<ModifyPositionResponse>> {
+    closePosition(dealerType: DealerTypeEnum, symbol: string): Promise<IApiResponseContainerEmpty> {
         return this.httpClientFactory.createClientAndCall({
             controller,
             action: `close-position/${dealerType}`,

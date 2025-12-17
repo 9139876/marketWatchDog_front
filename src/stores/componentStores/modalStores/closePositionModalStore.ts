@@ -25,16 +25,14 @@ export default class ClosePositionModalStore {
         let message: string;
 
         if (result.isSuccess) {
-            message = result.payload?.success === true
-                ? `Позиция по ${currentSymbol} успешно закрыта!`
-                : `Не удалось закрыть позицию по ${currentSymbol} - ${result.payload?.retcodeDescription}`;
+            message = `Позиция по ${currentSymbol} успешно закрыта!`;
         } else {
             message = `Ошибка при закрытии позиции по ${currentSymbol} - ${result.errorMessage}`;
         }
 
         alert(message);
 
-        if (result.isSuccess && result.payload?.success === true) {
+        if (result.isSuccess) {
             this.hideModal();
         }
     }

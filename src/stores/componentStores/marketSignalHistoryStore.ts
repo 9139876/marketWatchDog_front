@@ -54,8 +54,6 @@ export default class MarketSignalHistoryStore {
                 group!.signals.push(item);
             });
 
-        console.log('buffer', buffer);
-
         this.marketSignalsGroupsForShow = buffer
             .sort((a, b) => b.time.getTime() - a.time.getTime());
     }
