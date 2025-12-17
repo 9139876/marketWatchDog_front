@@ -4,3 +4,10 @@ export function getStartOfDayToday(): Date {
 
     return result;
 }
+
+export function getStartOfDayBeforeToday(before: number): Date {
+    const result = getStartOfDayToday();
+    result.setDate(result.getDate() - before);
+
+    return new Date(result);
+}

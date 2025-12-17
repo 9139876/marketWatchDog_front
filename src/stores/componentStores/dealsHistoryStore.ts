@@ -3,8 +3,8 @@ import {makeAutoObservable} from "mobx";
 import DealsHistoryApi from "../../api/dealsHistoryApi";
 import ClosedPositionModel from "../../models/dealsHistory/closedPositionModel";
 import GetNewItemsRequest from "../../models/common/getNewItemsRequest";
-import {lastOrDefault} from "../../utils/extensions/arrayExtensions";
-import {getStartOfDayToday} from "../../utils/helpers/dateHelpers";
+import {firstOrDefault} from "../../utils/extensions/arrayExtensions";
+import {getStartOfDayBeforeToday} from "../../utils/helpers/dateHelpers";
 
 export default class DealsHistoryStore {
     private rootStore: RootStore;
@@ -25,7 +25,7 @@ export default class DealsHistoryStore {
     refreshClosedPositionModels = async () => {
         const request: GetNewItemsRequest = {
             dealerType: this.rootStore.appStateStore.getDealerType(),
-            after: lastOrDefault(this.closedPositionModels)?.closeTime ?? getStartOfDayToday(),
+            after: firstOrDefault(this.closedPositionModels)?.closeTime ?? getStartOfDayBeforeToday(100),
             lastId: -1
         };
 
