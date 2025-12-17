@@ -96,8 +96,8 @@ const OpenPositionModal: FC = observer(() => {
                     <InputNumber<string>
                         style={{width: "7em"}}
                         value={openPositionModalStore.inLotsSize.toString()}
-                        min="0"
-                        max="10"
+                        min="0.01"
+                        max="1000"
                         step="0.01"
                         precision={2}
                         onChange={openPositionModalStore.setInLotsSize}
