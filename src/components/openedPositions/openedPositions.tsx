@@ -104,6 +104,9 @@ const OpenedPositions = observer(() => {
                 {/*Время открытия*/}
                 <td className="opened-position-cell">{formatDateTimeRusStr(item.openedPositionInfo.openedTime)}</td>
 
+                {/*Объем*/}
+                <td className="opened-position-cell">{item.openedPositionInfo.volumeStr}</td>
+
                 {/*Цена открытия*/}
                 <td className="opened-position-cell">{item.openedPositionInfo.priceOpenStr}</td>
 
@@ -152,9 +155,10 @@ const OpenedPositions = observer(() => {
                     <th className="opened-position-cell" scope="col" style={{width: "10%"}}>Инструмент</th>
                     <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Тип</th>
                     <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Время открытия</th>
-                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Цена открытия</th>
-                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Текущая цена</th>
-                    <th className="opened-position-cell" scope="col" style={{width: "7%"}}>Профит</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Объем</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Цена открытия</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Текущая цена</th>
+                    <th className="opened-position-cell" scope="col" style={{width: "5%"}}>Профит</th>
                     <th className="opened-position-cell" scope="col" style={{width: "10%"}}>StopLoss</th>
                     <th className="opened-position-cell" scope="col">WatchDogs</th>
                 </tr>
