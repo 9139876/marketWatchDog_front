@@ -52,7 +52,7 @@ const OpenPositionModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "cursive"}}>
+            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
 
                 <div style={{display: "flex"}}>
                     <div style={{paddingRight: "0.5em"}}>Инструмент:</div>
@@ -113,7 +113,6 @@ const OpenPositionModal: FC = observer(() => {
                         value={openPositionModalStore.stopLossValue?.toString() ?? ''}
                         min="0"
                         max="1000000"
-                        // step="0.01"
                         precision={6}
                         onChange={openPositionModalStore.setStopLossValue}
                         stringMode

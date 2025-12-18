@@ -31,7 +31,7 @@ const MarketSignalSettings = observer(() => {
         },
         {
             title: 'MaxDailyProfit / Margin (%)',
-            dataIndex: 'dailyMovingProfitToMarginPercentRatio',
+            dataIndex: 'dailyMovingProfitToMarginPercentRatioStr',
             sorter: (a, b) => (a.dailyMovingProfitToMarginPercentRatio > b.dailyMovingProfitToMarginPercentRatio) ? 1 : -1,
             filters: [
                 {text: '10', value: 10},
@@ -45,12 +45,11 @@ const MarketSignalSettings = observer(() => {
                 {text: '90', value: 90},
                 {text: '100', value: 100}],
             onFilter: (value, record) => record.dailyMovingProfitToMarginPercentRatio >= value,
-            width: '10%',
             align: 'center',
         },
         {
             title: 'MaxDailyProfit / SpreadLoss',
-            dataIndex: 'dailyMovingProfitToSpreadLossRatio',
+            dataIndex: 'dailyMovingProfitToSpreadLossRatioStr',
             sorter: (a, b) => (a.dailyMovingProfitToSpreadLossRatio > b.dailyMovingProfitToSpreadLossRatio) ? 1 : -1,
             filters: [
                 {text: '10', value: 10},
@@ -64,7 +63,6 @@ const MarketSignalSettings = observer(() => {
                 {text: '90', value: 90},
                 {text: '100', value: 100}],
             onFilter: (value, record) => record.dailyMovingProfitToSpreadLossRatio >= value,
-            width: '10%',
             align: 'center',
         },
         {
@@ -76,7 +74,6 @@ const MarketSignalSettings = observer(() => {
                 {text: 'Да', value: true},
                 {text: 'Нет', value: false}],
             onFilter: (value, record) => record.havingSignal === value,
-            width: '10%',
             align: 'center',
         },
         {
@@ -102,7 +99,7 @@ const MarketSignalSettings = observer(() => {
                 size={"small"}
             />
             <Button
-                style={{margin: 15}}
+                style={{margin: 15, fontFamily: 'monospace'}}
                 type="primary"
                 disabled={disableRefreshButton}
                 onClick={refreshMarketSignalSettingsItems}

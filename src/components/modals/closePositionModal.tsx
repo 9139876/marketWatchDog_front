@@ -26,7 +26,7 @@ const ClosePositionModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "cursive"}}>
+            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
                 <div>{`Инструмент: ${closePositionModalStore.position?.symbol}`}</div>
                 <div>{`Тип: ${closePositionModalStore.position?.positionDirectionType === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
                 <div>{`Открыта: ${closePositionModalStore.position?.openedTime}`}</div>

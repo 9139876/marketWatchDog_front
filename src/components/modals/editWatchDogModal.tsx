@@ -24,7 +24,7 @@ const EditWatchDogModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "cursive"}}>
+            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>
                 <div style={{color: "blue"}}>
                     <div>{`Инструмент: ${editWatchDogModalStore.position?.symbol}`}</div>

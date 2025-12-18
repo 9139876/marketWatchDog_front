@@ -168,7 +168,7 @@ const OpenedPositions = observer(() => {
             <div style={{paddingTop: "1em", display: "flex", alignItems: "center"}}>
                 <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={onOpenPositionClick}/>
 
-                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontStyle: "italic"}}>Открыть позицию</div>
+                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontFamily:'monospace'}}>Открыть позицию</div>
             </div>
         </>
     )

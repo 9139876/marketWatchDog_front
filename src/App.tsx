@@ -27,7 +27,7 @@ const App = observer(() => {
             <div className={styles.bodyWrapper}>
                 {appStateStore.getConnectedToServerStatus()
                     ? <MainTree/>
-                    : <Empty style={{paddingTop: '5em'}} styles={{image: {height: '10em'}}} description={<div style={{color: 'red', fontSize: '3em', fontFamily: 'cursive'}}>Нет соединения с сервером :(</div>}/>}
+                    : <Empty style={{paddingTop: '5em'}} styles={{image: {height: '10em'}}} description={<div style={{color: 'red', fontSize: '3em', fontFamily: 'monospace'}}>Нет соединения с сервером :(</div>}/>}
             </div>
 
             <div className={styles.footerWrapper}>

@@ -41,7 +41,7 @@ const Header = observer(() => {
                     appStateStore.getConnectedToServerStatus()
                         ? <div style={{marginLeft: '1em', display: 'flex', alignItems: 'center'}}>
                             <div style={{display: "flex", alignItems: 'center', marginRight: '1em'}}>
-                                <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em'}}>Интервал обновления:</div>
+                                <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.5em'}}>Интервал обновления:</div>
 
                                 <InputNumber<string>
                                     style={{width: "4em"}}
@@ -54,12 +54,12 @@ const Header = observer(() => {
                                 />
                             </div>
 
-                            <div style={{marginRight: '1em', fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em'}}>
+                            <div style={{marginRight: '1em', fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.5em'}}>
                                 {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
                             </div>
 
                             <Alert
-                                style={{ fontWeight: 'bold', fontFamily: 'math', fontSize: '1.2em'}}
+                                style={{ fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.2em'}}
                                 type='success'
                                 message={`${origin} - ${appStateStore.getDealerType()}`}
                                 showIcon/>
