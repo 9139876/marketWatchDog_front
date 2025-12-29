@@ -42,7 +42,7 @@ const ClosedPositions = observer(() => {
         return items.map(
             (item, index) => ({
                 key: index,
-                label: `${item.symbol} - ${item.typeDescription} ${item.volumeStr} лот, профит ${item.profitStr} рублей` + (item.comment?.length > 0 ? ` (${item.comment})` : ''),
+                label: `${item.symbol} - ${item.typeDescription} ${item.volumeStr} лот, [${item.priceOpenStr} -> ${item.priceCloseStr}] профит ${item.profitStr} рублей` + (item.comment?.length > 0 ? ` (${item.comment})` : ''),
                 children: mapEvents(item)
             }));
     }
