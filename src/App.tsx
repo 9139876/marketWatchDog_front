@@ -11,6 +11,7 @@ import ClosePositionModal from "./components/modals/closePositionModal";
 import AddWatchDogModal from "./components/modals/addWatchDogModal";
 import OpenPositionModal from "./components/modals/openPositionModal";
 import EditWatchDogModal from "./components/modals/editWatchDogModal";
+import commonStyles from "./commonStyles/commonStyles.module.css";
 
 const {Footer} = Layout;
 
@@ -27,12 +28,11 @@ const App = observer(() => {
             <div className={styles.bodyWrapper}>
                 {appStateStore.getConnectedToServerStatus()
                     ? <MainTree/>
-                    : <div className={styles.redText} style={{paddingTop: '5em', fontSize: 'xxx-large', textAlign:'center'}}>Нет соединения с сервером</div>}
+                    : <div className={commonStyles.redText} style={{paddingTop: '5em', fontSize: 'xxx-large', textAlign:'center'}}>Нет соединения с сервером</div>}
             </div>
 
             <div className={styles.footerWrapper}>
                 <Footer style={{
-                    color:'green',
                     textAlign: 'right',
                     fontSize: 'x-large',
                     padding: '1em'

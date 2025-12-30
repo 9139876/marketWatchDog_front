@@ -6,6 +6,7 @@ import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDi
 import {Button} from "antd";
 import GroupItem from "../../models/marketSignal/groupItem";
 import MarketSignalHistoryItem from "../../models/marketSignal/marketSignalHistoryItem";
+import commonStyles from "../../commonStyles/commonStyles.module.css";
 
 const MarketSignalHistoryList = observer(() => {
 
@@ -36,25 +37,28 @@ const MarketSignalHistoryList = observer(() => {
     }
 
     const mapSignalToListItem = (item: MarketSignalHistoryItem): ReactNode => {
-        const content: ReactNode =
-            <div style={{ color:'inherit'}}>
-                <div style={{ color:'inherit'}}>
-                    <div style={{ color:'inherit'}}>{`${item.symbol} - ${item.timeframe}`}</div>
-                    <div style={{ color:'inherit'}}>{item.message.signal}</div>
+        const getStyle = (): string => {
+            switch (item.message.marketSignalDirectionType) {
+                case MarketSignalDirectionTypeEnum.Buy:
+                    return commonStyles.greenText;
+                case MarketSignalDirectionTypeEnum.Sell:
+                    return commonStyles.redText;
+                default:
+                    return commonStyles.grayText;
+            }
+        };
+
+        const getContent = (): ReactNode => {
+            const styleName = getStyle();
+
+            return <div className={styleName}>
+                <div>
+                    <div className={styleName}>{`${item.symbol} - ${item.timeframe}`}</div>
+                    <div className={styleName}>{item.message.signal}</div>
                 </div>
                 {item.message.lines.map(line => <div>{line}</div>)}
             </div>;
-
-        const inner = () => {
-            switch (item.message.marketSignalDirectionType) {
-                case MarketSignalDirectionTypeEnum.Buy:
-                    return <div style={{color: "green"}}> {content} </div>
-                case MarketSignalDirectionTypeEnum.Sell:
-                    return <div style={{color: "red"}}> {content} </div>
-                default:
-                    return <div style={{color: "white"}}> {content} </div>
-            }
-        };
+        }
 
         return <Button
             variant={'link'}
@@ -62,7 +66,7 @@ const MarketSignalHistoryList = observer(() => {
             disabled={disableControls}
             onClick={async () => await openPosition(item.symbol, item.message.marketSignalDirectionType)}
         >
-            {inner()}
+            {getContent()}
         </Button>
     }
 

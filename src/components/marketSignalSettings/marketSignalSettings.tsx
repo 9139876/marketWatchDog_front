@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState} from "react";
-import {Button, Table} from 'antd';
+import {Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 import {CheckCircleTwoTone} from "@ant-design/icons";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
 import SymbolInfoWithMarketSignalSettingsModel from "../../models/marketSymbolsAndSignalSettings/symbolInfoWithMarketSignalSettingsModel";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
+import StrongButton from "../../customControls/strongButton";
 
 const MarketSignalSettings = observer(() => {
 
@@ -98,14 +101,14 @@ const MarketSignalSettings = observer(() => {
                 scroll={{y: 39 * 5}}
                 size={"small"}
             />
-            <Button
-                style={{margin: 15}}
-                type="primary"
+            <StrongButton
+                className={strongButtonStyles.greenButton}
+                style={{marginTop: 15}}
                 disabled={disableRefreshButton}
                 onClick={refreshMarketSignalSettingsItems}
             >
                 Обновить
-            </Button>
+            </StrongButton>
         </div>
     );
 });
