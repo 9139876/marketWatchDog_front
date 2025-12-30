@@ -1,10 +1,12 @@
 import React, {FC} from "react";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
-import {Button, Modal} from "antd";
+import {Modal} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import {Input} from "antd/lib";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
+import StrongButton from "../../customControls/strongButton";
 
 const EditWatchDogModal: FC = observer(() => {
     const {TextArea} = Input;
@@ -12,17 +14,17 @@ const EditWatchDogModal: FC = observer(() => {
 
     return (
         <Modal
-            style={{minWidth: "50em"}}
+            style={{minWidth: "50em", border: '2px solid', borderRadius: '0'}}
             title={(<div style={{fontSize: 'xx-large'}}>{`Редактирование ${editWatchDogModalStore.watchDog?.typeDescription}`}</div>)}
             closable={false}
             open={editWatchDogModalStore.isVisible}
             footer={[
-                <Button key="updateWatchDog" type="primary" onClick={async () => await editWatchDogModalStore.updateWatchDog()}>
+                <StrongButton className={strongButtonStyles.greenButton} key="updateWatchDog" onClick={async () => await editWatchDogModalStore.updateWatchDog()}>
                     Обновить WatchDog
-                </Button>,
-                <Button key="cancel" type="default" onClick={editWatchDogModalStore.hideModal}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.grayButton} key="cancel" onClick={editWatchDogModalStore.hideModal}>
                     Отмена
-                </Button>,
+                </StrongButton>,
             ]}>
             <div style={{fontSize: "large"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>

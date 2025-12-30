@@ -1,11 +1,12 @@
 import {observer} from "mobx-react";
-import {Button, Checkbox, Modal} from "antd";
+import {Checkbox, Modal} from "antd";
 import {FC} from "react";
 import React from "react";
 import {useStores} from "../../stores/hooks/useStores";
 import styles from "../../app.module.css";
 import {TimeFrameEnum} from "../../models/enums/timeFrameEnum";
-
+import strongButtonStyles from "../../customControls/strongButton.module.css";
+import StrongButton from "../../customControls/strongButton";
 
 const EditMarketSignalSettingsModal: FC = observer(() => {
     const {editMarketSignalSettingsModalStore} = useStores();
@@ -22,17 +23,17 @@ const EditMarketSignalSettingsModal: FC = observer(() => {
 
     return (
         <Modal
-            style={{minWidth: "50em"}}
+            style={{minWidth: "50em", border: '2px solid', borderRadius: '0'}}
             title={(<div style={{fontSize: 'xx-large'}}>{`Редактирование сигналов для ${editMarketSignalSettingsModalStore.symbol}`}</div>)}
             closable={false}
             open={editMarketSignalSettingsModalStore.isVisible}
             footer={[
-                <Button key="withSave" type="primary" onClick={editMarketSignalSettingsModalStore.saveAndClose}>
+                <StrongButton className={strongButtonStyles.greenButton} key="withSave" onClick={editMarketSignalSettingsModalStore.saveAndClose}>
                     Сохранить и закрыть
-                </Button>,
-                <Button key="cancel" type="default" onClick={editMarketSignalSettingsModalStore.hideModal}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.grayButton} key="cancel" onClick={editMarketSignalSettingsModalStore.hideModal}>
                     Отмена
-                </Button>,
+                </StrongButton>,
             ]}>
             <div>
                 <div className={styles.checkboxGroupTitle}>Divergence</div>

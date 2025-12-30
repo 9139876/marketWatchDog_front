@@ -39,7 +39,7 @@ const OpenPositionModal: FC = observer(() => {
 
     return (
         <Modal
-            style={{minWidth: "50em"}}
+            style={{minWidth: "50em", border: '2px solid', borderRadius: '0'}}
             title={(<div style={{fontSize: 'xx-large'}}>Открытие позиции</div>)}
             closable={false}
             open={openPositionModalStore.isVisible}

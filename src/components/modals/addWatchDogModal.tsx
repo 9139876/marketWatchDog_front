@@ -1,10 +1,12 @@
 import React, {FC} from "react";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
-import {Button, Modal, Select} from "antd";
+import {Modal, Select} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import {Input} from "antd/lib";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
+import StrongButton from "../../customControls/strongButton";
 
 const AddWatchDogModal: FC = observer(() => {
     const {TextArea} = Input;
@@ -12,17 +14,17 @@ const AddWatchDogModal: FC = observer(() => {
 
     return (
         <Modal
-            style={{minWidth: "50em"}}
+            style={{minWidth: "50em", border: '2px solid', borderRadius: '0'}}
             title={(<div style={{fontSize: 'xx-large'}}>Добавление WatchDog</div>)}
             closable={false}
             open={addWatchDogModalStore.isVisible}
             footer={[
-                <Button key="addWatchDog" type="primary" disabled={!addWatchDogModalStore.currentPositionWatchDog} onClick={async () => await addWatchDogModalStore.addWatchDog()}>
+                <StrongButton className={strongButtonStyles.greenButton} key="addWatchDog" disabled={!addWatchDogModalStore.currentPositionWatchDog} onClick={async () => await addWatchDogModalStore.addWatchDog()}>
                     Добавить WatchDog
-                </Button>,
-                <Button key="cancel" type="default" onClick={addWatchDogModalStore.hideModal}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.grayButton} key="cancel" onClick={addWatchDogModalStore.hideModal}>
                     Отмена
-                </Button>,
+                </StrongButton>,
             ]}>
             <div style={{fontSize: "large"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>

@@ -1,9 +1,11 @@
 import React, {FC} from "react";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
-import {Button, Modal} from "antd";
+import {Modal} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import {Nullable} from "../../global/common/nullable";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
+import StrongButton from "../../customControls/strongButton";
 
 const ClosePositionModal: FC = observer(() => {
     const {closePositionModalStore} = useStores();
@@ -14,17 +16,17 @@ const ClosePositionModal: FC = observer(() => {
 
     return (
         <Modal
-            style={{minWidth: "50em"}}
+            style={{minWidth: "50em", border: '2px solid', borderRadius: '0'}}
             title={(<div style={{fontSize: 'xx-large'}}>Закрытие позиции</div>)}
             closable={false}
             open={closePositionModalStore.isVisible}
             footer={[
-                <Button key="closePosition" type="primary" danger onClick={closePositionModalStore.closePosition}>
+                <StrongButton className={strongButtonStyles.redButton} key="closePosition" onClick={closePositionModalStore.closePosition}>
                     Закрыть позицию
-                </Button>,
-                <Button key="cancel" type="default" onClick={closePositionModalStore.hideModal}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.grayButton} key="cancel" onClick={closePositionModalStore.hideModal}>
                     Отмена
-                </Button>,
+                </StrongButton>,
             ]}>
             <div style={{fontSize: "large"}}>
                 <div>{`Инструмент: ${closePositionModalStore.position?.symbol}`}</div>
