@@ -23,7 +23,7 @@ const EditMarketSignalSettingsModal: FC = observer(() => {
     return (
         <Modal
             style={{minWidth: "50em"}}
-            title={`Редактирование сигналов для ${editMarketSignalSettingsModalStore.symbol}`}
+            title={(<div style={{fontSize: 'xx-large'}}>{`Редактирование сигналов для ${editMarketSignalSettingsModalStore.symbol}`}</div>)}
             closable={false}
             open={editMarketSignalSettingsModalStore.isVisible}
             footer={[

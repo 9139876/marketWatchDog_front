@@ -1,5 +1,5 @@
 import React from 'react';
-import {Empty, Layout} from 'antd';
+import {Layout} from 'antd';
 import MainTree from "./components/mainTree";
 
 import {useStores} from "./stores/hooks/useStores";
@@ -27,15 +27,14 @@ const App = observer(() => {
             <div className={styles.bodyWrapper}>
                 {appStateStore.getConnectedToServerStatus()
                     ? <MainTree/>
-                    : <Empty style={{paddingTop: '5em'}} styles={{image: {height: '10em'}}} description={<div style={{color: 'red', fontSize: '3em', fontFamily: 'monospace'}}>Нет соединения с сервером :(</div>}/>}
+                    : <div className={styles.redText} style={{paddingTop: '5em', fontSize: 'xxx-large', textAlign:'center'}}>Нет соединения с сервером</div>}
             </div>
 
             <div className={styles.footerWrapper}>
                 <Footer style={{
+                    color:'green',
                     textAlign: 'right',
-                    fontFamily: 'monospace',
-                    fontWeight: 'bold',
-                    fontSize: '1.5em',
+                    fontSize: 'x-large',
                     padding: '1em'
                 }}>
                     Market WatchDog ©{new Date().getFullYear()} Created by Insider.

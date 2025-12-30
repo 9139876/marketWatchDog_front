@@ -25,7 +25,7 @@ const MarketSignalHistoryList = observer(() => {
 
     const mapToListItem = (group: GroupItem<MarketSignalHistoryItem>): ReactNode => {
         return <div>
-            <h2 style={{fontFamily: 'monospace'}}>{group.key}</h2>
+            <h2>{group.key}</h2>
 
             <div>
                 {group.items.map(mapSignalToListItem)}
@@ -37,10 +37,10 @@ const MarketSignalHistoryList = observer(() => {
 
     const mapSignalToListItem = (item: MarketSignalHistoryItem): ReactNode => {
         const content: ReactNode =
-            <div>
-                <div>
-                    <div style={{fontFamily: 'monospace'}}>{`${item.symbol} - ${item.timeframe}`}</div>
-                    <div style={{fontFamily: 'monospace'}}>{item.message.signal}</div>
+            <div style={{ color:'inherit'}}>
+                <div style={{ color:'inherit'}}>
+                    <div style={{ color:'inherit'}}>{`${item.symbol} - ${item.timeframe}`}</div>
+                    <div style={{ color:'inherit'}}>{item.message.signal}</div>
                 </div>
                 {item.message.lines.map(line => <div>{line}</div>)}
             </div>;
@@ -48,17 +48,17 @@ const MarketSignalHistoryList = observer(() => {
         const inner = () => {
             switch (item.message.marketSignalDirectionType) {
                 case MarketSignalDirectionTypeEnum.Buy:
-                    return <div style={{color: "darkgreen"}}> {content} </div>
+                    return <div style={{color: "green"}}> {content} </div>
                 case MarketSignalDirectionTypeEnum.Sell:
                     return <div style={{color: "red"}}> {content} </div>
                 default:
-                    return <div style={{color: "black"}}> {content} </div>
+                    return <div style={{color: "white"}}> {content} </div>
             }
         };
 
         return <Button
             variant={'link'}
-            style={{fontWeight: 'bold', fontFamily: 'math', fontSize: '1.5em', width: '100%', height: 'auto', marginBottom: '0.5em'}}
+            style={{fontSize: '1.5em', width: '100%', height: 'auto', marginBottom: '0.5em'}}
             disabled={disableControls}
             onClick={async () => await openPosition(item.symbol, item.message.marketSignalDirectionType)}
         >

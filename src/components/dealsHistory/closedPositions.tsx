@@ -12,8 +12,8 @@ const ClosedPositions = observer(() => {
 
     const createEventItem = (date: string, text: string): ReactNode => {
         return <div style={{display: 'flex'}}>
-            <div style={{fontFamily: 'monospace', fontWeight: 'bold', marginRight: '0.5em'}}>[{date}]</div>
-            <div style={{fontFamily: 'monospace', fontWeight: 'normal'}}>{text}</div>
+            <div style={{marginRight: '0.5em'}}>[{date}]</div>
+            <div style={{fontWeight: 'normal'}}>{text}</div>
         </div>
     }
 
@@ -35,7 +35,7 @@ const ClosedPositions = observer(() => {
             children: createEventItem(formatTimeRusStr(model.closeTime), `Закрытие позиции по цене ${model.priceCloseStr} (${model.closeReasonDescription})`)
         });
 
-        return <Timeline style={{marginLeft: '1em', fontFamily: 'monospace'}} items={items}/>
+        return <Timeline style={{marginLeft: '1em'}} items={items}/>
     }
 
     const getItems = (items: ClosedPositionModel[]): CollapseProps['items'] => {
@@ -51,10 +51,10 @@ const ClosedPositions = observer(() => {
         <div style={{minHeight: '12em', maxHeight: '24em', overflow: 'auto', padding: '0.5em'}}>
             {dealsHistoryStore.closedPositionModelGroupsForShow.map(group =>
                 <div>
-                    <h2 style={{fontFamily: 'monospace'}}>{group.key}</h2>
+                    <h2>{group.key}</h2>
 
                     <Collapse
-                        style={{fontWeight: 'bold', fontFamily: 'monospace'}}
+                        style={{fontWeight: 'bold'}}
                         items={getItems(group.items)}
                     />
 

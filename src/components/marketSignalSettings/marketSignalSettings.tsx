@@ -99,7 +99,7 @@ const MarketSignalSettings = observer(() => {
                 size={"small"}
             />
             <Button
-                style={{margin: 15, fontFamily: 'monospace'}}
+                style={{margin: 15}}
                 type="primary"
                 disabled={disableRefreshButton}
                 onClick={refreshMarketSignalSettingsItems}

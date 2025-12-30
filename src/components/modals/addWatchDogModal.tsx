@@ -13,7 +13,7 @@ const AddWatchDogModal: FC = observer(() => {
     return (
         <Modal
             style={{minWidth: "50em"}}
-            title={'Добавление WatchDog'}
+            title={(<div style={{fontSize: 'xx-large'}}>Добавление WatchDog</div>)}
             closable={false}
             open={addWatchDogModalStore.isVisible}
             footer={[
@@ -24,7 +24,7 @@ const AddWatchDogModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
+            <div style={{fontSize: "large"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>
                 <div style={{color: "blue"}}>
                     <div>{`Инструмент: ${addWatchDogModalStore.position?.symbol}`}</div>

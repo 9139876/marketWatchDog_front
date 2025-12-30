@@ -1,8 +1,10 @@
 import React, {FC, useState} from "react";
 import {observer} from "mobx-react";
 import {useStores} from "../../stores/hooks/useStores";
-import {Button, InputNumber, Modal, Select} from "antd";
+import {InputNumber, Modal, Select} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
+import StrongButton from "../../customControls/strongButton";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
 
 const OpenPositionModal: FC = observer(() => {
     const {openPositionModalStore, sharedStore} = useStores();
@@ -38,21 +40,21 @@ const OpenPositionModal: FC = observer(() => {
     return (
         <Modal
             style={{minWidth: "50em"}}
-            title={'Открытие позиции'}
+            title={(<div style={{fontSize: 'xx-large'}}>Открытие позиции</div>)}
             closable={false}
             open={openPositionModalStore.isVisible}
             footer={[
-                <Button key="openPosition" type="primary" onClick={openPositionModalStore.openPosition} disabled={!openPositionModalStore.allCorrect}>
+                <StrongButton className={strongButtonStyles.greenButton} key="openPosition" onClick={openPositionModalStore.openPosition} disabled={!openPositionModalStore.allCorrect}>
                     Открыть позицию
-                </Button>,
-                <Button key="checkPosition" type="primary" onClick={checkPosition} disabled={disableControls}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.greenButton} key="checkPosition" onClick={checkPosition} disabled={disableControls}>
                     Проверить
-                </Button>,
-                <Button key="cancel" type="default" onClick={openPositionModalStore.hideModal}>
+                </StrongButton>,
+                <StrongButton className={strongButtonStyles.grayButton} key="cancel" onClick={openPositionModalStore.hideModal}>
                     Отмена
-                </Button>,
+                </StrongButton>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
+            <div style={{fontSize: "large"}}>
 
                 <div style={{display: "flex"}}>
                     <div style={{paddingRight: "0.5em"}}>Инструмент:</div>
@@ -128,7 +130,7 @@ const OpenPositionModal: FC = observer(() => {
                 <div style={{display: "flex", paddingTop: "0.5em"}}>
                     <div style={{paddingRight: "0.5em"}}>Потери при срабатывании StopLoss:</div>
 
-                    <div style={{color: openPositionModalStore.lossPercentIfStopLossFiredIsValid ? "darkgreen" : "red"}}>
+                    <div style={{color: openPositionModalStore.lossPercentIfStopLossFiredIsValid ? "green" : "red"}}>
                         {openPositionModalStore.lossValueIfStopLossFiredAbsStr.length > 0 ? `${openPositionModalStore.lossValueIfStopLossFiredAbsStr} (${openPositionModalStore.lossPercentIfStopLossFiredAbsStr}%)` : ''}
                     </div>
                 </div>
@@ -148,14 +150,14 @@ const OpenPositionModal: FC = observer(() => {
                 <div style={{display: "flex", paddingTop: "0.5em"}}>
                     <div style={{paddingRight: "0.5em"}}>Отношение потерь StopLoss к свободной марже:</div>
 
-                    <div style={{color: openPositionModalStore.lossDivMarginFreeIsValid ? "darkgreen" : "red"}}>
+                    <div style={{color: openPositionModalStore.lossDivMarginFreeIsValid ? "green" : "red"}}>
                         {openPositionModalStore.lossDivMarginFreePercentStr.length > 0 ? `${openPositionModalStore.lossDivMarginFreePercentStr}%` : ''}
                     </div>
                 </div>
 
                 <hr></hr>
 
-                <div style={{paddingBottom: "2em", color: openPositionModalStore.allCorrect ? "darkgreen" : "red"}}>
+                <div style={{paddingBottom: "2em", color: openPositionModalStore.allCorrect ? "green" : "red"}}>
                     {openPositionModalStore.notValidReasons.map(reason => (
                         <div>{reason}</div>
                     ))}

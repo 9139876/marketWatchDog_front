@@ -2,10 +2,12 @@
 
 import {observer} from "mobx-react";
 import {useStores} from "../stores/hooks/useStores";
-import {Alert, Button, Input, InputNumber, Select} from "antd";
+import {Alert, Input, InputNumber, Select} from "antd";
 import React, {useState} from "react";
 import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 import {formatDateTimeRusStr} from "../utils/helpers/stringHelper";
+import StrongButton from "../customControls/strongButton";
+import strongButtonStyles from "../customControls/strongButton.module.css";
 
 const Header = observer(() => {
 
@@ -41,7 +43,7 @@ const Header = observer(() => {
                     appStateStore.getConnectedToServerStatus()
                         ? <div style={{marginLeft: '1em', display: 'flex', alignItems: 'center'}}>
                             <div style={{display: "flex", alignItems: 'center', marginRight: '1em'}}>
-                                <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.5em'}}>Интервал обновления:</div>
+                                <div style={{paddingRight: "0.5em", fontSize: '1.5em'}}>Интервал обновления:</div>
 
                                 <InputNumber<string>
                                     style={{width: "4em"}}
@@ -54,12 +56,12 @@ const Header = observer(() => {
                                 />
                             </div>
 
-                            <div style={{marginRight: '1em', fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.5em'}}>
+                            <div style={{marginRight: '1em', fontSize: '1.5em'}}>
                                 {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
                             </div>
 
                             <Alert
-                                style={{ fontWeight: 'bold', fontFamily: 'monospace', fontSize: '1.2em'}}
+                                style={{fontSize: '1.2em'}}
                                 type='success'
                                 message={`${origin} - ${appStateStore.getDealerType()}`}
                                 showIcon/>
@@ -93,21 +95,22 @@ const Header = observer(() => {
                 {
                     appStateStore.getConnectedToServerStatus()
                         ?
-                        <Button
-                            type='primary'
-                            danger
+                        <StrongButton
+                            key='disconnectToServer'
+                            className={strongButtonStyles.redButton}
                             onClick={appStateStore.disconnectToServer}
                         >
                             Отключиться
-                        </Button>
+                        </StrongButton>
                         :
-                        <Button
+                        <StrongButton
+                            key='tryConnectToServer'
+                            className={strongButtonStyles.greenButton}
                             disabled={connectButtonDisabled}
-                            type='primary'
                             onClick={tryConnectToServer}
                         >
                             Подключиться
-                        </Button>
+                        </StrongButton>
                 }
             </div>
         </div>);

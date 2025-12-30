@@ -1,0 +1,32 @@
+.redButton {
+    font-size: xx-large;
+    border: 2px solid;
+    min-width: 5em;
+    margin: 0 0.25em 0 0.25em;
+    color: red !important;
+
+}
+
+.greenButton {
+    font-size: xx-large;
+    border: 2px solid;
+    min-width: 5em;
+    margin: 0 0.25em 0 0.25em;
+    color: green !important;
+}
+
+.whiteButton {
+    font-size: xx-large;
+    border: 2px solid;
+    min-width: 5em;
+    margin: 0 0.25em 0 0.25em;
+    color: white !important;
+}
+
+.grayButton {
+    font-size: xx-large;
+    border: 2px solid;
+    min-width: 5em;
+    margin: 0 0.25em 0 0.25em;
+    color: gray !important;
+}

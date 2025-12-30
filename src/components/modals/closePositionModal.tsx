@@ -15,7 +15,7 @@ const ClosePositionModal: FC = observer(() => {
     return (
         <Modal
             style={{minWidth: "50em"}}
-            title={'Закрытие позиции'}
+            title={(<div style={{fontSize: 'xx-large'}}>Закрытие позиции</div>)}
             closable={false}
             open={closePositionModalStore.isVisible}
             footer={[
@@ -26,7 +26,7 @@ const ClosePositionModal: FC = observer(() => {
                     Отмена
                 </Button>,
             ]}>
-            <div style={{fontSize: "large", fontWeight: "bold", fontFamily: "monospace"}}>
+            <div style={{fontSize: "large"}}>
                 <div>{`Инструмент: ${closePositionModalStore.position?.symbol}`}</div>
                 <div>{`Тип: ${closePositionModalStore.position?.positionDirectionType === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
                 <div>{`Открыта: ${closePositionModalStore.position?.openedTime}`}</div>

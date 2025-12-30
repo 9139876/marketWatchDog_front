@@ -48,12 +48,12 @@ const OpenedPositions = observer(() => {
         return (
             !!item.stopLossStr
                 ? (<div style={{color: "black"}}>
-                    <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLossStr}`}</div>
+                    <div>{`Value: ${item.stopLossStr}`}</div>
                     <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
                         {`${(item.ifStopLossFiredProfitInPercents ?? 0) >= 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbsStr}%`}
                     </div>
                 </div>)
-                : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
+                : (<div style={{color: "red"}}>!!! ОТСУТСТВУЕТ !!!</div>)
         );
     }
 
@@ -70,7 +70,7 @@ const OpenedPositions = observer(() => {
                 <MinusCircleTwoTone twoToneColor={'#d9363e'} style={{fontSize: "1.5em", marginRight: '0.6em'}}/>
             </Popconfirm>
 
-            <Button variant={'link'} style={{fontWeight: 'bold', fontSize: "1em"}} onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
+            <Button variant={'link'} style={{fontSize: "1em"}} onClick={async () => await editWatchDogModalStore.showModal(watchDog.positionIdentifier, watchDog.type)}>
                 {watchDog.typeDescription}
             </Button>
         </div>
@@ -172,7 +172,7 @@ const OpenedPositions = observer(() => {
             <div style={{paddingTop: "1em", display: "flex", alignItems: "center"}}>
                 <PlusCircleTwoTone style={{fontSize: "3em"}} onClick={onOpenPositionClick}/>
 
-                <div style={{paddingLeft: "0.5em", fontSize: "1.2em", fontWeight: "bold", fontFamily:'monospace'}}>Открыть позицию</div>
+                <div style={{paddingLeft: "0.5em", fontSize: "1.2em"}}>Открыть позицию</div>
             </div>
         </>
     )

@@ -16,7 +16,7 @@ const EventsList = observer(() => {
 
         switch (item.eventType) {
             case MarketEventType.ChangeStopLoss:
-                return <div style={{color: "darkgreen"}}>&#9679; {text}</div>
+                return <div style={{color: "green"}}>&#9679; {text}</div>
             case MarketEventType.UpdatePosition:
                 return <div style={{color: "blue"}}>&#9679; {text}</div>
             case MarketEventType.PositionWatchDogError:
@@ -34,7 +34,7 @@ const EventsList = observer(() => {
     return (
         <div>
             <Checkbox.Group
-                style={{margin: '0em 0em 1em 1em', fontFamily: 'monospace', fontWeight: 'bold'}}
+                style={{margin: '0em 0em 1em 1em'}}
                 options={eventStore.selectedEventTypes.map(x => x.value)}
                 value={eventStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)}
                 onChange={onChange}
