@@ -93,24 +93,36 @@ const Header = observer(() => {
 
             <div style={{marginLeft: '1em', marginRight: '1em'}}>
                 {
-                    appStateStore.getConnectedToServerStatus()
+                    connectButtonDisabled
                         ?
                         <StrongButton
-                            key='disconnectToServer'
-                            className={strongButtonStyles.redButton}
+                            key='connecting'
+                            className={strongButtonStyles.grayButton}
                             onClick={appStateStore.disconnectToServer}
                         >
-                            Отключиться
+                            Подключение...
                         </StrongButton>
                         :
-                        <StrongButton
-                            key='tryConnectToServer'
-                            className={strongButtonStyles.greenButton}
-                            disabled={connectButtonDisabled}
-                            onClick={tryConnectToServer}
-                        >
-                            Подключиться
-                        </StrongButton>
+                        (
+                            appStateStore.getConnectedToServerStatus()
+                                ?
+                                <StrongButton
+                                    key='disconnectToServer'
+                                    className={strongButtonStyles.redButton}
+                                    onClick={appStateStore.disconnectToServer}
+                                >
+                                    Отключиться
+                                </StrongButton>
+                                :
+                                <StrongButton
+                                    key='tryConnectToServer'
+                                    className={strongButtonStyles.greenButton}
+                                    disabled={connectButtonDisabled}
+                                    onClick={tryConnectToServer}
+                                >
+                                    Подключиться
+                                </StrongButton>
+                        )
                 }
             </div>
         </div>);
