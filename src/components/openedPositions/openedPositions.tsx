@@ -11,6 +11,7 @@ import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import OpenedPositionInfoWithWatchDogs from "../../models/openedPositions/openedPositionInfoWithWatchDogs";
 import PositionWatchDogStoredModel from "../../models/watchDog/positionWatchDogStoredModel";
 import {NoticeType} from "antd/es/message/interface";
+import commonStyles from "../../commonStyles/commonStyles.module.css";
 
 
 const OpenedPositions = observer(() => {
@@ -47,13 +48,13 @@ const OpenedPositions = observer(() => {
     const mapToStopLossCell = (item: OpenedPositionInfo): ReactNode => {
         return (
             !!item.stopLossStr
-                ? (<div style={{color: "black"}}>
+                ? (<div>
                     <div style={{fontWeight: "bold"}}>{`Value: ${item.stopLossStr}`}</div>
                     <div className={getColorClassName(item.ifStopLossFiredProfitInPercents)}>
                         {`${(item.ifStopLossFiredProfitInPercents ?? 0) >= 0 ? '+' : '-'}${item.ifStopLossFiredProfitInPercentsAbsStr}%`}
                     </div>
                 </div>)
-                : (<div style={{color: "red", fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
+                : (<div className={commonStyles.redText} style={{fontWeight: "bold"}}>!!! ОТСУТСТВУЕТ !!!</div>)
         );
     }
 

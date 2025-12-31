@@ -1,27 +1,27 @@
 .opened-position-table {
     border-collapse: collapse;
-    border: 2px solid rgb(140 140 140);
+    border: 2px solid rgb(140 140 140) !important;;
     width: 100%;
     font-size: 0.85vw;
 }
 
 .opened-position-thead {
-    background-color: rgb(228 240 245);
+    background-color: rgb(228 240 245) !important;;
 }
 
 .opened-position-cell {
-    border: 1px solid rgb(160 160 160);
+    border: 1px solid rgb(160 160 160) !important;;
     padding: 8px 10px;
     text-align: center;
     font-weight: bold;
 }
 
 .opened-position-green-text{
-    color: green;
+    color: green !important;;
     font-weight: bold;
 }
 
 .opened-position-red-text{
-    color: red;
+    color: red !important;
     font-weight: bold;
 }

@@ -28,7 +28,7 @@ const AddWatchDogModal: FC = observer(() => {
             ]}>
             <div style={{fontSize: "large", fontWeight: "bold"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>
-                <div style={{color: "blue"}}>
+                <div>
                     <div>{`Инструмент: ${addWatchDogModalStore.position?.symbol}`}</div>
                     <div>{`Тип: ${addWatchDogModalStore.position?.positionDirectionType === PositionDirectionTypeEnum.Long ? 'Long' : 'Short'}`}</div>
                     <div>{`Открыта: ${formatDateTimeRusStr(addWatchDogModalStore.position?.openedTime)}`}</div>

@@ -5,6 +5,7 @@ import {MarketEventItem} from "../../models/marketEvents/marketEventItem";
 import {MarketEventType} from "../../models/marketEvents/marketEventType";
 import {Checkbox} from "antd";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
+import commonStyles from "../../commonStyles/commonStyles.module.css";
 
 const EventsList = observer(() => {
 
@@ -16,13 +17,13 @@ const EventsList = observer(() => {
 
         switch (item.eventType) {
             case MarketEventType.ChangeStopLoss:
-                return <div style={{color: "green"}}>&#9679; {text}</div>
+                return <div className={commonStyles.greenText}>&#9679; {text}</div>
             case MarketEventType.UpdatePosition:
-                return <div style={{color: "blue"}}>&#9679; {text}</div>
+                return <div className={commonStyles.blueText}>&#9679; {text}</div>
             case MarketEventType.PositionWatchDogError:
-                return <div style={{color: "red"}}>&#9679; {text}</div>
+                return <div className={commonStyles.redText}>&#9679; {text}</div>
             default:
-                return <div style={{color: "black"}}>&#9679; {text}</div>
+                return <div className={commonStyles.grayText}>&#9679; {text}</div>
         }
     }
 

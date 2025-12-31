@@ -3,12 +3,13 @@ import {useStores} from "../../stores/hooks/useStores";
 import React, {ReactNode} from "react";
 import {formatDateTimeRusStr} from "../../utils/helpers/stringHelper";
 import FrontEndLogItem from "../../models/frontEndLog/frontEndLogItem";
+import commonStyles from "../../commonStyles/commonStyles.module.css";
 
 const FrontEndLog = observer(() => {
     const {frontEndLogStore} = useStores();
 
     const mapToListItem = (item: FrontEndLogItem): ReactNode => {
-        return <div style={{color: "red"}}>&#9679; {`[${formatDateTimeRusStr(item.time)}]: ${item.description}`}</div>
+        return <div className={commonStyles.redText}>&#9679; {`[${formatDateTimeRusStr(item.time)}]: ${item.description}`}</div>
     }
 
     return (

@@ -5,6 +5,7 @@ import {InputNumber, Modal, Select} from "antd";
 import {PositionDirectionTypeEnum} from "../../models/openedPositions/positionDirectionTypeEnum";
 import StrongButton from "../../customControls/strongButton";
 import strongButtonStyles from "../../customControls/strongButton.module.css";
+import commonStyles from "../../commonStyles/commonStyles.module.css";
 
 const OpenPositionModal: FC = observer(() => {
     const {openPositionModalStore, sharedStore} = useStores();
@@ -130,7 +131,7 @@ const OpenPositionModal: FC = observer(() => {
                 <div style={{display: "flex", paddingTop: "0.5em"}}>
                     <div style={{paddingRight: "0.5em"}}>Потери при срабатывании StopLoss:</div>
 
-                    <div style={{color: openPositionModalStore.lossPercentIfStopLossFiredIsValid ? "green" : "red"}}>
+                    <div className={openPositionModalStore.lossPercentIfStopLossFiredIsValid ? commonStyles.greenText : commonStyles.redText}>
                         {openPositionModalStore.lossValueIfStopLossFiredAbsStr.length > 0 ? `${openPositionModalStore.lossValueIfStopLossFiredAbsStr} (${openPositionModalStore.lossPercentIfStopLossFiredAbsStr}%)` : ''}
                     </div>
                 </div>
@@ -150,14 +151,14 @@ const OpenPositionModal: FC = observer(() => {
                 <div style={{display: "flex", paddingTop: "0.5em"}}>
                     <div style={{paddingRight: "0.5em"}}>Отношение потерь StopLoss к свободной марже:</div>
 
-                    <div style={{color: openPositionModalStore.lossDivMarginFreeIsValid ? "green" : "red"}}>
+                    <div className={openPositionModalStore.lossDivMarginFreeIsValid ? commonStyles.greenText : commonStyles.redText}>
                         {openPositionModalStore.lossDivMarginFreePercentStr.length > 0 ? `${openPositionModalStore.lossDivMarginFreePercentStr}%` : ''}
                     </div>
                 </div>
 
                 <hr></hr>
 
-                <div style={{paddingBottom: "2em", color: openPositionModalStore.allCorrect ? "green" : "red"}}>
+                <div className={openPositionModalStore.allCorrect ? commonStyles.greenText : commonStyles.redText} style={{paddingBottom: "2em"}}>
                     {openPositionModalStore.notValidReasons.map(reason => (
                         <div>{reason}</div>
                     ))}
