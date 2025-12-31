@@ -12,7 +12,7 @@ const ClosedPositions = observer(() => {
 
     const createEventItem = (date: string, text: string): ReactNode => {
         return <div style={{display: 'flex'}}>
-            <div style={{marginRight: '0.5em'}}>[{date}]</div>
+            <div style={{marginRight: '0.5em', fontWeight:'bold'}}>[{date}]</div>
             <div style={{fontWeight: 'normal'}}>{text}</div>
         </div>
     }

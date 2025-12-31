@@ -54,7 +54,7 @@ const OpenPositionModal: FC = observer(() => {
                     Отмена
                 </StrongButton>,
             ]}>
-            <div style={{fontSize: "large"}}>
+            <div style={{fontSize: "large", fontWeight: "bold"}}>
 
                 <div style={{display: "flex"}}>
                     <div style={{paddingRight: "0.5em"}}>Инструмент:</div>

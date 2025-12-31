@@ -26,7 +26,7 @@ const AddWatchDogModal: FC = observer(() => {
                     Отмена
                 </StrongButton>,
             ]}>
-            <div style={{fontSize: "large"}}>
+            <div style={{fontSize: "large", fontWeight: "bold"}}>
                 <div style={{fontSize: "larger", textDecoration: "underline"}}>Позиция:</div>
                 <div style={{color: "blue"}}>
                     <div>{`Инструмент: ${addWatchDogModalStore.position?.symbol}`}</div>

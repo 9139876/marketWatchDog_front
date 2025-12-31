@@ -34,7 +34,7 @@ const EventsList = observer(() => {
     return (
         <div>
             <Checkbox.Group
-                style={{margin: '0em 0em 1em 1em'}}
+                style={{margin: '0em 0em 1em 1em', fontWeight: 'bold'}}
                 options={eventStore.selectedEventTypes.map(x => x.value)}
                 value={eventStore.selectedEventTypes.filter(x => x.isSelected).map(x => x.value)}
                 onChange={onChange}
