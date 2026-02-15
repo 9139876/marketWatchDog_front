@@ -1,6 +1,6 @@
 import React from 'react';
 import {Layout} from 'antd';
-import MainTree from "./components/mainTree";
+import Main from "./components/main";
 
 import {useStores} from "./stores/hooks/useStores";
 import {observer} from "mobx-react";
@@ -27,7 +27,7 @@ const App = observer(() => {
 
             <div className={styles.bodyWrapper}>
                 {appStateStore.getConnectedToServerStatus()
-                    ? <MainTree/>
+                    ? <Main/>
                     : <div className={commonStyles.redText} style={{paddingTop: '5em', fontSize: 'xxx-large', textAlign:'center'}}>Нет соединения с сервером</div>}
             </div>
 

@@ -45,6 +45,25 @@ export default class DealsHistoryStore {
         }
     }
 
+    fullRefreshClosedPositionModels = async () => {
+        const request: GetNewItemsRequest = {
+            dealerType: this.rootStore.appStateStore.getDealerType(),
+            after: getStartOfDayBeforeToday(3660),
+            lastId: -1
+        };
+
+        const result = await this.dealsHistoryApi.getDealsHistoryAfter(request);
+
+        if (result.isSuccess) {
+            const newClosedPositionModels = result.payload ?? [];
+
+            if (newClosedPositionModels.length > 0) {
+                this.closedPositionModels = newClosedPositionModels.sort((a, b) => b.closeTime.getTime() - a.closeTime.getTime());
+                this.updateClosedPositionModelGroupsForShow();
+            }
+        }
+    }
+
     private updateClosedPositionModelGroupsForShow(): void {
         const buffer: GroupItem<ClosedPositionModel>[] = [];
 

@@ -8,6 +8,8 @@ import {DealerTypeEnum} from "../models/enums/dealerTypeEnum";
 import {formatDateTimeRusStr} from "../utils/helpers/stringHelper";
 import StrongButton from "../customControls/strongButton";
 import strongButtonStyles from "../customControls/strongButton.module.css";
+import {OperatingModeTypeEnum} from "../models/enums/operatingModeTypeEnum";
+import commonStyles from "../commonStyles/commonStyles.module.css";
 
 const Header = observer(() => {
 
@@ -36,29 +38,45 @@ const Header = observer(() => {
             }));
     }
 
+    const getOperatingModeTypes = () => {
+        return Object.values(OperatingModeTypeEnum).map(item =>
+            ({
+                value: item,
+                label: item.toString()
+            }));
+    }
+
     return (
         <div style={{display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%'}}>
             <div>
                 {
                     appStateStore.getConnectedToServerStatus()
                         ? <div style={{marginLeft: '1em', display: 'flex', alignItems: 'center'}}>
-                            <div style={{display: "flex", alignItems: 'center', marginRight: '1em'}}>
-                                <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontSize: '1.5em'}}>Интервал обновления:</div>
+                            {
+                                appStateStore.operatingModeIsStandard() || appStateStore.operatingModeIsAutoTrade()
+                                    ? (<div>
+                                        <div style={{display: "flex", alignItems: 'center', marginRight: '1em'}}>
+                                            <div style={{paddingRight: "0.5em", fontWeight: 'bold', fontSize: '1.5em'}}>Интервал обновления:</div>
 
-                                <InputNumber<string>
-                                    style={{width: "4em"}}
-                                    value={appStateStore.updateInterval.toString()}
-                                    min="3"
-                                    max="30"
-                                    step="1"
-                                    onChange={appStateStore.setUpdateInterval}
-                                    stringMode
-                                />
-                            </div>
+                                            <InputNumber<string>
+                                                style={{width: "4em"}}
+                                                value={appStateStore.updateInterval.toString()}
+                                                min="3"
+                                                max="30"
+                                                step="1"
+                                                onChange={appStateStore.setUpdateInterval}
+                                                stringMode
+                                            />
+                                        </div>
 
-                            <div style={{marginRight: '1em', fontWeight: 'bold', fontSize: '1.5em'}}>
-                                {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
-                            </div>
+                                        <div style={{marginRight: '1em', fontWeight: 'bold', fontSize: '1.5em'}}>
+                                            {`Последнее обновление: ${formatDateTimeRusStr(appStateStore.lastUpdatedTime)}`}
+                                        </div>
+                                    </div>)
+                                    : (<div>
+                                        <div className={commonStyles.redText} style={{fontSize: 'xx-large', textAlign:'center', marginRight:'1em'}}>Режим теста на истории</div>
+                                    </div>)
+                            }
 
                             <Alert
                                 style={{fontWeight: 'bold', fontSize: '1.2em'}}
@@ -68,14 +86,26 @@ const Header = observer(() => {
                         </div>
                         :
                         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                            <div style={{marginLeft: '1em'}}>
+                                <Select
+                                    disabled={appStateStore.getConnectedToServerStatus()}
+                                    style={{width: "15em"}}
+                                    placeholder="Выбор режима"
+                                    options={getOperatingModeTypes()}
+                                    value={appStateStore.getOperatingModeType()}
+                                    onChange={appStateStore.setOperatingModeType}
+                                />
+                            </div>
+
                             <div>
                                 <Input
-                                    style={{width: "30em"}}
+                                    style={{width: "30em", marginLeft: '1em'}}
                                     disabled={appStateStore.getConnectedToServerStatus()}
                                     addonBefore={`Сервер: ${httpStr}`}
                                     value={origin}
                                     onChange={onChangeOrigin}/>
                             </div>
+
                             <div style={{marginLeft: '1em'}}>
                                 <Select
 

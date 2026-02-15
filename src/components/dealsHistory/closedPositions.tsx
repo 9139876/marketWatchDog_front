@@ -5,14 +5,16 @@ import React, {ReactNode} from "react";
 import ClosedPositionModel from "../../models/dealsHistory/closedPositionModel";
 import {TimelineItemProps} from "antd/es/timeline/TimelineItem";
 import {formatTimeRusStr} from "../../utils/helpers/stringHelper";
+import StrongButton from "../../customControls/strongButton";
+import strongButtonStyles from "../../customControls/strongButton.module.css";
 
 const ClosedPositions = observer(() => {
 
-    const {dealsHistoryStore} = useStores();
+    const {dealsHistoryStore, appStateStore} = useStores();
 
     const createEventItem = (date: string, text: string): ReactNode => {
         return <div style={{display: 'flex'}}>
-            <div style={{marginRight: '0.5em', fontWeight:'bold'}}>[{date}]</div>
+            <div style={{marginRight: '0.5em', fontWeight: 'bold'}}>[{date}]</div>
             <div style={{fontWeight: 'normal'}}>{text}</div>
         </div>
     }
@@ -47,8 +49,20 @@ const ClosedPositions = observer(() => {
             }));
     }
 
+    const getMaxHeight = (): string => {
+        return appStateStore.operatingModeIsHistoryTest()
+            ? '48em'
+            : '24em';
+    }
+
     return (
-        <div style={{minHeight: '12em', maxHeight: '24em', overflow: 'auto', padding: '0.5em'}}>
+        <div style={{minHeight: '12em', maxHeight: getMaxHeight(), overflow: 'auto', padding: '0.5em'}}>
+            {appStateStore.operatingModeIsHistoryTest()
+                ? <StrongButton className={strongButtonStyles.greenButton} key="fullRefresh" onClick={dealsHistoryStore.fullRefreshClosedPositionModels}>
+                    Обновить
+                </StrongButton>
+                : null
+            }
             {dealsHistoryStore.closedPositionModelGroupsForShow.map(group =>
                 <div>
                     <h2>{group.key}</h2>

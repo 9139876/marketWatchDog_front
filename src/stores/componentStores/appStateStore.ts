@@ -2,13 +2,15 @@ import RootStore from "../rootStore";
 import {makeAutoObservable} from "mobx";
 import ServerHealthCheckApi from "../../api/serverHealthCheckApi";
 import {DealerTypeEnum} from "../../models/enums/dealerTypeEnum";
+import {OperatingModeTypeEnum} from "../../models/enums/operatingModeTypeEnum";
 
 export default class AppStateStore {
     private rootStore: RootStore;
     private serverHealthCheckApi: ServerHealthCheckApi;
     private connectedToServer: boolean = false;
     private backendOrigin: string = 'http://wd-back-dev.loc';
-    private dealerTypeEnum: DealerTypeEnum = DealerTypeEnum.AlfaForex;
+    private dealerType: DealerTypeEnum = DealerTypeEnum.AlfaForex;
+    private operatingModeType: OperatingModeTypeEnum = OperatingModeTypeEnum.Standard;
     updateInterval: number = 5;
     lastUpdatedTime: Date = new Date(1991, 0, 1);
 
@@ -23,11 +25,31 @@ export default class AppStateStore {
     }
 
     getDealerType = (): DealerTypeEnum => {
-        return this.dealerTypeEnum;
+        return this.dealerType;
     }
 
     setDealerType = (value: DealerTypeEnum) => {
-        this.dealerTypeEnum = value;
+        this.dealerType = value;
+    }
+
+    getOperatingModeType = (): OperatingModeTypeEnum => {
+        return this.operatingModeType;
+    }
+
+    setOperatingModeType = (value: OperatingModeTypeEnum) => {
+        this.operatingModeType = value;
+    }
+
+    operatingModeIsStandard = (): boolean => {
+        return this.operatingModeType === OperatingModeTypeEnum.Standard;
+    }
+
+    operatingModeIsAutoTrade = (): boolean => {
+        return this.operatingModeType === OperatingModeTypeEnum.AutoTrade;
+    }
+
+    operatingModeIsHistoryTest = (): boolean => {
+        return this.operatingModeType === OperatingModeTypeEnum.HistoryTest;
     }
 
     getBackendOrigin = () => {
@@ -51,6 +73,15 @@ export default class AppStateStore {
     }
 
     connectToServer = async () => {
+        if (this.operatingModeIsHistoryTest()) {
+            if (await this.connectToServerInternal()) {
+                this.connectedToServer = true;
+                return;
+            } else {
+                alert(`Попытка соединения с ${this.backendOrigin} не удалась :(`)
+            }
+        }
+
         if (await this.connectToServerInternal()) {
             this.connectedToServer = true;
             await this.update();
@@ -70,6 +101,8 @@ export default class AppStateStore {
 
         if (!pingResult.isSuccess || pingResult.payload !== 'pong') {
             return false;
+        } else if (this.operatingModeIsHistoryTest()) {
+            return true;
         }
 
         //INITIALIZE
